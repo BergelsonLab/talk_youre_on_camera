@@ -3,14 +3,16 @@ library(feather)
 library(ggrepel)
 library(broom)
 library(forcats)
+library(MASS)
+library(Hmisc)
 
 #eb This is where we want to change the code so it gets the latest version of allbasiclevel, and writes out what that version is when rendered.
 
-sixseven_basiclevel_home_data <- read_feather("data/all_basiclevel_feather7-19-17")%>%
+sixseven_basiclevel_home_data <- read_feather("data/all_basiclevel.feather")%>%
   filter(month%in% c("06","07"))%>%
   droplevels()
 
-sixseven_basiclevel_home_data_agg <- read_feather("data/all_basiclevel_home_data_agg_feather7-19-17")%>%
+sixseven_basiclevel_home_data_agg <- read_feather("data/all_basiclevel_home_data_agg_feather7-26-17")%>%
   filter(month%in% c("06","07"))%>%
   droplevels() %>% 
   dplyr::select(subj:num_exp_types, d, q, n, s, r,i, TOY:tech, propd, propq, propn, props, propr, propi, everything())

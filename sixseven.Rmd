@@ -13,7 +13,7 @@ source("sixseven_data_aggregation.R")
 #ggplot(clantime, aes(total_min,SubjectNumber))+geom_point()+theme_bw(base_size=8)
 ```
 
-#sheer #s of speakers, types, tokens, utterance types
+#The 12 Derived Counts
 
 ```{r counts}
 #numtypes
@@ -89,10 +89,15 @@ ggplot(sixseven_basiclevel_home_data_agg,
    geom_point(position = position_jitterdodge(dodge.width=.9, jitter.width = .1, jitter.height = 0), shape = 21)+
    stat_summary(fun.data=mean_cl_boot, position = position_dodge(width=.9), aes(group=audio_video), color="black")
 
+ggplot(sixseven_basiclevel_home_data_agg, 
+        aes(month, y_op, color=audio_video))+
+   geom_violin()+
+   geom_point(position = position_jitterdodge(dodge.width=.9, jitter.width = .1, jitter.height = 0), shape = 21)+
+   stat_summary(fun.data=mean_cl_boot, position = position_dodge(width=.9), aes(group=audio_video), color="black")
 
 ```
 
-#various props
+#The 11 Derived Proportions
 
 ```{r props}
 #type token: 15% higher in video
@@ -172,14 +177,9 @@ ggplot(sixseven_basiclevel_home_data_agg,
 
 #actual comparison across audio/video numerically
 
-
 #correlation graphs
 ```{r correlation graphs}
-ggplot(sixseven_spreadAV,
-       aes(a_numspeakers, v_numspeakers, color=month, fill = month))+
-  geom_point()+
-  stat_smooth()+facet_wrap(~month)
-#corr
+
 ggplot(sixseven_spreadAV,
        aes(a_numtypes, v_numtypes, color=month, fill = month))+
   geom_point()+
@@ -194,19 +194,22 @@ ggplot(sixseven_spreadAV,
        aes(a_FAT, v_FAT, color=month, fill = month))+
   geom_point()+
   stat_smooth()+facet_wrap(~month)
-#corr
+
 ggplot(sixseven_spreadAV,
        aes(a_MOT, v_MOT, color=month, fill = month))+
   geom_point()+
     stat_smooth()+facet_wrap(~month)
+ggplot(sixseven_spreadAV,
+       aes(a_numspeakers, v_numspeakers, color=month, fill = month))+
+  geom_point()+
+  stat_smooth()+facet_wrap(~month)
 
-colnames(sixseven_spreadAV)
-#corr
+
 ggplot(sixseven_spreadAV,
        aes(a_d, v_d, color=month, fill = month))+
   geom_point()+
     stat_smooth()+facet_wrap(~month)
-#corr
+
 ggplot(sixseven_spreadAV,
        aes(a_q, v_q, color=month, fill = month))+
   geom_point()+
@@ -231,12 +234,10 @@ ggplot(sixseven_spreadAV,
        aes(a_s, v_s, color=month, fill = month))+
   geom_point()+
     stat_smooth()+facet_wrap(~month)
-#crazy spread
-ggplot(sixseven_spreadAV,
-       aes(a_TOY, v_TOY, color=month, fill = month))+
-  geom_point()+
-    stat_smooth()+facet_wrap(~month)
-#not corr
+```
+
+#prop av cors, by month
+```{r}
 ggplot(sixseven_spreadAV,
        aes(a_prop_op, v_prop_op, color=month, fill = month))+
   geom_point()+
@@ -250,16 +251,6 @@ ggplot(sixseven_spreadAV,
 #sparse
 ggplot(sixseven_spreadAV,
        aes(a_prop_dad, v_prop_dad, color=month, fill = month))+
-  geom_point()+
-    stat_smooth()+facet_wrap(~month)
-#weird dist
-ggplot(sixseven_spreadAV,
-       aes(a_prop_parent, v_prop_parent, color=month, fill = month))+
-  geom_point()+
-    stat_smooth()+facet_wrap(~month)
-#sparse
-ggplot(sixseven_spreadAV,
-       aes(a_prop_tech, v_prop_tech, color=month, fill = month))+
   geom_point()+
     stat_smooth()+facet_wrap(~month)
 
@@ -297,15 +288,12 @@ ggplot(sixseven_spreadAV,
        aes(a_type_token_ratio, v_type_token_ratio, color=month, fill = month))+
   geom_point()+
     stat_smooth(method="rlm")+facet_wrap(~month)
-shapiro.test(sixseven_spreadAV$v_type_token_ratio)
 
-ggplot(sixseven_spreadAV,
-       aes(a_ent_subj_av, v_ent_subj_av, color=month, fill = month))+
-  geom_point()+
-    stat_smooth(method="rlm")+facet_wrap(~month)
+
 ```
 
-#distribution of utterance_types
+#distribution of ut, op, and speakers, proportionally and by count
+##stacked bargraphs
 
 ```{r}
 #ut stacked proportionally
@@ -360,8 +348,11 @@ top100av_spread <- top100av %>%
   mutate(aud_vid_sum = sum(audio,video, na.rm=T)) %>% 
   arrange(-aud_vid_sum)
 
-cor.test(top100av_spread$audio, top100av_spread$video, method = "spearman")# sig cor, but ~1/3 are 0s in each
-
+cor.test(top100av_spread$audio, top100av_spread$video, method = "spearman")# sig cor, but ~1/2 are 0s
+top100av_spread %>% 
+  mutate(zeroA_V= ifelse(audio==0|video==0,T,F)) %>% 
+  group_by(zeroA_V) %>% 
+  tally()
 
 top100av67 <- sixseven_basiclevel_home_data%>%
    group_by(audio_video, month,object)%>%
@@ -423,13 +414,14 @@ top100_monthspread <- bind_rows(top100audio_monthspread, top100video_monthspread
 
 #could holmes adjust these as needed
 
-cor.test(subset(top100av67_avspread, month=="06")$audio, subset(top100av67_avspread, month=="06")$video, method = "spearman")
-cor.test(subset(top100av67_avspread, month=="07")$audio, subset(top100av67_avspread, month=="07")$video, method = "spearman")
-cor.test(top100audio_monthspread$six, top100audio_monthspread$seven, method = "spearman")
-cor.test(top100video_monthspread$six, top100video_monthspread$seven, method = "spearman")
-cor.test(top100av_spread$audio, top100av_spread$video, method = "spearman")
+cor_sixavtop <- cor.test(subset(top100av67_avspread, month=="06")$audio, subset(top100av67_avspread, month=="06")$video, method = "spearman") %>% tidy()#.23
+cor_sevavtop <-cor.test(subset(top100av67_avspread, month=="07")$audio, subset(top100av67_avspread, month=="07")$video, method = "spearman") %>% tidy()#.22
+cor_sixsevenAtop <-cor.test(top100audio_monthspread$six, top100audio_monthspread$seven, method = "spearman") %>% tidy()#.67
+cor_sixsevenVtop <- cor.test(top100video_monthspread$six, top100video_monthspread$seven, method = "spearman") %>% tidy()#.36
+cor_AVtop<-cor.test(top100av_spread$audio, top100av_spread$video, method = "spearman") %>% tidy()
 
 #cor top100 by month a vs. v
+#plots in paper draft
 ggplot(top100av67_avspread, aes(audio, video))+facet_wrap(~month)+geom_point(shape=1)
 ggplot(top100_monthspread, aes(six, seven))+facet_wrap(~audio_video, scales = "free")+geom_point(shape =1)
 
@@ -454,12 +446,11 @@ tally_month_av<- sixseven_basiclevel_home_data %>%
   group_by(object,audio_video, month) %>%
   tally() %>% 
   arrange(-n)
+#plot in paper draft
 ggplot(tally_month_av, aes(n, fill = month))+geom_histogram()+
   facet_grid(month~audio_video,scales = "free")+
   scale_x_log10()+scale_y_log10()
 
-ggplot(filter(tally_month_av, n>10), aes(n, fill = month))+geom_histogram()+
-  facet_grid(audio_video~month,scales = "free")+scale_x_log10()
 
 #unique within audio
 audiounique <- sixseven_basiclevel_home_data %>% 
@@ -491,11 +482,11 @@ sixseven_basiclevel_home_data %>%
 
 #audio that is not in video
 #video that is not in audio
-#1847 words occured in audio more than once but video never
+#1868 words occured in audio more than once but video never
 audiounique %>% 
   filter(!object%in% videounique$object & n>1)
 
-#of which 265 were proper nouns
+#of which 270 were proper nouns
 audiounique %>% 
   filter(!object%in% videounique$object & n>1) %>% 
   mutate(cap = ifelse(tolower(object)!=object, T, F)) %>% 
@@ -519,6 +510,7 @@ videounique %>%
 
 ```{r tallying graphs}
 #top100 graph, log space
+#plot in draft
 ggplot(top100av_spread, aes(audio+.1, video+.1, color = (audio==0 |video==0)))+
   geom_label_repel(aes(label=object),label.size = .10,
   label.padding = unit(0.1, "lines"),
@@ -526,10 +518,6 @@ ggplot(top100av_spread, aes(audio+.1, video+.1, color = (audio==0 |video==0)))+
   theme_bw(base_size=18)+
   guides(colour=F)+scale_x_log10()+scale_y_log10()
 
-ggplot(persubj_month_top1, aes(subj, n, color= object, label = object))+
-  geom_label()+theme_bw(base_size=12)+
-  #geom_label_repel()+
-  guides(color=F)+facet_grid(audio_video~month, scales = "free")
 
 overall_month_top10 <-sixseven_basiclevel_home_data%>%
   group_by(audio_video, month, object)%>%
@@ -540,6 +528,7 @@ overall_month_top10 <-sixseven_basiclevel_home_data%>%
 
 #overall_month_top10 %>% View()
 #top 10 by av and by month
+#plot in draft
 ggplot(overall_month_top10, aes(n, nfams, label = object, colour = audio_video, fill = object))+
   facet_wrap(~month)+
   geom_label_repel(segment.color = "grey50")+
@@ -549,7 +538,8 @@ ggplot(overall_month_top10, aes(n, nfams, label = object, colour = audio_video, 
   
 
 
-ggplot(top50av67_avspread, aes(audio, video, color = (audio==0 |video==0)))+
+#ggplot(top100av67_avspread, aes(audio+.1, video+.1, color = (audio==0 |video==0)))+
+ggplot(top100av67_avspread, aes(audio, video, color = (audio==0 |video==0)))+
   geom_label_repel(aes(label=object),label.size = .10,
   label.padding = unit(0.1, "lines"), size = 3,
   point.padding = unit(1.6, 'lines'),
@@ -563,16 +553,12 @@ ggplot(top50av67_avspread, aes(audio, video, color = (audio==0 |video==0)))+
       #arrow = arrow(length = unit(0.02, 'npc')))+
   theme_bw(base_size=14)+
   guides(color=F)+facet_wrap(~month, nrow=1)+
-  geom_point()
+  geom_point()#+scale_x_log10()+scale_y_log10()
 
-
-
-
-ggplot(hist_sixseven, aes(n, fill=audio_video))+geom_histogram(binwidth=100)+facet_wrap(month~audio_video, scales ="free")
 ```
 
 ```{r sixseven_spreadmonth graphs}
-ggplot(sixseven_spreadmonth, aes(six_numspeakers, sev_numspeakers))+geom_point()+stat_smooth()+facet_wrap(~audio_video, scales = "free", nrow  =2)
+ggplot(sixseven_spreadmonth, aes(six_numspeakers, sev_numspeakers))+geom_jitter(width=.1, height=0)+stat_smooth()+facet_wrap(~audio_video, scales = "free", nrow  =2)
 ggplot(sixseven_spreadmonth, aes(six_numtypes, sev_numtypes))+geom_point()+stat_smooth()+facet_wrap(~audio_video, scales = "free", nrow  =2)
 ggplot(sixseven_spreadmonth, aes(six_FAT, sev_FAT))+geom_point()+stat_smooth()+facet_wrap(~audio_video, scales = "free", nrow  =2)
 ggplot(sixseven_spreadmonth, aes(six_MOT, sev_MOT))+geom_point()+stat_smooth()+facet_wrap(~audio_video, scales = "free", nrow  =2)
@@ -582,15 +568,11 @@ ggplot(sixseven_spreadmonth, aes(six_i, sev_i))+geom_point()+stat_smooth()+facet
 ggplot(sixseven_spreadmonth, aes(six_r, sev_r))+geom_point()+stat_smooth()+facet_wrap(~audio_video, scales = "free", nrow  =2)
 ggplot(sixseven_spreadmonth, aes(six_s, sev_s))+geom_point()+stat_smooth()+facet_wrap(~audio_video, scales = "free", nrow  =2)
 ggplot(sixseven_spreadmonth, aes(six_n, sev_n))+geom_point()+stat_smooth()+facet_wrap(~audio_video, scales = "free", nrow  =2)
+ggplot(sixseven_spreadmonth, aes(six_y_op, sev_y_op))+geom_point()+stat_smooth()+facet_wrap(~audio_video, scales = "free", nrow  =2)
 ```
 
 #stats
 ```{r anovas}
-#need to redo as moving window
-lm_quant_prop <- lm(data = sixseven_basiclevel_home_data_agg, type_token_ratio ~ month + audio_video)
-anova(lm_quant_prop)
-plot(lm_quant_prop)
-summary(lm_quant_prop)
 
 sixseven_basiclevel_home_data_agg %>% 
   group_by(month, audio_video)%>%
@@ -662,7 +644,7 @@ wv12 <- wilcox.test(subset(sixseven_basiclevel_home_data_agg, audio_video=="vide
             subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="07" & subj!="17")$FAT, conf.int=T, paired = T)
 ```
 ```{r cor tests 6 vs 7}
-# none of the audio differences 6 vs 7 are different
+# do six vs. seven audio correlate
 ca1 <- cor.test(subset(sixseven_basiclevel_home_data_agg, audio_video=="audio" & month=="06")$numtokens,
             subset(sixseven_basiclevel_home_data_agg, audio_video=="audio" & month=="07")$numtokens, conf.int=T, method = "kendall")
 ca2 <- cor.test(subset(sixseven_basiclevel_home_data_agg, audio_video=="audio" & month=="06")$numtypes,
@@ -688,7 +670,7 @@ ca11 <- cor.test(subset(sixseven_basiclevel_home_data_agg, audio_video=="audio" 
 ca12 <- cor.test(subset(sixseven_basiclevel_home_data_agg, audio_video=="audio" & month=="06")$y_op,
             subset(sixseven_basiclevel_home_data_agg, audio_video=="audio" & month=="07")$n_op, conf.int=T, method = "kendall")
 
-#most video 6vs7 aren't different
+# do six vs. seven video correlate
 cv1 <- cor.test(subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="06"& subj!="17")$numtokens,
             subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="07"& subj!="17")$numtokens, conf.int=T, method = "kendall")
 cv2 <- cor.test(subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="06"& subj!="17")$numtypes,
@@ -731,14 +713,14 @@ round(ca_ps, 3)
 table(ca_ps<.05)
 table(p.adjust(ca_ps, method = "holm")<.05)
 
+ca_taus <- cbind(ca1$estimate,ca2$estimate,ca3$estimate, ca4$estimate, ca5$estimate, ca6$estimate, ca7$estimate, ca8$estimate, ca9$estimate, ca10$estimate, ca11$estimate, ca12$estimate)
+range(ca_taus)
+
 wv_ps <- cbind(wv1$p.value,wv2$p.value,wv3$p.value, wv4$p.value, wv5$p.value, wv6$p.value, wv7$p.value, wv8$p.value, wv9$p.value, wv10$p.value, wv11$p.value, wv12$p.value)
 round(p.adjust(wv_ps, method = "holm"),3)
 round(wv_ps, 3)
 table(wv_ps<.05)
 table(p.adjust(wv_ps, method = "holm")<.05)
-
-ca_taus <- cbind(ca1$estimate,ca2$estimate,ca3$estimate, ca4$estimate, ca5$estimate, ca6$estimate, ca7$estimate, ca8$estimate, ca9$estimate, ca10$estimate, ca11$estimate, ca12$estimate)
-range(ca_taus)
 
 
 wa_ps <- cbind(wa1$p.value,wa2$p.value,wa3$p.value, wa4$p.value, wa5$p.value, wa6$p.value, wa7$p.value, wa8$p.value, wa9$p.value, wa10$p.value, wa11$p.value, wa12$p.value)
@@ -747,6 +729,7 @@ round(wa_ps, 3)
 table(wa_ps<.05)
 table(p.adjust(wa_ps, method = "holm")<.05)
 
+#rough estimate for what we'll get when we properly divide by video hour
 sixseven_basiclevel_home_data_agg%>%
   group_by(audio_video) %>% 
   summarise(meantokens = mean(numtokens, na.rm=T),
