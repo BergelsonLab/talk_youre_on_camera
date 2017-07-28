@@ -16,13 +16,6 @@ source("sixseven_data_aggregation.R")
 #sheer #s of speakers, types, tokens, utterance types
 
 ```{r counts}
-#numspeakers
-ggplot(sixseven_basiclevel_home_data_agg, 
-       aes(month, numspeakers, color=audio_video))+
-  geom_violin()+
-  geom_point(position = position_jitterdodge(dodge.width=.9, jitter.width = .1, jitter.height = 0), shape = 21)+
-  stat_summary(fun.data=mean_cl_boot, position = position_dodge(width=.9), aes(group=audio_video), color="black")
-
 #numtypes
 ggplot(sixseven_basiclevel_home_data_agg, 
        aes(month, numtokens, color=audio_video))+
@@ -43,9 +36,17 @@ ggplot(sixseven_basiclevel_home_data_agg,
   geom_violin()+
   geom_point(position = position_jitterdodge(dodge.width=.9, jitter.width = .1, jitter.height = 0), shape = 21)+
   stat_summary(fun.data=mean_cl_boot, position = position_dodge(width=.9), aes(group=audio_video), color="black")
+
 #MOT: big diff but not 10fold
 ggplot(sixseven_basiclevel_home_data_agg, 
        aes(month, MOT, color=audio_video))+
+  geom_violin()+
+  geom_point(position = position_jitterdodge(dodge.width=.9, jitter.width = .1, jitter.height = 0), shape = 21)+
+  stat_summary(fun.data=mean_cl_boot, position = position_dodge(width=.9), aes(group=audio_video), color="black")
+
+#numspeakers
+ggplot(sixseven_basiclevel_home_data_agg, 
+       aes(month, numspeakers, color=audio_video))+
   geom_violin()+
   geom_point(position = position_jitterdodge(dodge.width=.9, jitter.width = .1, jitter.height = 0), shape = 21)+
   stat_summary(fun.data=mean_cl_boot, position = position_dodge(width=.9), aes(group=audio_video), color="black")
@@ -87,31 +88,17 @@ ggplot(sixseven_basiclevel_home_data_agg,
    geom_violin()+
    geom_point(position = position_jitterdodge(dodge.width=.9, jitter.width = .1, jitter.height = 0), shape = 21)+
    stat_summary(fun.data=mean_cl_boot, position = position_dodge(width=.9), aes(group=audio_video), color="black")
-#TOY
-ggplot(sixseven_basiclevel_home_data_agg, 
-        aes(month, TOY, label=subj, color= audio_video))+
-   geom_violin()+
-   geom_point(position = position_jitterdodge(dodge.width=.9, jitter.width = .1, jitter.height = 0), shape = 21)+
-   stat_summary(fun.data=mean_cl_boot, position = position_dodge(width=.9), aes(group=audio_video), color="black")
 
-#TOY without 0s & with labels
-ggplot(sixseven_basiclevel_home_data_agg %>%filter(TOY>0), 
-        aes(month, TOY, label=subj, color= audio_video))+
-   geom_violin()+
-   #geom_point(position = position_jitterdodge(dodge.width=.9, jitter.width = .1, jitter.height = 0), shape = 21)+
-   stat_summary(fun.data=mean_cl_boot, position = position_dodge(width=.9), aes(group=audio_video), color="black")+
-     geom_label_repel(
-  label.size = .10,
-  label.padding = unit(0.1, "lines"))+scale_y_log10()
 
 ```
 
 #various props
 
 ```{r props}
-#prop_op: higher for video by roughly 10%
+#type token: 15% higher in video
+# this needs to be done with either a MATTR or vocD measure (see clan)
 ggplot(sixseven_basiclevel_home_data_agg, 
-       aes(month, prop_op, color=audio_video))+
+       aes(month, type_token_ratio, color=audio_video))+
   geom_violin()+
   geom_point(position = position_jitterdodge(dodge.width=.9, jitter.width = .1, jitter.height = 0), shape = 21)+
   stat_summary(fun.data=mean_cl_boot, position = position_dodge(width=.9), aes(group=audio_video), color="black")
@@ -126,20 +113,6 @@ ggplot(sixseven_basiclevel_home_data_agg,
 #prop_dad: comparably low in both;~15%
 ggplot(sixseven_basiclevel_home_data_agg, 
        aes(month, prop_dad, color=audio_video))+
-  geom_violin()+
-  geom_point(position = position_jitterdodge(dodge.width=.9, jitter.width = .1, jitter.height = 0), shape = 21)+
-  stat_summary(fun.data=mean_cl_boot, position = position_dodge(width=.9), aes(group=audio_video), color="black")
-
-#prop_parent: same
-ggplot(sixseven_basiclevel_home_data_agg, 
-       aes(month, prop_parent, color=audio_video))+
-  geom_violin()+
-  geom_point(position = position_jitterdodge(dodge.width=.9, jitter.width = .1, jitter.height = 0), shape = 21)+
-  stat_summary(fun.data=mean_cl_boot, position = position_dodge(width=.9), aes(group=audio_video), color="black")
-
-#prop_tech: same. identical.
-ggplot(sixseven_basiclevel_home_data_agg, 
-       aes(month, prop_tech, color=audio_video))+
   geom_violin()+
   geom_point(position = position_jitterdodge(dodge.width=.9, jitter.width = .1, jitter.height = 0), shape = 21)+
   stat_summary(fun.data=mean_cl_boot, position = position_dodge(width=.9), aes(group=audio_video), color="black")
@@ -186,16 +159,10 @@ ggplot(sixseven_basiclevel_home_data_agg,
   geom_point(position = position_jitterdodge(dodge.width=.9, jitter.width = .1, jitter.height = 0), shape = 21)+
   stat_summary(fun.data=mean_cl_boot, position = position_dodge(width=.9), aes(group=audio_video), color="black")
 
-#type token: 15% higher in video
-ggplot(sixseven_basiclevel_home_data_agg, 
-       aes(month, type_token_ratio, color=audio_video))+
-  geom_violin()+
-  geom_point(position = position_jitterdodge(dodge.width=.9, jitter.width = .1, jitter.height = 0), shape = 21)+
-  stat_summary(fun.data=mean_cl_boot, position = position_dodge(width=.9), aes(group=audio_video), color="black")
 
-#ent_subj_avg: identical
+#prop_op: higher for video by roughly 10%
 ggplot(sixseven_basiclevel_home_data_agg, 
-       aes(month, ent_subj_av, color=audio_video))+
+       aes(month, prop_op, color=audio_video))+
   geom_violin()+
   geom_point(position = position_jitterdodge(dodge.width=.9, jitter.width = .1, jitter.height = 0), shape = 21)+
   stat_summary(fun.data=mean_cl_boot, position = position_dodge(width=.9), aes(group=audio_video), color="black")
