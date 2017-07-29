@@ -558,17 +558,17 @@ ggplot(top100av67_avspread, aes(audio, video, color = (audio==0 |video==0)))+
 ```
 
 ```{r sixseven_spreadmonth graphs}
-ggplot(sixseven_spreadmonth, aes(six_numspeakers, sev_numspeakers))+geom_jitter(width=.1, height=0)+stat_smooth()+facet_wrap(~audio_video, scales = "free", nrow  =2)
-ggplot(sixseven_spreadmonth, aes(six_numtypes, sev_numtypes))+geom_point()+stat_smooth()+facet_wrap(~audio_video, scales = "free", nrow  =2)
-ggplot(sixseven_spreadmonth, aes(six_FAT, sev_FAT))+geom_point()+stat_smooth()+facet_wrap(~audio_video, scales = "free", nrow  =2)
-ggplot(sixseven_spreadmonth, aes(six_MOT, sev_MOT))+geom_point()+stat_smooth()+facet_wrap(~audio_video, scales = "free", nrow  =2)
-ggplot(sixseven_spreadmonth, aes(six_d, sev_d))+geom_point()+stat_smooth()+facet_wrap(~audio_video, scales = "free", nrow  =2)
-ggplot(sixseven_spreadmonth, aes(six_q, sev_q))+geom_point()+stat_smooth()+facet_wrap(~audio_video, scales = "free", nrow  =2)
-ggplot(sixseven_spreadmonth, aes(six_i, sev_i))+geom_point()+stat_smooth()+facet_wrap(~audio_video, scales = "free", nrow  =2)
-ggplot(sixseven_spreadmonth, aes(six_r, sev_r))+geom_point()+stat_smooth()+facet_wrap(~audio_video, scales = "free", nrow  =2)
-ggplot(sixseven_spreadmonth, aes(six_s, sev_s))+geom_point()+stat_smooth()+facet_wrap(~audio_video, scales = "free", nrow  =2)
-ggplot(sixseven_spreadmonth, aes(six_n, sev_n))+geom_point()+stat_smooth()+facet_wrap(~audio_video, scales = "free", nrow  =2)
-ggplot(sixseven_spreadmonth, aes(six_y_op, sev_y_op))+geom_point()+stat_smooth()+facet_wrap(~audio_video, scales = "free", nrow  =2)
+#ggplot(d, aes(six_numspeakers, sev_numspeakers))+geom_jitter(width=.1, height=0)+stat_smooth()+facet_wrap(~audio_video, scales = "free", nrow  =2)
+#ggplot(sixseven_spreadmonth, aes(six_numtypes, sev_numtypes))+geom_point()+stat_smooth()+facet_wrap(~audio_video, scales = "free", nrow  =2)
+#ggplot(sixseven_spreadmonth, aes(six_FAT, sev_FAT))+geom_point()+stat_smooth()+facet_wrap(~audio_video, scales = "free", nrow  =2)
+#ggplot(sixseven_spreadmonth, aes(six_MOT, sev_MOT))+geom_point()+stat_smooth()+facet_wrap(~audio_video, scales = "free", nrow  =2)
+#ggplot(sixseven_spreadmonth, aes(six_d, sev_d))+geom_point()+stat_smooth()+facet_wrap(~audio_video, scales = "free", nrow  =2)
+#ggplot(sixseven_spreadmonth, aes(six_q, sev_q))+geom_point()+stat_smooth()+facet_wrap(~audio_video, scales = "free", nrow  =2)
+#ggplot(sixseven_spreadmonth, aes(six_i, sev_i))+geom_point()+stat_smooth()+facet_wrap(~audio_video, scales = "free", nrow  =2)
+#ggplot(sixseven_spreadmonth, aes(six_r, sev_r))+geom_point()+stat_smooth()+facet_wrap(~audio_video, scales = "free", nrow  =2)
+#ggplot(sixseven_spreadmonth, aes(six_s, sev_s))+geom_point()+stat_smooth()+facet_wrap(~audio_video, scales = "free", nrow  =2)
+#ggplot(sixseven_spreadmonth, aes(six_n, sev_n))+geom_point()+stat_smooth()+facet_wrap(~audio_video, scales = "free", nrow  =2)
+#ggplot(sixseven_spreadmonth, aes(six_y_op, sev_y_op))+geom_point()+stat_smooth()+facet_wrap(~audio_video, scales = "free", nrow  =2)
 ```
 
 #stats
@@ -671,30 +671,33 @@ ca12 <- cor.test(subset(sixseven_basiclevel_home_data_agg, audio_video=="audio" 
             subset(sixseven_basiclevel_home_data_agg, audio_video=="audio" & month=="07")$n_op, conf.int=T, method = "kendall")
 
 # do six vs. seven video correlate
-cv1 <- cor.test(subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="06"& subj!="17")$numtokens,
-            subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="07"& subj!="17")$numtokens, conf.int=T, method = "kendall")
-cv2 <- cor.test(subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="06"& subj!="17")$numtypes,
-            subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="07"& subj!="17")$numtypes, conf.int=T, method = "kendall")
-cv3 <- cor.test(subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="06"& subj!="17")$numspeakers,
-            subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="07"& subj!="17")$numspeakers, conf.int=T, method = "kendall")
-cv4 <- cor.test(subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="06"& subj!="17")$MOT,
-            subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="07"& subj!="17")$MOT, conf.int=T, method = "kendall")
-cv5 <- cor.test(subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="06"& subj!="17")$d,
-            subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="07"& subj!="17")$d, conf.int=T, method = "kendall")
-cv6 <- cor.test(subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="06"& subj!="17")$r,
-            subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="07"& subj!="17")$r, conf.int=T, method = "kendall")
-cv7 <- cor.test(subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="06"& subj!="17")$i,
-            subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="07"& subj!="17")$i, conf.int=T, method = "kendall")
-cv8 <- cor.test(subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="06"& subj!="17")$y_op,
-            subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="07"& subj!="17")$y_op, conf.int=T, method = "kendall")
-cv9 <- cor.test(subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="06"& subj!="17")$q,
-            subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="07"& subj!="17")$q, conf.int=T, method = "kendall")
-cv10 <- cor.test(subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="06"& subj!="17")$n,
-            subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="07"& subj!="17")$n, conf.int=T, method = "kendall")
-cv11 <- cor.test(subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="06"& subj!="17")$s,
-            subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="07"& subj!="17")$s, conf.int=T, method = "kendall")
-cv12 <- cor.test(subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="06" & subj!="17")$FAT,
-            subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="07" & subj!="17")$FAT, conf.int=T, method = "kendall")
+
+test <- sixseven_basiclevel_home_data_agg %>% filter(audio_video=="video" & subj!="17") %>% arrange(subj)
+
+cv1 <- cor.test(subset(test, audio_video=="video" & month=="06"& subj!="17")$numtokens,
+            subset(test, audio_video=="video" & month=="07"& subj!="17")$numtokens, conf.int=T, method = "kendall")
+cv2 <- cor.test(subset(test, audio_video=="video" & month=="06"& subj!="17")$numtypes,
+            subset(test, audio_video=="video" & month=="07"& subj!="17")$numtypes, conf.int=T, method = "kendall")
+cv3 <- cor.test(subset(test, audio_video=="video" & month=="06"& subj!="17")$numspeakers,
+            subset(test, audio_video=="video" & month=="07"& subj!="17")$numspeakers, conf.int=T, method = "kendall")
+cv4 <- cor.test(subset(test, audio_video=="video" & month=="06"& subj!="17")$MOT,
+            subset(test, audio_video=="video" & month=="07"& subj!="17")$MOT, conf.int=T, method = "kendall")
+cv5 <- cor.test(subset(test, audio_video=="video" & month=="06"& subj!="17")$d,
+            subset(test, audio_video=="video" & month=="07"& subj!="17")$d, conf.int=T, method = "kendall")
+cv6 <- cor.test(subset(test, audio_video=="video" & month=="06"& subj!="17")$r,
+            subset(test, audio_video=="video" & month=="07"& subj!="17")$r, conf.int=T, method = "kendall")
+cv7 <- cor.test(subset(test, audio_video=="video" & month=="06"& subj!="17")$i,
+            subset(test, audio_video=="video" & month=="07"& subj!="17")$i, conf.int=T, method = "kendall")
+cv8 <- cor.test(subset(test, audio_video=="video" & month=="06"& subj!="17")$y_op,
+            subset(test, audio_video=="video" & month=="07"& subj!="17")$y_op, conf.int=T, method = "kendall")
+cv9 <- cor.test(subset(test, audio_video=="video" & month=="06"& subj!="17")$q,
+            subset(test, audio_video=="video" & month=="07"& subj!="17")$q, conf.int=T, method = "kendall")
+cv10 <- cor.test(subset(test, audio_video=="video" & month=="06"& subj!="17")$n,
+            subset(test, audio_video=="video" & month=="07"& subj!="17")$n, conf.int=T, method = "kendall")
+cv11 <- cor.test(subset(test, audio_video=="video" & month=="06"& subj!="17")$s,
+            subset(test, audio_video=="video" & month=="07"& subj!="17")$s, conf.int=T, method = "kendall")
+cv12 <- cor.test(subset(test, audio_video=="video" & month=="06" & subj!="17")$FAT,
+            subset(test, audio_video=="video" & month=="07" & subj!="17")$FAT, conf.int=T, method = "kendall")
 
 cv_ps <- cbind(cv1$p.value,cv2$p.value,cv3$p.value, cv4$p.value, cv5$p.value, cv6$p.value, cv7$p.value, cv8$p.value, cv9$p.value, cv10$p.value, cv11$p.value, cv12$p.value)
 round(p.adjust(cv_ps, method = "holm"),3)
@@ -702,8 +705,8 @@ round(cv_ps,3)
 table(cv_ps<.05)
 table(p.adjust(cv_ps, method = "holm")<.05)
 cv6
-#taking out cv7 bc it's not sig, reading count
-cv_taus <- cbind(cv1$estimate,cv2$estimate,cv3$estimate, cv4$estimate, cv5$estimate, cv6$estimate, cv8$estimate, cv9$estimate, cv10$estimate, cv11$estimate, cv12$estimate)
+#taking out cv6 bc it's not sig, reading count
+cv_taus <- cbind(cv1$estimate,cv2$estimate,cv3$estimate, cv4$estimate, cv5$estimate, cv7$estimate, cv8$estimate, cv9$estimate, cv10$estimate, cv11$estimate, cv12$estimate)
 range(cv_taus)
 
 
@@ -807,26 +810,26 @@ pca10 <- cor.test(subset(sixseven_basiclevel_home_data_agg, audio_video=="audio"
             subset(sixseven_basiclevel_home_data_agg, audio_video=="audio" & month=="07")$type_token_ratio, conf.int=T, method = "kendall")
 
 #most video 6vs7 aren't different
-pcv1 <- cor.test(subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="06"& subj!="17")$prop_op,
-            subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="07"& subj!="17")$prop_op, conf.int=T, method = "kendall")
-pcv2 <- cor.test(subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="06"& subj!="17")$prop_mom,
-            subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="07"& subj!="17")$prop_mom, conf.int=T, method = "kendall")
-pcv3 <- cor.test(subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="06"& subj!="17")$prop_dad,
-            subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="07"& subj!="17")$prop_dad, conf.int=T, method = "kendall")
-pcv4 <- cor.test(subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="06"& subj!="17")$propd,
-            subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="07"& subj!="17")$propd, conf.int=T, method = "kendall")
-pcv5 <- cor.test(subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="06"& subj!="17")$propi,
-            subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="07"& subj!="17")$propi, conf.int=T, method = "kendall")
-pcv6 <- cor.test(subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="06"& subj!="17")$propr,
-            subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="07"& subj!="17")$propr, conf.int=T, method = "kendall")
-pcv7 <- cor.test(subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="06"& subj!="17")$propq,
-            subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="07"& subj!="17")$propq, conf.int=T, method = "kendall")
-pcv8 <- cor.test(subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="06"& subj!="17")$props,
-            subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="07"& subj!="17")$props, conf.int=T, method = "kendall")
-pcv9 <- cor.test(subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="06"& subj!="17")$propn,
-            subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="07"& subj!="17")$propn, conf.int=T, method = "kendall")
-pcv10 <- cor.test(subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="06"& subj!="17")$type_token_ratio,
-            subset(sixseven_basiclevel_home_data_agg, audio_video=="video" & month=="07"& subj!="17")$type_token_ratio, conf.int=T, method = "kendall")
+pcv1 <- cor.test(subset(test, audio_video=="video" & month=="06"& subj!="17")$prop_op,
+            subset(test, audio_video=="video" & month=="07"& subj!="17")$prop_op, conf.int=T, method = "kendall")
+pcv2 <- cor.test(subset(test, audio_video=="video" & month=="06"& subj!="17")$prop_mom,
+            subset(test, audio_video=="video" & month=="07"& subj!="17")$prop_mom, conf.int=T, method = "kendall")
+pcv3 <- cor.test(subset(test, audio_video=="video" & month=="06"& subj!="17")$prop_dad,
+            subset(test, audio_video=="video" & month=="07"& subj!="17")$prop_dad, conf.int=T, method = "kendall")
+pcv4 <- cor.test(subset(test, audio_video=="video" & month=="06"& subj!="17")$propd,
+            subset(test, audio_video=="video" & month=="07"& subj!="17")$propd, conf.int=T, method = "kendall")
+pcv5 <- cor.test(subset(test, audio_video=="video" & month=="06"& subj!="17")$propi,
+            subset(test, audio_video=="video" & month=="07"& subj!="17")$propi, conf.int=T, method = "kendall")
+pcv6 <- cor.test(subset(test, audio_video=="video" & month=="06"& subj!="17")$propr,
+            subset(test, audio_video=="video" & month=="07"& subj!="17")$propr, conf.int=T, method = "kendall")
+pcv7 <- cor.test(subset(test, audio_video=="video" & month=="06"& subj!="17")$propq,
+            subset(test, audio_video=="video" & month=="07"& subj!="17")$propq, conf.int=T, method = "kendall")
+pcv8 <- cor.test(subset(test, audio_video=="video" & month=="06"& subj!="17")$props,
+            subset(test, audio_video=="video" & month=="07"& subj!="17")$props, conf.int=T, method = "kendall")
+pcv9 <- cor.test(subset(test, audio_video=="video" & month=="06"& subj!="17")$propn,
+            subset(test, audio_video=="video" & month=="07"& subj!="17")$propn, conf.int=T, method = "kendall")
+pcv10 <- cor.test(subset(test, audio_video=="video" & month=="06"& subj!="17")$type_token_ratio,
+            subset(test, audio_video=="video" & month=="07"& subj!="17")$type_token_ratio, conf.int=T, method = "kendall")
 
 pcv_ps <- cbind(pcv1$p.value,pcv2$p.value,pcv3$p.value, pcv4$p.value, pcv5$p.value, pcv6$p.value, pcv7$p.value, pcv8$p.value, pcv9$p.value, pcv10$p.value)
 round(p.adjust(pcv_ps, method = "holm"),3)#prop_mom, prop_dad, 
@@ -1003,13 +1006,7 @@ countvals_long <- sixseven_basiclevel_home_data_agg %>%
                                   op = "y_op"))
 
 
-# ggplot(propvals_med, aes(fill = prop_meas, linetype=audio_video,prop_meas, medianval))+
-#   facet_wrap(month~audio_video,ncol=1)+geom_bar(stat="identity", color = "black")
-# ggplot(propvals_med, aes(fill = prop_meas, linetype=audio_video, month, medianval))+
-#   geom_bar(stat="identity", color = "black", position ="dodge")
-
-# ggplot(propvals_mean, aes(fill = prop_meas, linetype=audio_video, month, meanval))+
-#   geom_bar(stat="identity", color = "black", position ="dodge")
+#plots in draft
 ggplot(propvals_long, aes(fill = prop_meas, linetype =audio_video, month, propval))+
   stat_summary(fun.y=mean, geom="bar", position = "dodge", aes(linetype=audio_video),color = "black")+
   stat_summary(fun.data=mean_cl_boot, geom="pointrange", position=position_dodge(width=.9), 
