@@ -82,21 +82,25 @@ sixseven_spreadAV <- sixseven_basiclevel_home_data_agg%>%
          SubjectNumber= v_SubjectNumber)%>%
   left_join(audio_ag)
 
-# #month spread
-# 
-# six_spreadmonth <- sixseven_basiclevel_home_data_agg%>%
-#   filter(month=="06")%>%
-#   dplyr::select(-noun_chi_onset, -posttalk, -SubjectNumber)%>%
-#   setNames(paste0('six_', names(.)))%>%
-#   rename(subj=six_subj,
-#        month = six_month,
-#        audio_video = six_audio_video)
-# 
-# sixseven_spreadmonth <- sixseven_basiclevel_home_data_agg%>%
-#   filter(month=="07" & !(audio_video=="video" & subj=="17"))%>%
-#   dplyr::select(-noun_chi_onset, -posttalk, -SubjectNumber)%>%
-#   setNames(paste0('sev_', names(.)))%>%
-#   rename(subj=sev_subj,
-#        month = sev_month,
-#        audio_video = sev_audio_video)%>%
-#   left_join(six_spreadmonth)
+#month spread
+
+six_spreadmonth <- sixseven_basiclevel_home_data_agg%>%
+  filter(month=="06")%>%
+  dplyr::select(-noun_chi_onset, -posttalk, -SubjectNumber, -month)%>%
+  setNames(paste0('six_', names(.)))%>%
+  rename(subj=six_subj,
+      # month = six_month,
+       audio_video = six_audio_video)
+summary(six_spreadmonth)
+
+sixseven_spreadmonth <- sixseven_basiclevel_home_data_agg%>%
+  filter(month=="07" & !(audio_video=="video" & subj=="17"))%>%
+  dplyr::select(-noun_chi_onset, -posttalk, -SubjectNumber, -month)%>%
+  setNames(paste0('sev_', names(.)))%>%
+  rename(subj=sev_subj,
+       #month = sev_month,
+       audio_video = sev_audio_video)%>%
+  left_join(six_spreadmonth)
+
+sixseven_aud <- sixseven_spreadmonth %>% filter(audio_video=="audio")
+sixseven_vid <- sixseven_spreadmonth %>% filter(audio_video=="video")
