@@ -46,9 +46,9 @@ wa12 <- wilcox.test(sixseven_aud$six_y_op, sixseven_aud$sev_y_op, conf.int=T, pa
 
 was <- bind_rows(wa1, wa2, wa3, wa4, wa5, wa6, wa7, wa8, wa9, wa10 ,wa11, wa12) %>% 
   mutate(pval_adj = p.adjust(p.value, method = "holm"))
+was %>% filter(pval_adj>.05)
 
-
-#most video 6vs7 aren't different
+#none of video 6vs7 aren't different
 wv1 <- wilcox.test(sixseven_vid$six_numtokens,sixseven_vid$sev_numtokens, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "wv1")
 wv2 <- wilcox.test(sixseven_vid$six_numtypes,sixseven_vid$sev_numtypes, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "wv2")
 wv3 <- wilcox.test(sixseven_vid$six_numspeakers,sixseven_vid$sev_numspeakers, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "wv3")
@@ -64,8 +64,8 @@ wv12 <- wilcox.test(sixseven_vid$six_FAT,sixseven_vid$sev_FAT, conf.int=T, paire
 
 wvs <- bind_rows(wv1, wv2, wv3, wv4, wv5, wv6, wv7, wv8, wv9, wv10 ,wv11, wv12) %>% 
   mutate(pval_adj = p.adjust(p.value, method = "holm"))
-
-# do six vs. seven audio count vars correlate
+wvs %>% filter(pval_adj>.05)
+# do six vs. seven audio count vars correlate: yes, all correlate
 ca1 <- cor.test(sixseven_aud$six_numtokens, sixseven_aud$sev_numtokens, conf.int=T, method = "kendall") %>% tidy() %>% mutate(comp = "ca1")
 ca2 <- cor.test(sixseven_aud$six_numtypes, sixseven_aud$sev_numtypes, conf.int=T, method = "kendall") %>% tidy() %>% mutate(comp = "ca2")
 ca3 <- cor.test(sixseven_aud$six_numspeakers, sixseven_aud$sev_numspeakers, conf.int=T, method = "kendall") %>% tidy() %>% mutate(comp = "ca3")
@@ -81,9 +81,9 @@ ca12 <- cor.test(sixseven_aud$six_y_op, sixseven_aud$sev_y_op, conf.int=T, metho
 
 cas <- bind_rows(ca1, ca2, ca3, ca4, ca5, ca6, ca7, ca8, ca9, ca10 ,ca11, ca12) %>% 
   mutate(pval_adj = p.adjust(p.value, method = "holm"))
+cas %>% filter(pval_adj>.05)
 
-
-# do six vs. seven video count vars correlate
+# do six vs. seven video count vars correlate: all but cv7: num_r
 
 cv1 <- cor.test(sixseven_vid$six_numtokens, sixseven_vid$sev_numtokens, conf.int=T, method = "kendall") %>% tidy() %>% mutate(comp = "cv1")
 cv2 <- cor.test(sixseven_vid$six_numtypes, sixseven_vid$sev_numtypes, conf.int=T, method = "kendall") %>% tidy() %>% mutate(comp = "cv2")
@@ -100,7 +100,7 @@ cv12 <- cor.test(sixseven_vid$six_y_op, sixseven_vid$sev_y_op, conf.int=T, metho
 
 cvs <- bind_rows(cv1, cv2, cv3, cv4, cv5, cv6, cv7, cv8, cv9, cv10 ,cv11, cv12) %>% 
   mutate(pval_adj = p.adjust(p.value, method = "holm"))
-
+cvs %>% filter(pval_adj>.05)
 #need to rewrite all wilcox/cor.test code similar to the the way i did with the counts in the preceding chunk, or even better with forloops
 ```
 
@@ -268,9 +268,6 @@ ggplot(countvals_long, aes(fill = count_meas, linetype =audio_video, month, coun
   stat_summary(fun.data=mean_cl_boot, geom="pointrange", position=position_dodge(width=.9), 
                aes(group = interaction(count_meas,month,audio_video)))+
   facet_wrap(meas_type~audio_video, scales = "free_y", ncol=2)+ggtitle("count variables")
-
-
-
 
 ```
 
@@ -600,3 +597,4 @@ todo:
 
 
 
+                  

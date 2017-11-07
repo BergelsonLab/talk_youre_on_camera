@@ -8,16 +8,18 @@ library(Hmisc)
 
 #eb This is where we want to change the code so it gets the latest version of allbasiclevel, and writes out what that version is when rendered.
 
-sixseven_basiclevel_home_data <- read_feather("data/all_basiclevel.feather")%>%
-  filter(month%in% c("06","07"))%>%
-  droplevels()
+sixseven_basiclevel_home_data <- read_feather("data/sixsevmonth_basiclevel_home_data_feather")%>%
+#   filter(month%in% c("06","07"))%>%
+   droplevels()
+#source("seedlings_basiclevels_dataprep_sixseven.R")
 
-sixseven_basiclevel_home_data_agg <- read_feather("data/all_basiclevel_home_data_agg_feather7-26-17")%>%
+
+sixseven_basiclevel_home_data_agg <- read_feather("data/all_basiclevel_home_data_agg_feather10-31-17")%>%
   filter(month%in% c("06","07"))%>%
+#sixseven_basiclevel_home_data_agg <- read_feather("data/sixsevmonth_basiclevel_home_data_agg_feather")%>%
   droplevels() %>% 
   dplyr::select(subj:num_exp_types, d, q, n, s, r,i, TOY:tech, propd, propq, propn, props, propr, propi, everything())
-sixupdated <- sixseven_basiclevel_home_data_agg%>%
-  filter(month=="06")
+
 summary(sixseven_basiclevel_home_data_agg$subj, maxsum = 50)
 
 #vid lengths
@@ -34,10 +36,14 @@ vidtime <- read_csv("data/vidlengths_subject_files_1-30-16.csv") %>%
 #ggplot(vidtime, aes(total_min, SubjectNumber))+geom_point()+theme_bw(base_size=8)
 
 #aud lengths
-audtime <- read_csv("data/ACLEW_list_of_corpora - recording_level.csv") %>%
+audtime_two <- read_csv("data/audiotimes.csv") %>% 
+  rename(SubjectNumber="file") %>% 
+  mutate(total_min = round((wav_time/1000/60),1))
+audtime <- read_tsv("data/ACLEW_list_of_corpora - recording_level.tsv") %>%
   rename(SubjectNumber = "lab_internal_subject_id",
          total_min = "length_of_recording") %>% 
-  filter(SubjectNumber %in% sixseven_basiclevel_home_data$SubjectNumber) %>% 
+  #filter(SubjectNumber %in% sixseven_basiclevel_home_data$SubjectNumber) %>% 
+  filter(SubjectNumber %in% audtime_two$SubjectNumber) %>% 
   dplyr::select(SubjectNumber, total_min) %>% 
   mutate(audio_video ="audio",
          total_min = as.numeric(as.character(total_min)))

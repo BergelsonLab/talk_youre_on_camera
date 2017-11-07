@@ -6,12 +6,12 @@ output: html_document
 ---
 
 ```{r setup, echo=FALSE, results='hide', message=FALSE}
-setwd("/Users/sd314/Desktop/github/blab/talk_youre_on_camera")
+#setwd("/Users/sd314/Desktop/github/blab/talk_youre_on_camera")
 library(dplyr)
 
 require("knitr")
 knitr::opts_chunk$set(cache=TRUE, fig.width = 20, fig.height=10, warning = F, strip.white = T)
-opts_knit$set(root.dir = "/Users/sd314/Desktop/github/blab/talk_youre_on_camera")
+#opts_knit$set(root.dir = "/Users/sd314/Desktop/github/blab/talk_youre_on_camera")
 ```
 
 ``` {r reading in the data, echo=FALSE, results='hide', message=FALSE}
