@@ -108,7 +108,7 @@ cvs %>% filter(pval_adj>.05)
 We first analyzed the 12 derived count measures in month six versus seven, by recording-type. Across children, all 12 derived count audio measures correlated significantly month-to-month (Kendall’s tau ranged from `r ifelse(sum(cas$pval_adj>0),round(min(cas$estimate),2),"FIXTHIS")` - `r ifelse(sum(cas$pval_adj>0),round(max(cas$estimate),2),"FIXTHIS")`, `r ifelse(sum(cas$pval_adj>0.05)==0, "all adjusted-p<.05","FIXTHIS")`, and did not significantly differ by month (`r ifelse(sum(was$pval_adj<0.05)==0, "all adjusted-p>.05","FIXTHIS")`). All video measures too correlated significantly month-to-month, except number of reading tokens (`r ifelse(filter(cvs, comp=="cv8")$pval_adj>.05,"adjusted-p>.05","FIXTHIS")`; remaining 11 Kendall’s tau ranged from `r round(min(subset(cvs, pval_adj<.05)$estimate),2)` - `r round(max(subset(cvs, pval_adj<.05)$estimate),2)`,  all adjusted-p<.05) For video too no derived count measures varied significantly from six to seven months `r ifelse(sum(wvs$pval_adj<0.05)==0, "all adjusted-p>.05","FIXTHIS")``. Thus, within recording type, the count-based metrics of the object words infants heard were statistically equivalent in month six and seven, and correlated significantly within children month-to-month (except 1 of the 24 correlations). This suggests that parents are likely behaving relatively naturally during recordings, or are adjusting their behavior as a function of our observations to an extremely consistent degree. 
 
 ##Derived Counts, Audio vs. Video-recordings
-We next assessed how quantity of input scaled between our hour-long video recordings and daylong audio recordings. While video recordings were all around an hour (Mean, SD, Range, XX), the length of audio recordings varied (M=14.4(XX sd), R=10.5-16 hrs). The modal recording length was 16 hours, the maximum capacity of the LENA devices. However, children varied in their naptime schedule, and indeed from audio alone it can be hard to know with certainty whether the child was asleep. As described in the Methods section, we demarcated all long stretches of silence and thus have an upper-limit on their wakeful (i.e. non-silent) hours (Mean, SD, Range.). This is in line with established norms for 6–8-month-olds in the US (Mandel et al, 2010), which report the average amount of sleep is 3 hours during the day, and 10 hour during the night. Thus, given a 24-hour day, 16 hours of recording beginning when the child wakes up should capture roughly 11 daytime hours, in line with our silence demarcations. 
+We next assessed how quantity of input scaled between our hour-long video recordings and daylong audio recordings. While video recordings were all around an hour (*M*=`r paste(mean(vidtime$length), ",",sd(vidtime$length), "R=",max(vidtime$length), "-", min(vidtime$length)`), the length of audio recordings varied *M*=`r paste(mean(audtime$length), ",",sd(audtime$length), "R=",max(audtime$length), "-", min(audtime$length)`(M=14.4(XX sd), R=10.5-16 hrs). The modal recording length was`r mode(audtime$length)`16 hours, the maximum capacity of the LENA devices. However, children varied in their naptime schedule, and indeed from audio alone it can be hard to know with certainty whether the child was asleep. As described in the Methods section, we demarcated all long stretches of silence and thus have an upper-limit on their wakeful (i.e. non-silent) hours (*M*=`r paste(mean(audtime$length), ",",sd(audtime$length), "R=",max(audtime$length), "-", min(audtime$length)`). This is in line with established norms for 6–8-month-olds in the US (Mandel et al, 2010), which report the average amount of sleep is 3 hours during the day, and 10 hour during the night. Thus, given a 24-hour day, 16 hours of recording beginning when the child wakes up should capture roughly 11 daytime hours, in line with our silence demarcations. 
 
 To examine how the video data ‘scale’ to day-length data, we divided the audio-recording measures by the number of wakeful hours in each audio-file, providing an hourly average that could be compared to the video-recording data. We then divide the quantity from the (hour-long) video-recording by the hourly audio-average to compute a ‘Video Boost’ for each metric. For example, infants heard XX noun-tokens on average in their audio recordings, and XX in their video tokens. This renders an average of XX tokens per audio hour (after dividing each audio-recording by its number of wakeful hours), and thus a XX/XX = XX Video Boost. See Table XX.
 
@@ -117,35 +117,43 @@ NB: Still need to do stats for this section after normalizing by length
 
 ```{r 6vs 7 prop measures wilcox, echo = F, warning = F, message = F}
 # none of the audio props 6 vs 7 are different
-pwa1 <- wilcox.test(sixseven_aud$six_prop_op,sixseven_aud$sev_prop_op, conf.int=T, paired = T)
-pwa2 <- wilcox.test(sixseven_aud$six_prop_mom,sixseven_aud$sev_prop_mom, conf.int=T, paired = T)
-pwa3 <- wilcox.test(sixseven_aud$six_prop_dad,sixseven_aud$sev_prop_dad, conf.int=T, paired = T)
-pwa4 <- wilcox.test(sixseven_aud$six_propd,sixseven_aud$sev_propd, conf.int=T, paired = T)
-pwa5 <- wilcox.test(sixseven_aud$six_propi,sixseven_aud$sev_propi, conf.int=T, paired = T)
-pwa6 <- wilcox.test(sixseven_aud$six_propr,sixseven_aud$sev_propr, conf.int=T, paired = T)
-pwa7 <- wilcox.test(sixseven_aud$six_propq,sixseven_aud$sev_propq, conf.int=T, paired = T)
-pwa8 <- wilcox.test(sixseven_aud$six_props,sixseven_aud$sev_props, conf.int=T, paired = T)
-pwa9 <- wilcox.test(sixseven_aud$six_propn,sixseven_aud$sev_propn, conf.int=T, paired = T)
-pwa10 <- wilcox.test(sixseven_aud$six_type_token_ratio,sixseven_aud$sev_type_token_ratio, conf.int=T, paired = T)
+pwa1 <- wilcox.test(sixseven_aud$six_prop_op,sixseven_aud$sev_prop_op, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwa1")
+pwa2 <- wilcox.test(sixseven_aud$six_prop_mom,sixseven_aud$sev_prop_mom, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwa2")
+pwa3 <- wilcox.test(sixseven_aud$six_prop_dad,sixseven_aud$sev_prop_dad, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwa3")
+pwa4 <- wilcox.test(sixseven_aud$six_propd,sixseven_aud$sev_propd, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwa4")
+pwa5 <- wilcox.test(sixseven_aud$six_propi,sixseven_aud$sev_propi, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwa5")
+pwa6 <- wilcox.test(sixseven_aud$six_propr,sixseven_aud$sev_propr, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwa6")
+pwa7 <- wilcox.test(sixseven_aud$six_propq,sixseven_aud$sev_propq, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwa7")
+pwa8 <- wilcox.test(sixseven_aud$six_props,sixseven_aud$sev_props, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwa8")
+pwa9 <- wilcox.test(sixseven_aud$six_propn,sixseven_aud$sev_propn, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwa9")
+pwa10 <- wilcox.test(sixseven_aud$six_type_token_ratio,sixseven_aud$sev_type_token_ratio, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwa10")
 
-pwa_ps <- cbind(pwa1$p.value,pwa2$p.value,pwa3$p.value, pwa4$p.value, pwa5$p.value, pwa6$p.value, pwa7$p.value, pwa8$p.value, pwa9$p.value, pwa10$p.value)
+#pwa_ps <- cbind(pwa1$p.value,pwa2$p.value,pwa3$p.value, pwa4$p.value, pwa5$p.value, pwa6$p.value, pwa7$p.value, pwa8$p.value, pwa9$p.value, pwa10$p.value)
+pwas <- bind_rows(pwa1, pwa2, pwa3, pwa4, pwa5, pwa6, pwa7, pwa8, pwa9, pwa10) %>% 
+  mutate(pval_adj = p.adjust(p.value, method = "holm"))
+pwas %>% filter(pval_adj>.05)
+
 # round(p.adjust(pwa_ps, method = "holm"),3)
 # round(pwa_ps, 3)
 # table(pwa_ps<.05)
 # table(p.adjust(pwa_ps, method = "holm")<.05) # 10 F
 
 # none of the video props 6vs7 are different
-pwv1 <- wilcox.test(sixseven_vid$six_prop_op,sixseven_vid$sev_prop_op, conf.int=T, paired = T)
-pwv2 <- wilcox.test(sixseven_vid$six_prop_mom,sixseven_vid$sev_prop_mom, conf.int=T, paired = T)
-pwv3 <- wilcox.test(sixseven_vid$six_prop_dad,sixseven_vid$sev_prop_dad, conf.int=T, paired = T)
-pwv4 <- wilcox.test(sixseven_vid$six_propd,sixseven_vid$sev_propd, conf.int=T, paired = T)
-pwv5 <- wilcox.test(sixseven_vid$six_propi,sixseven_vid$sev_propi, conf.int=T, paired = T)
-pwv6 <- wilcox.test(sixseven_vid$six_propr,sixseven_vid$sev_propr, conf.int=T, paired = T)
-pwv7 <- wilcox.test(sixseven_vid$six_propq,sixseven_vid$sev_propq, conf.int=T, paired = T)
-pwv8 <- wilcox.test(sixseven_vid$six_props,sixseven_vid$sev_props, conf.int=T, paired = T)
-pwv9 <- wilcox.test(sixseven_vid$six_propn,sixseven_vid$sev_propn, conf.int=T, paired = T)
-pwv10 <- wilcox.test(sixseven_vid$six_type_token_ratio,sixseven_vid$sev_type_token_ratio, conf.int=T, paired = T)
-pwv_ps <- cbind(pwv1$p.value,pwv2$p.value,pwv3$p.value, pwv4$p.value, pwv5$p.value, pwv6$p.value, pwv7$p.value, pwv8$p.value, pwv9$p.value, pwv10$p.value)
+pwv1 <- wilcox.test(sixseven_vid$six_prop_op,sixseven_vid$sev_prop_op, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwv1")
+pwv2 <- wilcox.test(sixseven_vid$six_prop_mom,sixseven_vid$sev_prop_mom, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwv1")
+pwv3 <- wilcox.test(sixseven_vid$six_prop_dad,sixseven_vid$sev_prop_dad, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwv1")
+pwv4 <- wilcox.test(sixseven_vid$six_propd,sixseven_vid$sev_propd, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwv1")
+pwv5 <- wilcox.test(sixseven_vid$six_propi,sixseven_vid$sev_propi, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwv1")
+pwv6 <- wilcox.test(sixseven_vid$six_propr,sixseven_vid$sev_propr, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwv1")
+pwv7 <- wilcox.test(sixseven_vid$six_propq,sixseven_vid$sev_propq, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwv1")
+pwv8 <- wilcox.test(sixseven_vid$six_props,sixseven_vid$sev_props, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwv1")
+pwv9 <- wilcox.test(sixseven_vid$six_propn,sixseven_vid$sev_propn, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwv1")
+pwv10 <- wilcox.test(sixseven_vid$six_type_token_ratio,sixseven_vid$sev_type_token_ratio, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwv1")
+#pwv_ps <- cbind(pwv1$p.value,pwv2$p.value,pwv3$p.value, pwv4$p.value, pwv5$p.value, pwv6$p.value, pwv7$p.value, pwv8$p.value, pwv9$p.value, pwv10$p.value)
+pwvs <- bind_rows(pwv1, pwv2, pwv3, pwv4, pwv5, pwv6, pwv7, pwv8, pwv9, pwv10) %>% 
+  mutate(pval_adj = p.adjust(p.value, method = "holm"))
+pwvs %>% filter(pval_adj>.05)
+
 # round(p.adjust(pwv_ps, method = "holm"),3)
 # round(pwv_ps, 3)
 # table(pwv_ps<.05)
@@ -589,7 +597,6 @@ propcseven_ps <- cbind(propcseven1$p.value,propcseven2$p.value,propcseven3$p.val
 
 todo: 
 
-#MATTR/vocd (ask andrei to write an r function for these?)
 #tables
 #by hour
 
