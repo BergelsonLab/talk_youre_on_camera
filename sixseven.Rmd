@@ -286,7 +286,7 @@ Turning to correlations across recording-types, in month six only the proportion
 #Noun Frequency and Prevalence 
 We conclude with a set of highly exploratory analyses at the word level, which aim to provide a first-pass characterization of whether audio and video recordings captured the same nouns and the same relative frequencies by examining word frequency across each month, recording type, and infant. The distribution of nouns in our recordings was zipfian: of the `r totaln_objectwords`unique object words (`r totaln_bl` lemmas) heard across months and recording types, only `r totaln_once_objectwords` (`r totaln_once_bl` lemmas) were heard more than once (see figure XX).
 
-```{r noun_freq, echo = F, fig.width=12, fig.height = 12, warning = F, message= F}
+```{r noun_freq, echo = F, fig.height = 5, warning = F, message= F}
 zipf_av_67
 top100_logspace_av_graph
 ```  
@@ -304,7 +304,7 @@ avtop100corr_pvalnozeros<- ifelse(cor_AVtopnozeroes$p.value<.0001, "p<.0001", "f
 
 Collapsing month, we examined the top 100 most frequent nouns from audio- and video-recordings (n=`r avtop100_numwords` due to ties, n=`r avtop100_numwordsnozeros` without words that occurred zero times in one recording-type). Frequency across recording-types correlated significantly (Kendall's tau: `r avtop100corr_estnozeros`, `r avtop100corr_pvalnozeros`,) even with zero-frequency words included (Kendall's tau: `r avtop100corr_est`, `r avtop100corr_pval`; see figure XX). Further, we found numerically stronger correlations month-to-month than across recording-types within month (month 6 audio vs. video: tau = `r round(cor_sixavtop$estimate,2)`, month 7 audio vs. video: tau = `r round(cor_sevavtop$estimate,2)`, month 6 vs. 7 audio: tau = `r round(cor_sixsevenAtop$estimate,2)`, month 6 vs. 7 video: tau = `r round(cor_sixsevenVtop$estimate,2)`, `r corAVtop67_combo_ps`; see figure XX). Thus, at the word-level too, month-to-month measures appear more stable than cross-recording-type measures
 
-```{r top100_corgraphs, echo = F, fig.width=12}
+```{r top100_corgraphs, echo = F, fig.height=5}
 gr_top100_monthspread
 gr_top100_avspread
 #need to make a table of the top 10 av/67 words, ask Shannon/Andrei
