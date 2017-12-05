@@ -181,6 +181,18 @@ vars_with_NAs
 ```
 
 We next normed our count values by the number of minutes in each. For example, if an infant heard 500 noun-tokens in 800 minutes of non-silent audio-recording, and 200 in 60 minutes of videos, this was normed to .62 and 3.3 noun-tokens per minute, respectively. Unlike for the audio-boost calculation, this allows us to retain zero values, rendering more readily interpretable results across our count and proportional measures.
+```{r normtable, echo = F, warning = F}
+countvals_normed_table <- countvals_long_norm %>% 
+  group_by(audio_video, month, norm_meas) %>% 
+  summarise(mnv = mean(normval)) %>% 
+  spread(audio_video, mnv) %>% 
+  mutate(norm_inflation = video/audio) %>% 
+  dplyr::select(month, norm_meas, norm_inflation) %>% 
+  spread(month, norm_inflation) %>% 
+  mutate_if(is.numeric, funs(round(.,1)))
+countvals_normed_table
+```
+
 
 With the normed data, we found identical patterns when looking within month six and seven: `r wsix_wsev_sigps`/12 of our count-based metrics (in each month) occurred at significantly lower rates in audio recordings than video recordings (adjusted-p<.05). The three that were statistically indistinguishable were nouns/minute produced (1) by fathers, (2) in reading, and (3) in singing (all adjusted-p>.05). These same three measures had a large number of zero values; see table XX. We return to the topic of unattested low-frequency events in corpora in the discussion.
 
