@@ -18,10 +18,13 @@ getmode <- function(v) {
 }
 #to do's: add and format tables wherever they're indicated; 
 # create figure legends, and tinker to make sure figures render at reasonable size/ratios
-# refer to figures and tables with \@ref(fig:chunk-name) for figures * \@ref(tab:chunk-name) for tables, bookdown style
-# add the table from the googledoc version, maybe? or just once it's finalized, take a pic of it and add as figure?
+# make crossref's for figures and tables with \@ref(fig:chunk-name) for figures * \@ref(tab:chunk-name) for tables, bookdown style
 # reliability stats
 # change code to read in from blabr in sixseven_data_aggregation.R for both basic_level and basic_level_agg files
+# port in intro/discussion 
+# fix all refs
+# make APA format
+# cut down to 4k words total if possible
 ```
 #Results 
 ##Analysis Plan
