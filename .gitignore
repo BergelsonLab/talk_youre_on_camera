@@ -25,3 +25,4 @@ vignettes/*.pdf
 .Rproj.user
 sixseven_paper.docx
 sixseven.html
+.DS_Store
