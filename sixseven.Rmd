@@ -5,603 +5,310 @@ output: html_document
 ---
 
 #Talk, you're on camera
-#06 and 07 aud vid comparison
+
 
 ```{r read in data, comment=F, message=F, hide = T, warning = F, echo = F}
+#06 and 07 aud vid comparison
 source("sixseven_data_aggregation.R")
+source("wilcoxon_corrs_sixseven.R")
+source("sixseven_figure_code.R")
+getmode <- function(v) {
+   uniqv <- unique(v)
+   uniqv[which.max(tabulate(match(v, uniqv)))]
+}
+#to do's: add and format tables wherever they're indicated; 
+# create figure legends, and tinker to make sure figures render at reasonable size/ratios
+# refer to figures and tables with \@ref(fig:chunk-name) for figures * \@ref(tab:chunk-name) for tables, bookdown style
+# add the table from the googledoc version, maybe? or just once it's finalized, take a pic of it and add as figure?
 ```
 #Results 
-Based on the coding scheme above, we derived count (n=12) and proportional (n=10) measures from the annotations in each file. See table XX. We then aggregated the data at the recording level, generating derived count and proportion values for each child, for each recording-type, for each month. For all recording type and month comparisons, we look at whether the data varied significantly (by two-tailed, paired Wilcoxon-Test), and correlated significantly (by Kendall Rank Correlation) across the given groups. We applied Holm’s p-value adjustment for multiple comparisons (Holm, 1979), for each set of Wilcoxon and Kendall tests. 
+##Analysis Plan
+Based on the coding scheme above, we derived count (n=12) and proportional (n=10) measures from the annotations in each file. See table XX. We then aggregated the data at the recording level, generating derived count and proportion values for each child (n=44), for each recording-type (audio, video), for each month (six, seven). We also normalized the count measures by recording length to allow direct comparison across daylong and hourlong recordings (further details below). We initially created multi-level models, with each of the 22 measures as the dependent variable,  recording-type (audio/video) and month (six/seven) as fixed effects and participant as a random effect (i.e. dv ~ recording_type + month + (1|subj)). Month was not a significant predictor in any of the 22 models; recording-type was in 17/22 models. However, since many of the models showed structured (generally funnel-shaped) residuals that limited interpretation across measures, we instead adopted a simple set of nonparametric analyses. 
+
+For all recording type and month comparisons, we look at whether our measures *differed* significantly (by two-tailed, paired Wilcoxon Test), and *correlated* significantly (by Kendall Rank Correlation) across the given groups. This approach lets us compare, for instance, whether the proportion of declaratives is indistinguishable in our audio and video recordings independently of whether these values are correlated across recording types. We applied Holm’s p-value adjustment for multiple comparisons (Holm, 1979), for each set of Wilcoxon and Kendall tests. For instance, comparing the 12 count measures for month six versus month seven within audio recordings by Wilxocon test is one 'set'; given our analysis plan of 2(count or proportional) x 2(audio or video) x 2 (six or seven month) x 2(Wilcoxon Test or Kendall correlation), there are 15 further sets to which this p-value adjustment was applied. 
 
 ```{r wilcoxon_count_withinAV_sixsev, echo=F, message = F, warning = F}
-monthav_ttr <- sixseven_basiclevel_home_data_agg %>% 
-  group_by(month, audio_video)%>%
-  summarise(mean(type_token_ratio))
 
-#sixseven_spreadAV %>% 
-monthav_numsp <- sixseven_basiclevel_home_data_agg %>% 
-  group_by(month, audio_video)%>%
-  summarise(median(numspeakers, na.rm=T),
-            mean(numspeakers, na.rm=T),
-            sd(numspeakers, na.rm=T))
+vidmode <- getmode(round(vidtime$total_min)) #rounding to the minute 1st
+cas_mintau <- ifelse(sum(cas$pval_adj>0),round(min(cas$estimate),2),"FIXTHIS")
+cas_maxtau <- ifelse(sum(cas$pval_adj>0),round(max(cas$estimate),2),"FIXTHIS")
+cas_taup <- ifelse(sum(cas$pval_adj>0.05)==0, "all adjusted-p<.05","FIXTHIS")
+was_ps <- ifelse(sum(was$pval_adj<0.05)==0, "all adjusted-p>.05","FIXTHIS")
+cvs_nonsigpval <- ifelse(filter(cvs, comp=="cv_r")$pval_adj>.05,"adjusted-p>.05","FIXTHIS")
+cvs_sigpval <- ifelse(sum(filter(cvs, comp!="cv_r")$pval_adj)>0,"all adjusted-p<.05","FIXTHIS")
+cvs_numsigps <- length(subset(cvs, pval_adj<.05)$estimate)
+cvs_mintau <- round(min(subset(cvs, pval_adj<.05)$estimate),2)
+cvs_maxtau <- round(max(subset(cvs, pval_adj<.05)$estimate),2)
+wvs_ps <- ifelse(sum(wvs$pval_adj<0.05)==0, "all adjusted-p>.05","FIXTHIS")
 
-monthav_FAT <- sixseven_basiclevel_home_data_agg %>% 
-  group_by(month, audio_video)%>%
-  summarise(median(FAT, na.rm=T),
-            mean(FAT, na.rm=T),
-            sd(FAT, na.rm=T))
-# none of the audio count vars 6 vs 7 are different
-wa1 <- wilcox.test(sixseven_aud$six_numtokens, sixseven_aud$sev_numtokens, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "wa1")
-wa2 <- wilcox.test(sixseven_aud$six_numtypes, sixseven_aud$sev_numtypes, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "wa2")
-wa3 <- wilcox.test(sixseven_aud$six_numspeakers, sixseven_aud$sev_numspeakers, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "wa3")
-wa4 <- wilcox.test(sixseven_aud$six_MOT, sixseven_aud$sev_MOT, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "wa4")
-wa5 <- wilcox.test(sixseven_aud$six_FAT, sixseven_aud$sev_FAT, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "wa5")
-wa6 <- wilcox.test(sixseven_aud$six_d, sixseven_aud$sev_d, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "wa6")
-wa7 <- wilcox.test(sixseven_aud$six_q, sixseven_aud$sev_q, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "wa7")
-wa8 <- wilcox.test(sixseven_aud$six_r, sixseven_aud$sev_r, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "wa8")
-wa9 <- wilcox.test(sixseven_aud$six_s, sixseven_aud$sev_s, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "wa9")
-wa10 <- wilcox.test(sixseven_aud$six_i, sixseven_aud$sev_i, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "wa10")
-wa11 <- wilcox.test(sixseven_aud$six_n, sixseven_aud$sev_n, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "wa11")
-wa12 <- wilcox.test(sixseven_aud$six_y_op, sixseven_aud$sev_y_op, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "wa12")
-
-was <- bind_rows(wa1, wa2, wa3, wa4, wa5, wa6, wa7, wa8, wa9, wa10 ,wa11, wa12) %>% 
-  mutate(pval_adj = p.adjust(p.value, method = "holm"))
-was %>% filter(pval_adj>.05)
-
-#none of video 6vs7 aren't different
-wv1 <- wilcox.test(sixseven_vid$six_numtokens,sixseven_vid$sev_numtokens, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "wv1")
-wv2 <- wilcox.test(sixseven_vid$six_numtypes,sixseven_vid$sev_numtypes, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "wv2")
-wv3 <- wilcox.test(sixseven_vid$six_numspeakers,sixseven_vid$sev_numspeakers, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "wv3")
-wv4 <- wilcox.test(sixseven_vid$six_MOT,sixseven_vid$sev_MOT, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "wv4")
-wv5 <- wilcox.test(sixseven_vid$six_d,sixseven_vid$sev_d, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "wv5")
-wv6 <- wilcox.test(sixseven_vid$six_r,sixseven_vid$sev_r, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "wv6")
-wv7 <- wilcox.test(sixseven_vid$six_i,sixseven_vid$sev_i, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "wv7")
-wv8 <- wilcox.test(sixseven_vid$six_y_op,sixseven_vid$sev_y_op, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "wv8")
-wv9 <- wilcox.test(sixseven_vid$six_q,sixseven_vid$sev_q, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "wv9")
-wv10 <- wilcox.test(sixseven_vid$six_n,sixseven_vid$sev_n, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "wv10")
-wv11 <- wilcox.test(sixseven_vid$six_s,sixseven_vid$sev_s, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "wv11")
-wv12 <- wilcox.test(sixseven_vid$six_FAT,sixseven_vid$sev_FAT, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "wv12")
-
-wvs <- bind_rows(wv1, wv2, wv3, wv4, wv5, wv6, wv7, wv8, wv9, wv10 ,wv11, wv12) %>% 
-  mutate(pval_adj = p.adjust(p.value, method = "holm"))
-wvs %>% filter(pval_adj>.05)
-# do six vs. seven audio count vars correlate: yes, all correlate
-ca1 <- cor.test(sixseven_aud$six_numtokens, sixseven_aud$sev_numtokens, conf.int=T, method = "kendall") %>% tidy() %>% mutate(comp = "ca1")
-ca2 <- cor.test(sixseven_aud$six_numtypes, sixseven_aud$sev_numtypes, conf.int=T, method = "kendall") %>% tidy() %>% mutate(comp = "ca2")
-ca3 <- cor.test(sixseven_aud$six_numspeakers, sixseven_aud$sev_numspeakers, conf.int=T, method = "kendall") %>% tidy() %>% mutate(comp = "ca3")
-ca4 <- cor.test(sixseven_aud$six_MOT, sixseven_aud$sev_MOT, conf.int=T, method = "kendall") %>% tidy() %>% mutate(comp = "ca4")
-ca5 <- cor.test(sixseven_aud$six_FAT, sixseven_aud$sev_FAT, conf.int=T, method = "kendall") %>% tidy() %>% mutate(comp = "ca5")
-ca6 <- cor.test(sixseven_aud$six_d, sixseven_aud$sev_d, conf.int=T, method = "kendall") %>% tidy() %>% mutate(comp = "ca6")
-ca7 <- cor.test(sixseven_aud$six_q, sixseven_aud$sev_q, conf.int=T, method = "kendall") %>% tidy() %>% mutate(comp = "ca7")
-ca8 <- cor.test(sixseven_aud$six_r, sixseven_aud$sev_r, conf.int=T, method = "kendall") %>% tidy() %>% mutate(comp = "ca8")
-ca9 <- cor.test(sixseven_aud$six_s, sixseven_aud$sev_s, conf.int=T, method = "kendall") %>% tidy() %>% mutate(comp = "ca9")
-ca10 <- cor.test(sixseven_aud$six_i, sixseven_aud$sev_i, conf.int=T, method = "kendall") %>% tidy() %>% mutate(comp = "ca10")
-ca11 <- cor.test(sixseven_aud$six_n, sixseven_aud$sev_n, conf.int=T, method = "kendall") %>% tidy() %>% mutate(comp = "ca11")
-ca12 <- cor.test(sixseven_aud$six_y_op, sixseven_aud$sev_y_op, conf.int=T, method = "kendall") %>% tidy() %>% mutate(comp = "ca12")
-
-cas <- bind_rows(ca1, ca2, ca3, ca4, ca5, ca6, ca7, ca8, ca9, ca10 ,ca11, ca12) %>% 
-  mutate(pval_adj = p.adjust(p.value, method = "holm"))
-cas %>% filter(pval_adj>.05)
-
-# do six vs. seven video count vars correlate: all but cv7: num_r
-
-cv1 <- cor.test(sixseven_vid$six_numtokens, sixseven_vid$sev_numtokens, conf.int=T, method = "kendall") %>% tidy() %>% mutate(comp = "cv1")
-cv2 <- cor.test(sixseven_vid$six_numtypes, sixseven_vid$sev_numtypes, conf.int=T, method = "kendall") %>% tidy() %>% mutate(comp = "cv2")
-cv3 <- cor.test(sixseven_vid$six_numspeakers, sixseven_vid$sev_numspeakers, conf.int=T, method = "kendall") %>% tidy() %>% mutate(comp = "cv3")
-cv4 <- cor.test(sixseven_vid$six_MOT, sixseven_vid$sev_MOT, conf.int=T, method = "kendall") %>% tidy() %>% mutate(comp = "cv4")
-cv5 <- cor.test(sixseven_vid$six_FAT, sixseven_vid$sev_FAT, conf.int=T, method = "kendall") %>% tidy() %>% mutate(comp = "cv5")
-cv6 <- cor.test(sixseven_vid$six_d, sixseven_vid$sev_d, conf.int=T, method = "kendall") %>% tidy() %>% mutate(comp = "cv6")
-cv7 <- cor.test(sixseven_vid$six_q, sixseven_vid$sev_q, conf.int=T, method = "kendall") %>% tidy() %>% mutate(comp = "cv7")
-cv8 <- cor.test(sixseven_vid$six_r, sixseven_vid$sev_r, conf.int=T, method = "kendall") %>% tidy() %>% mutate(comp = "cv8")
-cv9 <- cor.test(sixseven_vid$six_s, sixseven_vid$sev_s, conf.int=T, method = "kendall") %>% tidy() %>% mutate(comp = "cv9")
-cv10 <- cor.test(sixseven_vid$six_i, sixseven_vid$sev_i, conf.int=T, method = "kendall") %>% tidy() %>% mutate(comp = "cv10")
-cv11 <- cor.test(sixseven_vid$six_n, sixseven_vid$sev_n, conf.int=T, method = "kendall") %>% tidy() %>% mutate(comp = "cv11")
-cv12 <- cor.test(sixseven_vid$six_y_op, sixseven_vid$sev_y_op, conf.int=T, method = "kendall") %>% tidy() %>% mutate(comp = "cv12")
-
-cvs <- bind_rows(cv1, cv2, cv3, cv4, cv5, cv6, cv7, cv8, cv9, cv10 ,cv11, cv12) %>% 
-  mutate(pval_adj = p.adjust(p.value, method = "holm"))
-cvs %>% filter(pval_adj>.05)
-#need to rewrite all wilcox/cor.test code similar to the the way i did with the counts in the preceding chunk, or even better with forloops
 ```
 
 ##Derived Counts, Month 6 vs. 7
-We first analyzed the 12 derived count measures in month six versus seven, by recording-type. Across children, all 12 derived count audio measures correlated significantly month-to-month (Kendall’s tau ranged from `r ifelse(sum(cas$pval_adj>0),round(min(cas$estimate),2),"FIXTHIS")` - `r ifelse(sum(cas$pval_adj>0),round(max(cas$estimate),2),"FIXTHIS")`, `r ifelse(sum(cas$pval_adj>0.05)==0, "all adjusted-p<.05","FIXTHIS")`, and did not significantly differ by month (`r ifelse(sum(was$pval_adj<0.05)==0, "all adjusted-p>.05","FIXTHIS")`). All video measures too correlated significantly month-to-month, except number of reading tokens (`r ifelse(filter(cvs, comp=="cv8")$pval_adj>.05,"adjusted-p>.05","FIXTHIS")`; remaining 11 Kendall’s tau ranged from `r round(min(subset(cvs, pval_adj<.05)$estimate),2)` - `r round(max(subset(cvs, pval_adj<.05)$estimate),2)`,  all adjusted-p<.05) For video too no derived count measures varied significantly from six to seven months `r ifelse(sum(wvs$pval_adj<0.05)==0, "all adjusted-p>.05","FIXTHIS")``. Thus, within recording type, the count-based metrics of the object words infants heard were statistically equivalent in month six and seven, and correlated significantly within children month-to-month (except 1 of the 24 correlations). This suggests that parents are likely behaving relatively naturally during recordings, or are adjusting their behavior as a function of our observations to an extremely consistent degree. 
+We first analyzed the 12 derived count measures in month six versus seven, by recording-type. Across children, all 12 derived count audio measures correlated significantly month-to-month (Kendall’s tau ranged from `r cas_mintau` - `r cas_maxtau`, `r cas_taup`), and did not significantly differ by month (`r was_ps`). Eleven of twelve video measures correlated significantly month-to-month (Kendall’s taus ranged from `r cvs_mintau` - `r cvs_maxtau`, `r cvs_sigpval`), except number of reading tokens (`r cvs_nonsigpval`). For video too no derived count measures varied significantly from six to seven months (`r wvs_ps`.) Thus, within recording type, the count-based metrics of the object words infants heard were statistically equivalent in month six and seven, and correlated significantly within children month-to-month (except 1/24 correlations). This suggests that parents are likely behaving relatively naturally during recordings, or are adjusting their behavior as a function of our observations to an extremely consistent degree. 
+
+```{r gr_derived_counts_67_diff, echo = F, fig.height = 8, warning = F}
+gr_countvals_long
+
+```
+```{r gr_derived_counts_67_corr, echo = F, fig.width=12, fig.height=3, warning = F}
+
+gr_count_cor_67_facetav
+
+```
+
+```{r lengths, echo = F, warning = F, message = F}
+audmode <- getmode(audtime$total_min)
+audmode_nosil_hr <- round(getmode(audtime$tot_nosil/60),1)
+aud_nosilM <- round(mean(audtime$tot_nosil)/60,2)
+aud_nosilSD <- round(sd(audtime$tot_nosil)/60,2)
+aud_nosilmin <- round(min(audtime$tot_nosil)/60,2)
+aud_nosilmax <- round(max(audtime$tot_nosil)/60,2)
+
+vidM_SD_R <- paste(round(mean(vidtime$total_min),2), ", SD=",round(sd(vidtime$total_min),2),
+                   ", R=",min(vidtime$total_min), "-", max(vidtime$total_min)," min", sep = "")
+audM_SD_R <- paste(round(mean(audtime$total_hr),2), ", SD=",round(sd(audtime$total_hr),2),
+                   ", R=",min(audtime$total_hr), "-", max(audtime$total_hr)," hr", sep = "")
+audM_SD_Rmin <- paste(round(mean(audtime$total_min),2), ", SD=",round(sd(audtime$total_min),2),
+                   ", R=",min(audtime$total_min), "-", max(audtime$total_min)," min", sep = "")
+
+audnosilM_SD_R <- paste(aud_nosilM*60, ", SD=",aud_nosilSD*60,", R=",aud_nosilmin*60, "-", aud_nosilmax*60, " min", sep = "")
+```
 
 ##Derived Counts, Audio vs. Video-recordings
-We next assessed how quantity of input scaled between our hour-long video recordings and daylong audio recordings. While video recordings were all around an hour (*M*=`r paste(mean(vidtime$length), ",",sd(vidtime$length), "R=",max(vidtime$length), "-", min(vidtime$length)`), the length of audio recordings varied *M*=`r paste(mean(audtime$length), ",",sd(audtime$length), "R=",max(audtime$length), "-", min(audtime$length)`(M=14.4(XX sd), R=10.5-16 hrs). The modal recording length was`r mode(audtime$length)`16 hours, the maximum capacity of the LENA devices. However, children varied in their naptime schedule, and indeed from audio alone it can be hard to know with certainty whether the child was asleep. As described in the Methods section, we demarcated all long stretches of silence and thus have an upper-limit on their wakeful (i.e. non-silent) hours (*M*=`r paste(mean(audtime$length), ",",sd(audtime$length), "R=",max(audtime$length), "-", min(audtime$length)`). This is in line with established norms for 6–8-month-olds in the US (Mandel et al, 2010), which report the average amount of sleep is 3 hours during the day, and 10 hour during the night. Thus, given a 24-hour day, 16 hours of recording beginning when the child wakes up should capture roughly 11 daytime hours, in line with our silence demarcations. 
+We next assessed how quantity of input scaled between  hour-long video recordings and daylong audio recordings. Modally, videos were an hour (`r vidmode` min); audio-recordings were 16 hours (`r audmode` min), the maximum capacity of the LENA device. However, there was some variability across recordings (video: *M*=`r vidM_SD_R`; audio *M*=`r audM_SD_Rmin`).  While it can be difficult to ascertain from audio alone when the children were napping, by removing the 'silent' portions of the recordings (see Methods), we can estimate an upper-limit on their awake (i.e. non-silent) time (Mode = `r audmode_nosil_hr`, *M* = `r audnosilM_SD_R` ). This is in line with established norms for 6–8-month-olds in the US (Mandel et al, 2010), which report the average amount of sleep is 3 hours during the day, and 10 hours during the night. Thus, 16 hours of recording beginning when the child wakes up should capture ~11 daytime waking hours, in line with our silence demarcations. Infants were awake during video recordings (save one infant, who fell asleep before the recording hour ended; that video was stopped at sleep onset).
 
-To examine how the video data ‘scale’ to day-length data, we divided the audio-recording measures by the number of wakeful hours in each audio-file, providing an hourly average that could be compared to the video-recording data. We then divide the quantity from the (hour-long) video-recording by the hourly audio-average to compute a ‘Video Boost’ for each metric. For example, infants heard XX noun-tokens on average in their audio recordings, and XX in their video tokens. This renders an average of XX tokens per audio hour (after dividing each audio-recording by its number of wakeful hours), and thus a XX/XX = XX Video Boost. See Table XX.
 
-Another way to compute the difference between the daylong and hourlong recordings is to simply divide the audio count by the video count. Doing this results in a range of 2.5-4  across our metrics, rather than the roughly tenfold increase one would expect if video recordings captured an average hour of the day.
-NB: Still need to do stats for this section after normalizing by length
+```{r scaling examination, echo = F, warning = F, message = F}
+#count comparison by min
+#avg a-boost, removing any NAs
+aboost_mean <- sixseven_spreadAV %>% 
+  dplyr::select(subj, month, a_total_min, a_tot_nosilsk, a_tot_nosil,v_total_min,
+                a_numtypes, v_numtypes, a_numtokens, v_numtokens, a_numspeakers, v_numspeakers,a_MOT, v_MOT, a_FAT, v_FAT, a_d, v_d, a_q, v_q, a_i, v_i, a_s, v_s, a_r, v_r, a_n, v_n, a_y_op, v_y_op) %>% 
+  mutate_if(is.numeric, funs(na_if(., 0)))  %>% 
+  group_by(month) %>% 
+  summarise(
+    aboost_min = mean(a_total_min/v_total_min),
+    aboost_awakemin = mean(a_tot_nosil/v_total_min),
+    aboost_types =mean(a_numtypes/v_numtypes, na.rm=T),
+    aboost_tokens = mean(a_numtokens/v_numtokens, na.rm=T),
+    aboost_speakers = mean(a_numspeakers/v_numspeakers, na.rm=T),
+    aboost_MOT = mean(a_MOT/v_MOT, na.rm=T),
+    aboost_FAT = mean(a_FAT/v_FAT, na.rm=T),
+    aboost_d = mean(a_d/v_d, na.rm=T),
+    aboost_q = mean(a_q/v_q, na.rm=T),
+    aboost_i = mean(a_i/v_i, na.rm=T),
+    aboost_s = mean(a_s/v_s, na.rm=T),
+    aboost_r = mean(a_r/v_r, na.rm=T),
+    aboost_n = mean(a_n/v_n, na.rm=T),
+    aboost_op = mean(a_y_op/v_y_op, na.rm=T),
+    comp = "mean_aboost") %>% 
+  mutate_if(is.numeric, funs(round(., 2)))
+# sd of a_boost, removing NAs
+aboost_sd<- sixseven_spreadAV %>% 
+  dplyr::select(subj, month, a_total_min, a_tot_nosilsk, a_tot_nosil,v_total_min,
+                a_numtypes, v_numtypes, a_numtokens, v_numtokens, a_numspeakers, v_numspeakers,a_MOT, v_MOT, a_FAT, v_FAT, a_d, v_d, a_q, v_q, a_i, v_i, a_s, v_s, a_r, v_r, a_n, v_n, a_y_op, v_y_op) %>% 
+  mutate_if(is.numeric, funs(na_if(., 0)))  %>% 
+  group_by(month) %>% 
+  summarise(
+    aboost_min = sd(a_total_min/v_total_min),
+    aboost_awakemin = sd(a_tot_nosil/v_total_min),
+    aboost_types =sd(a_numtypes/v_numtypes, na.rm=T),
+    aboost_tokens = sd(a_numtokens/v_numtokens, na.rm=T),
+    aboost_speakers = sd(a_numspeakers/v_numspeakers, na.rm=T),
+    aboost_MOT = sd(a_MOT/v_MOT, na.rm=T),
+    aboost_FAT = sd(a_FAT/v_FAT, na.rm=T),
+    aboost_d = sd(a_d/v_d, na.rm=T),
+    aboost_q = sd(a_q/v_q, na.rm=T),
+    aboost_i = sd(a_i/v_i, na.rm=T),
+    aboost_s = sd(a_s/v_s, na.rm=T),
+    aboost_r = sd(a_r/v_r, na.rm=T),
+    aboost_n = sd(a_n/v_n, na.rm=T),
+    aboost_op = sd(a_y_op/v_y_op, na.rm=T),
+    comp = "sd_aboost") %>% 
+  mutate_if(is.numeric, funs(round(., 2)))
+#need to combine mean and sd into a nice single table; ask Shannon/Andrei
+aboost_mean %>% as.data.frame()
+aboost_sd %>% as.data.frame()
 
-```{r 6vs 7 prop measures wilcox, echo = F, warning = F, message = F}
-# none of the audio props 6 vs 7 are different
-pwa1 <- wilcox.test(sixseven_aud$six_prop_op,sixseven_aud$sev_prop_op, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwa1")
-pwa2 <- wilcox.test(sixseven_aud$six_prop_mom,sixseven_aud$sev_prop_mom, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwa2")
-pwa3 <- wilcox.test(sixseven_aud$six_prop_dad,sixseven_aud$sev_prop_dad, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwa3")
-pwa4 <- wilcox.test(sixseven_aud$six_propd,sixseven_aud$sev_propd, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwa4")
-pwa5 <- wilcox.test(sixseven_aud$six_propi,sixseven_aud$sev_propi, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwa5")
-pwa6 <- wilcox.test(sixseven_aud$six_propr,sixseven_aud$sev_propr, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwa6")
-pwa7 <- wilcox.test(sixseven_aud$six_propq,sixseven_aud$sev_propq, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwa7")
-pwa8 <- wilcox.test(sixseven_aud$six_props,sixseven_aud$sev_props, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwa8")
-pwa9 <- wilcox.test(sixseven_aud$six_propn,sixseven_aud$sev_propn, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwa9")
-pwa10 <- wilcox.test(sixseven_aud$six_type_token_ratio,sixseven_aud$sev_type_token_ratio, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwa10")
 
-#pwa_ps <- cbind(pwa1$p.value,pwa2$p.value,pwa3$p.value, pwa4$p.value, pwa5$p.value, pwa6$p.value, pwa7$p.value, pwa8$p.value, pwa9$p.value, pwa10$p.value)
-pwas <- bind_rows(pwa1, pwa2, pwa3, pwa4, pwa5, pwa6, pwa7, pwa8, pwa9, pwa10) %>% 
-  mutate(pval_adj = p.adjust(p.value, method = "holm"))
-pwas %>% filter(pval_adj>.05)
-
-# round(p.adjust(pwa_ps, method = "holm"),3)
-# round(pwa_ps, 3)
-# table(pwa_ps<.05)
-# table(p.adjust(pwa_ps, method = "holm")<.05) # 10 F
-
-# none of the video props 6vs7 are different
-pwv1 <- wilcox.test(sixseven_vid$six_prop_op,sixseven_vid$sev_prop_op, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwv1")
-pwv2 <- wilcox.test(sixseven_vid$six_prop_mom,sixseven_vid$sev_prop_mom, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwv1")
-pwv3 <- wilcox.test(sixseven_vid$six_prop_dad,sixseven_vid$sev_prop_dad, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwv1")
-pwv4 <- wilcox.test(sixseven_vid$six_propd,sixseven_vid$sev_propd, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwv1")
-pwv5 <- wilcox.test(sixseven_vid$six_propi,sixseven_vid$sev_propi, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwv1")
-pwv6 <- wilcox.test(sixseven_vid$six_propr,sixseven_vid$sev_propr, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwv1")
-pwv7 <- wilcox.test(sixseven_vid$six_propq,sixseven_vid$sev_propq, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwv1")
-pwv8 <- wilcox.test(sixseven_vid$six_props,sixseven_vid$sev_props, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwv1")
-pwv9 <- wilcox.test(sixseven_vid$six_propn,sixseven_vid$sev_propn, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwv1")
-pwv10 <- wilcox.test(sixseven_vid$six_type_token_ratio,sixseven_vid$sev_type_token_ratio, conf.int=T, paired = T) %>% tidy() %>% mutate(comp = "pwv1")
-#pwv_ps <- cbind(pwv1$p.value,pwv2$p.value,pwv3$p.value, pwv4$p.value, pwv5$p.value, pwv6$p.value, pwv7$p.value, pwv8$p.value, pwv9$p.value, pwv10$p.value)
-pwvs <- bind_rows(pwv1, pwv2, pwv3, pwv4, pwv5, pwv6, pwv7, pwv8, pwv9, pwv10) %>% 
-  mutate(pval_adj = p.adjust(p.value, method = "holm"))
-pwvs %>% filter(pval_adj>.05)
-
-# round(p.adjust(pwv_ps, method = "holm"),3)
-# round(pwv_ps, 3)
-# table(pwv_ps<.05)
-# table(p.adjust(pwv_ps, method = "holm")<.05) # 10 F
-```
-
-```{r cor tests 6 vs 7 prop measures, echo = F, warning = F, message = F}
-#7/10 prop vars correlate six vs. seven within audio
-pca1 <- cor.test(sixseven_aud$six_prop_op,sixseven_aud$sev_prop_op, conf.int=T, method = "kendall")
-pca2 <- cor.test(sixseven_aud$six_prop_mom,sixseven_aud$sev_prop_mom, conf.int=T, method = "kendall")
-pca3 <- cor.test(sixseven_aud$six_prop_dad,sixseven_aud$sev_prop_dad, conf.int=T, method = "kendall")
-pca4 <- cor.test(sixseven_aud$six_propd,sixseven_aud$sev_propd, conf.int=T, method = "kendall")
-pca5 <- cor.test(sixseven_aud$six_propi,sixseven_aud$sev_propi, conf.int=T, method = "kendall")
-pca6 <- cor.test(sixseven_aud$six_propr,sixseven_aud$sev_propr, conf.int=T, method = "kendall")
-pca7 <- cor.test(sixseven_aud$six_propq,sixseven_aud$sev_propq, conf.int=T, method = "kendall")
-pca8 <- cor.test(sixseven_aud$six_props,sixseven_aud$sev_props, conf.int=T, method = "kendall")
-pca9 <- cor.test(sixseven_aud$six_propn,sixseven_aud$sev_propn, conf.int=T, method = "kendall")
-pca10 <- cor.test(sixseven_aud$six_type_token_ratio,sixseven_aud$sev_type_token_ratio, conf.int=T, method = "kendall")
-
-pca_ps <- cbind(pca1$p.value,pca2$p.value,pca3$p.value, pca4$p.value, pca5$p.value, pca6$p.value, pca7$p.value, pca8$p.value, pca9$p.value, pca10$p.value)
-
-# p.adjust(test$p.value, method = "holm")
-# round(p.adjust(pca_ps, method = "holm"),3)# 2,3,4,5,6,8,10: all but propop, propq, and propn
-# round(pca_ps, 3)
-# table(pca_ps<.05)
-# table(p.adjust(pca_ps, method = "holm")<.05) # 7 true, 3 false
-
-#removing 1 7 and 9 bc ns
-pca_taus <- cbind(pca2$estimate,pca3$estimate, pca4$estimate, pca5$estimate, pca6$estimate, pca8$estimate, pca10$estimate)
-#range(pca_taus)
-
-#2/10 prop vars correlate six vs. seven within video
-pcv1 <- cor.test(sixseven_vid$six_prop_op,sixseven_vid$sev_prop_op, conf.int=T, method = "kendall")
-pcv2 <- cor.test(sixseven_vid$six_prop_mom,sixseven_vid$sev_prop_mom, conf.int=T, method = "kendall")
-pcv3 <- cor.test(sixseven_vid$six_prop_dad,sixseven_vid$sev_prop_dad, conf.int=T, method = "kendall")
-pcv4 <- cor.test(sixseven_vid$six_propd,sixseven_vid$sev_propd, conf.int=T, method = "kendall")
-pcv5 <- cor.test(sixseven_vid$six_propi,sixseven_vid$sev_propi, conf.int=T, method = "kendall")
-pcv6 <- cor.test(sixseven_vid$six_propr,sixseven_vid$sev_propr, conf.int=T, method = "kendall")
-pcv7 <- cor.test(sixseven_vid$six_propq,sixseven_vid$sev_propq, conf.int=T, method = "kendall")
-pcv8 <- cor.test(sixseven_vid$six_props,sixseven_vid$sev_props, conf.int=T, method = "kendall")
-pcv9 <- cor.test(sixseven_vid$six_propn,sixseven_vid$sev_propn, conf.int=T, method = "kendall")
-pcv10 <- cor.test(sixseven_vid$six_type_token_ratio,sixseven_vid$sev_type_token_ratio, conf.int=T, method = "kendall")
-
-pcv_ps <- cbind(pcv1$p.value,pcv2$p.value,pcv3$p.value, pcv4$p.value, pcv5$p.value, pcv6$p.value, pcv7$p.value, pcv8$p.value, pcv9$p.value, pcv10$p.value)
-# round(p.adjust(pcv_ps, method = "holm"),3)#prop_mom, prop_dad, 
-# round(pcv_ps,3)
-# table(pcv_ps<.05)
-# table(p.adjust(pcv_ps, method = "holm")<.05) #2 true, 8 false
+aboost_timemin<- round(mean(aboost_mean$aboost_min))
+aboost_timemin_nosil<- round(mean(aboost_mean$aboost_awakemin))
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+wsix_wsev_sigps <- ifelse(count(wsixs %>% filter(pval_adj<.05))==count(wsevens %>% filter(pval_adj<.05)), 
+                          count(wsixs %>% filter(pval_adj<.05)), "FIXTHIS")
+tau_six_d <- round(subset(csix_taus_sig,comp=="c6_d")$estimate,2)
+tau_six_q <- round(subset(csix_taus_sig,comp=="c6_q")$estimate,2)
+tau_six_i <- round(subset(csix_taus_sig,comp=="c6_i")$estimate,2)
+tau_sev_min <- round(min(cseven_taus_sig$estimate),2)
+tau_sev_max <- round(max(cseven_taus_sig$estimate),2)
+csix_taus_pval <- ifelse(sum(csix_taus_sig$pval_adj>0.05)==0, "all 3 adjusted-p<.05", "FIXTHIS")
+csev_taus_pval <- ifelse(sum(cseven_taus_sig$pval_adj>0.05)==0, "all adjusted-p<.05", "FIXTHIS")
 
 ```
+
+To examine how the video data ‘scale’ to day-length data descriptively, we divided the audio count metrics by the video count metrics for each child, to derive 'audio-boost' scores for each of the 12 measures. This computation shows that the audio recordings were ~`r aboost_timemin`x longer than the video recordings, or `r aboost_timemin_nosil`x longer if only 'non-silent' portions of the recording are included. However, rather than showing a concomitant 10-fold increase in our derived count metrics (as would be expected if the video captured a 'typical' or 'representative' hour of the day), the boost was closer to fivefold across measures; see table XX. This suggests that the video recordings, by and large, had a denser concentration of nouns across our count based metrics than did the audio recordings. 
+
+Notably, 'zero' values (e.g. recordings in which there were no nouns heard in singing) were omitted from the audio-boost computations given that they result in undefined values for a given child in a given month. The majority of variables had at least one such value, with over 1/3 of video recordings lacking instances of nouns heard in singing, reading, or by fathers each month; see Table X.
+
+```{r propna_missing_tables, echo = F, warning = F, message = F}
+#need to ask Shannon/Andrei to draft supplementals
+# prop of kids with NAs for each cat, each month
+propkids_with_NAs <- sixseven_spreadAV %>% 
+  dplyr::select(subj, month,
+                a_numtypes, v_numtypes, a_numtokens, v_numtokens, a_numspeakers, v_numspeakers,a_MOT, v_MOT, a_FAT, v_FAT, a_d, v_d, a_q, v_q, a_i, v_i, a_s, v_s, a_r, v_r, a_n, v_n, a_y_op, v_y_op) %>% 
+  mutate_if(is.numeric, funs(na_if(., 0)))  %>% 
+  group_by(month) %>% 
+  #dplyr::select(a_numtypes: v_y_op) %>% 
+  summarise_if(is.numeric, funs(round(sum(is.na(.))/44,2))) %>% 
+  dplyr::select(month, v_MOT, a_FAT, v_FAT, v_q, v_i, a_s, v_s, a_r, v_r, v_n)
+
+# prop of kids with NAs for each cat, across both months
+vars_with_NAs <- sixseven_spreadAV %>% 
+  dplyr::select(subj,
+                a_numtypes, v_numtypes, a_numtokens, v_numtokens, a_numspeakers, v_numspeakers,a_MOT, v_MOT, a_FAT, v_FAT, a_d, v_d, a_q, v_q, a_i, v_i, a_s, v_s, a_r, v_r, a_n, v_n, a_y_op, v_y_op) %>% 
+  group_by(subj) %>% 
+  summarise_if(is.numeric, funs(sum)) %>% 
+  mutate_if(is.numeric, funs(na_if(., 0))) %>%
+  summarise_if(is.numeric, funs(round(sum(is.na(.))/44,2)))%>% 
+  dplyr::select_if(any_vars(.>0))
+propkids_with_NAs
+vars_with_NAs
+```
+
+In order to compare the derived count metrics in our audio and video recordings directly, we next normed our count values by the number of minutes in each. For example, if an infant heard 500 noun-tokens in her 800 minutes of non-silent audio-recording, and 200 in her 60 minute video-recording, this was converted to .62 (audio) vs. 3.3 (video) noun-tokens per minute. This allows us to retain zero values omitted for the audio-boost scores above, rendering results that are more readily interpretable across our count and proportional measures.  We return to how it is best to account for unattested low-frequency events in corpora in the discussion, and provide the analagous normed analyses with zero values removed in the supplemental materials. 
+
+With the normed data, we found identical patterns when looking within month six and within month seven: `r wsix_wsev_sigps`/12 of our count-based metrics (in each month) occurred at significantly lower rates in audio recordings than video recordings (adjusted-p<.05). The three that were statistically indistinguishable were nouns/minute produced (1) by fathers, (2) in reading, and (3) in singing (all adjusted-p>.05; these are the same measures with a large number of zero values; see table XX.)
+
+In contrast, the correlations showed a more mixed pattern: in month six, audio vs. video normed count data only correlated significanly for 3/12 metrics, which were all utterance-type measures: number of declaratives (tau = `r tau_six_d`), questions (tau = `r tau_six_q`), and imperatives (tau = `r tau_six_i`; `r csix_taus_pval`). For month seven, 11/12 metrics correlated in audio vs. video data; number of nouns per minute heard in singing did not (excluding singing, `r tau_sev_min` - `r tau_sev_max`, `r csev_taus_pval`). See table XX and figure YY. 
+
+```{r gr_derived_counts_diff, echo = F, warning = F}
+gr_countvals_long_norm
+
+```
+
+```{r gr_derived_counts_corr, echo = F, fig.width=12,  fig.height= 3, warning = F}
+
+gr_count_cor_VA_facetmonth_norm
+
+```
+
+
+```{r derived_props, echo = F, warning = F, message = F}
+props_sixsev_ps <- ifelse(sum(pwas$pval_adj<0.05)+sum(pwvs$pval_adj<.05)==0, "all adjusted-p>.05","FIXTHIS")
+sig_pcas <- sum(pcas$pval_adj<.05)
+pcas_min <- round(min(pca_taus_sig$estimate),2)
+pcas_max <- round(max(pca_taus_sig$estimate),2)
+pcv_MOT <- round(subset(pcvs, comp=="pcv_MOT")$estimate,2)
+pcv_FAT <- round(subset(pcvs, comp=="pcv_FAT")$estimate,2)
+```
+
 ##Derived Proportions, Month 6 vs. 7.
-Unlike the count-based measures, the 10 proportional measures from each recording-type are readily comparable without further computation. Descriptively, within recording type, the differences month-to-month were small. Indeed, as with the derived count measures, there were no significant differences between month six and seven within audio or video recordings (all adjusted-p>.05. The pattern of correlations differed somewhat from the derived counts: for the audio recordings, `r sum(p.adjust(pca_ps, method = "holm")<0.05)`/10 proportional measures correlated from month 6 to month 7 (for these seven measures: Kendall’s tau range: `r round(min(pca_taus),2)`-`r round(max(pca_taus),2)`, adjusted-p<.05; for object co-presence, questions, and short-phrases adjusted-p>.05). For video data, only proportion of input from mom and from dad correlated from month 6 to month 7 (Kendall’s tau = .45 and .63, respectively; adjusted-p<.05). Thus, overall, at the group level, the proportional metrics were very stable month-to-month within recording type, but the correlations between the proportional measures across children at month six and seven were variable, especially for video-recordings.
+Turning to the 10 proportion-based measures, within recording type the differences month-to-month were small. Indeed, as with the count measures, there were no significant differences between month six and seven within audio or within video recordings (`r props_sixsev_ps`). The pattern of correlations differed somewhat from the derived counts: for the audio recordings, `r sig_pcas`/10 proportional measures correlated from month 6 to month 7 (for these seven measures: Kendall’s tau range: `r pcas_min`-`r pcas_max`, adjusted-p<.05; for object co-presence, questions, and short-phrases adjusted-p>.05). For video data, only proportion of input from mom and from dad correlated significantly from month 6 to month 7 (Kendall’s tau = `r pcv_MOT` and `r pcv_FAT`, respectively; adjusted-p<.05). Thus, overall, at the group level, the proportional metrics were very stable month-to-month within recording type, but the correlations between the proportional measures across children at month six and seven were variable, especially for video-recordings.
 
-##Derived Proportions, Audio vs. Video-recordings
-Across recording types, proportional measures differed more substantively; see figure XX. Within the speaker-based metrics, the video recordings featured mothers more and fathers less than the audio recordings (by ~15% and 5% respectively, XX). This likely reflects the demographics of our dataset: nearly all families had full-time working fathers, but mothers’ work schedules varied, and video recordings took place on weekdays during the typical work-day hours. Videos featured more object co-presence (~10%) than audio-recordings, likely reflecting the less far-ranging activities families engaged in while video equipment was present. Regarding quantity, videos also had a higher type to token ratio (i.e. more lexical diversity), even using the MATTR  (Fergatiotis et al, 2011), a point we return to later.
+```{r gr_derived_props, echo = F, fig.width=12, fig.height = 5, warning = F}
+gr_propvals_long
+gr_prop_cor_67_facetav
 
-Across utterance-types, at a gross level, the distributions of nouns in audio and video-recordings were similar, with declaratives making up most of the noun input, followed by questions, with the remaining input spread relatively evenly across imperatives, reading, singing, and short phrases. However, audio recordings featured relatively more declaratives and fewer questions than videos (XX, and XX%, respectively). 
-
-Statistically, at six months, 4/10 proportional measures differed significantly between audio and video recordings (proportion of object presence, declaratives, questions, and type-token ratio, all adj-p<.05), though the average estimated difference was only 2.4%. Only the proportion of imperatives correlated significantly across recording-types (Kendall’s tau = .31, adj-p<.05). At seven months, the same four proportional measures differed significantly across recording types (avg. estimated difference, 2.5%), in addition to the proportion of input from mothers and from fathers (all adj-p<.05). However, three of the four variables that differed significantly at seven months also correlated significantly (proportion of noun input from mom, dad, and in declaratives), along with the proportion of nouns heard in reading in the input (all adj-p<.05, Kendall’s tau range: .30-.33).  We return to appropriate interpretation for this mixed pattern of correlations and differences in the discussion.
+```
 
 ```{r propvals_countvals_figs, echo=F, message = F, warning = F}
-# propvals_med <- sixseven_basiclevel_home_data_agg %>% 
-#   dplyr::select(month, audio_video, prop_op, prop_mom, prop_dad, propd, propi, propn, propq, propr, props, type_token_ratio) %>% 
-#   group_by(month, audio_video) %>% 
-#   #summarise_if(is.numeric, funs(min, max, mean, median))
-#   summarise_if(is.numeric, funs(median)) %>% 
-#   gather(prop_meas, medianval, prop_op:type_token_ratio)
-# 
-# propvals_mean <- sixseven_basiclevel_home_data_agg %>% 
-#   dplyr::select(month, audio_video, prop_op, prop_mom, prop_dad, propd, propi, propn, propq, propr, props, type_token_ratio) %>% 
-#   group_by(month, audio_video) %>% 
-#   #summarise_if(is.numeric, funs(min, max, mean, median))
-#   summarise_if(is.numeric, funs(mean)) %>% 
-#   gather(prop_meas, meanval, prop_op:type_token_ratio)
+aboost_mom7 <- propvals_mean_spreadAV %>%
+  filter(prop_meas=="prop_mom" & month=="07") %>%
+  dplyr::select(a_boost) %>%
+  ungroup() %>%
+  summarise(round(mean(a_boost),2))
 
-#rough estimate for what we'll get when we properly divide by video hour
-sixseven_basiclevel_home_data_agg%>%
-  group_by(audio_video) %>% 
-  summarise(meantokens = mean(numtokens, na.rm=T),
-    meantokens_hour = mean(as.numeric(as.character(ifelse(audio_video=="audio", numtokens/11, numtokens))), na.rm=T))
-propvals_long <- sixseven_basiclevel_home_data_agg %>% 
-  dplyr::select(month, audio_video, subj, prop_op, prop_mom, prop_dad, propd, propq, propn, props, propr, propi, type_token_ratio) %>% 
-  group_by(month, audio_video, subj) %>% 
-  gather(prop_meas, propval, prop_op:type_token_ratio) %>% 
-  mutate(prop_meas=factor(prop_meas),
-         prop_meas = fct_relevel(prop_meas,
-                                  c("prop_op", "prop_mom", "prop_dad", "propd", "propq", "propn", "props", "propr", "propi","type_token_ratio")),
-meas_type = fct_collapse(prop_meas,
-                                  speaker = c("prop_mom","prop_dad"),
-                                  utt = c("propd","propq","propn","props","propr","propi"),
-                                  quant = "type_token_ratio",
-                                  op = "prop_op"))
+aboost_dad7 <- propvals_mean_spreadAV %>%
+  filter(prop_meas=="prop_dad" & month=="07") %>%
+  ungroup() %>%
+  dplyr::select(a_boost) %>%
+  summarise(round(mean(a_boost),2))
 
-countvals_long <- sixseven_basiclevel_home_data_agg %>% 
-  dplyr::select(month, audio_video, subj, y_op, MOT, FAT, d, q, n, s, r, i, numtypes, numtokens, numspeakers) %>% 
-  group_by(month, audio_video, subj) %>% 
-  gather(count_meas, countval, y_op:numspeakers) %>% 
-  mutate(count_meas=factor(count_meas),
-         count_meas = fct_relevel(count_meas,
-                                  c("y_op", "MOT", "FAT", "d", "q", "n", "s", "r", "i", "numtypes", "numtokens", "numspeakers")),
-    meas_type = fct_collapse(count_meas,
-                                  speaker = c("MOT","FAT"),
-                                  speaker_num = c("numspeakers"),
-                                  utt = c("d","q","n","s","r","i"),
-                                  quant = c("numtypes","numtokens"),
-                                  op = "y_op"))
+aboost_propop <- propvals_mean_spreadAV %>%
+  filter(prop_meas=="prop_op") %>%
+  ungroup() %>%
+  dplyr::select(a_boost) %>%
+  summarise(round(mean(a_boost),2))
 
+ttr_vid <- propvals_mean_spreadAV %>%
+  filter(prop_meas=="type_token_ratio") %>%
+  ungroup() %>%
+  dplyr::select(video) %>%
+  summarise(round(mean(video),2))
+ttr_aud <- propvals_mean_spreadAV %>%
+  filter(prop_meas=="type_token_ratio") %>%
+  ungroup() %>%
+  dplyr::select(audio) %>%
+  summarise(round(mean(audio),2))
+aboost_propd <- propvals_mean_spreadAV %>%
+  filter(prop_meas=="propd") %>%
+  ungroup() %>%
+  dplyr::select(a_boost) %>%
+  summarise(round(mean(a_boost),2))
+aboost_propq <- propvals_mean_spreadAV %>%
+  filter(prop_meas=="propq") %>%
+  ungroup() %>%
+  dplyr::select(a_boost) %>%
+  summarise(round(mean(a_boost),2))
 
-```
-```{r propvals_countvals, echo = F, warning = F, message = F}
-
-ggplot(propvals_long, aes(fill = prop_meas, linetype =audio_video, month, propval))+
-  stat_summary(fun.y=mean, geom="bar", position = "dodge", aes(linetype=audio_video),color = "black")+
-  stat_summary(fun.data=mean_cl_boot, geom="pointrange", position=position_dodge(width=.9), 
-               aes(group = interaction(prop_meas,month,audio_video)))+
-  facet_wrap(~meas_type, nrow = 2, scales = "free_y")+ggtitle("prop variables")
-
-ggplot(countvals_long, aes(fill = count_meas, linetype =audio_video, month, countval))+
-  stat_summary(fun.y=mean, geom="bar", position = "dodge", aes(linetype=audio_video), color = "black")+
-  stat_summary(fun.data=mean_cl_boot, geom="pointrange", position=position_dodge(width=.9), 
-               aes(group = interaction(count_meas,month,audio_video)))+
-  facet_wrap(meas_type~audio_video, scales = "free_y", ncol=2)+ggtitle("count variables")
+propwsixs_numsigdif <- sum(propwsixs$pval_adj<.05)
+# propwsixs_est <- filter(propwsixs,pval_adj<.05) %>% 
+#   dplyr::select(estimate) %>% abs(round(.,3))
+propcsixs_sigtau<-filter(propcsixs, pval_adj<.05) %>% 
+  dplyr::select(estimate) %>% 
+  round(.,3)
+propwsevens_numsigdif <- sum(propwsevens$pval_adj<.05)
+propcsevens_sigtau<-filter(propcsevens, pval_adj<.05) %>% 
+  dplyr::select(estimate) %>% 
+  round(.,3)
 
 ```
 
-##Noun Frequency and Prevalence 
-We next characterized whether audio and video recordings captured the same nouns and the same relative frequencies by examining word frequency across each month, recording type, and infant. The distribution of nouns in our recordings was zipfian: of the 5,811 unique object words heard across months and recording types, only 3,322 were heard more than once.
-  
-Looking at the top 100 audio and video nouns (collapsing month), we find that their frequencies across recording-types correlate significantly (Spearman’s rho=.35, p<.0001), though many these top 100 nouns occurred *only* in audio or video recordings; see figure XX. When we compute instead the frequency of the top 100 words by recording-type for each month, while all correlations are significant, we find stronger correlations month-to-month than across recording types within month (month 6 audio vs. video: rho = .23, month 6 audio vs. video: rho = .22, month 6 vs. 7 audio: rho = .67, month 6 vs. 7 video: rho = .36, all adj-p<.05; see figure XX). 
-   
-Finally, in a descriptive analysis of the top ten words by month and recording-type, we again find greater consistency across months than recording modalities (see table XX). Indeed, top words within recording-type were largely overlapping, while only two words overlapped on all four lists (book and baby). Furthermore, if instead we characterize how words were spread across infants and months, we find that the top audio words were far more common across families than the top video words (see figure XX). 
+##Derived Proportions, Audio vs. Video-recordings
+Across recording types, proportional measures differed more substantively than count measures; see figure XX. At six months, `r propwsixs_numsigdif`/10 proportional measures differed significantly between audio and video recordings (type-token ratio, and the proportion of object presence, declaratives, and questions, all adj-p<.05), while at seven months, `r propwsevens_numsigdif`/10 did so (the same four as in month six, in addition to input from mothers and fathers; all adj-p<.05). 
+
+Descriptively, videos featured object presence more than audio-recordings (Mdelta = `r abs(aboost_propop*100)`%), likely reflecting the less far-ranging activities families engaged in while video equipment was present. Regarding quantity, videos also had a higher type-to-token ratio (i.e. more lexical diversity; audio type-token ratio:  Mdelta = `r ttr_aud`, video type-token ratio: Mdelta = `r ttr_vid`), replicating previous work (Covington & Fall, 2010).
+
+Across utterance-types, at a gross level, the distributions of nouns in audio and video-recordings were similar, with declaratives making up most of the noun input, followed by questions, with the remaining input spread relatively evenly across imperatives, reading, singing, and short phrases. However, audio recordings featured relatively more declaratives and fewer questions than videos (`r aboost_propd*100`, and `r abs(aboost_propq*100)`%, respectively). Finally, in month seven, mothers talked `r abs(aboost_mom7)*100`% less in audio than video, and fathers talked `r abs(aboost_dad7)*100`% more. 
+
+```{r gr_derived_props_av, echo = F, fig.width=12, warning = F}
+gr_prop_cor_VA_facetmonth
+
+```
+
+Turning to the correlations among proportions across recording-types, in month six only the proportion of imperatives reached significance (Kendall’s tau =`r propcsixs_sigtau`, adj-p<.05). At seven months,  three of the variables that differed significantly across recording-types also correlated significantly (proportion of noun input from fathers and mothers, and in declaratives), along with the proportion of nouns heard in reading, (all four adj-p<.05, Kendall’s tau range: `r min(propcsevens_sigtau)` - `r max(propcsevens_sigtau)`).
+
+
+#Noun Frequency and Prevalence 
+The results thus far indicate that across all of our proportion and count-based measures, object nouns were stable in month six and seven, but often differed across recording type (by our Wilcoxon tests). We conclude with a set of highly exploratory analyses at the word level, which aim to provide a first-pass characterization of whether audio and video recordings captured the same nouns and the same relative frequencies by examining word frequency across each month, recording type, and infant. The distribution of nouns in our recordings was zipfian: of the `r totaln_objectwords`unique object words (`r totaln_bl` lemmas) heard across months and recording types, only `r totaln_once_objectwords` (`r totaln_once_bl` lemmas) were heard more than once (see figure XX).
+
+```{r noun_freq, echo = F, fig.width=12, fig.height = 12, warning = F, message= F}
+zipf_av_67
+top100_logspace_av_graph
+```  
 
 ```{r top-words, warning=F, message= F, echo = F}
-#collapsing month
-top100av <- sixseven_basiclevel_home_data%>%
-  group_by(audio_video, object)%>%
-  tally()%>%
-  top_n(100,n)
 
-top100av_spread <- top100av %>% 
-  spread(audio_video, n,fill = 0) %>% 
-  group_by(object) %>% 
-  mutate(aud_vid_sum = sum(audio,video, na.rm=T)) %>% 
-  arrange(-aud_vid_sum)
-
-top100_avcortest <- cor.test(top100av_spread$audio, top100av_spread$video, method = "spearman")# sig cor, but ~1/2 are 0s
-# top100av_spread %>% 
-#   mutate(zeroA_V= ifelse(audio==0|video==0,T,F)) %>% 
-#   group_by(zeroA_V) %>% 
-#   tally()
-
-top100av67 <- sixseven_basiclevel_home_data%>%
-   group_by(audio_video, month,object)%>%
-  tally() %>% 
-#   group_by(object)%>%
-#   summarise(n = n(),
-#             nfams = n_distinct(subj)) %>% 
-#   #filter(nfams>11) %>% #only including words that 25% the families heard in that recording-type and month
-#   #dplyr::select(-nfams) %>% #but then removing this var for further spreading below
-#   #ungroup() %>% 
-#   #group_by(audio_video, month) %>%
-   top_n(100,n) %>%
-#   arrange(-nfams, n) %>% 
-#   filter(!(nfams==1 & n==1)& nfams>1) %>% 
-  arrange(audio_video, month, -n)
-
-
-top100av67_avspread <- top100av67 %>% 
-  spread(audio_video, n, fill = 0) %>% 
-  group_by(object, month) %>% 
-  mutate(aud_vid_sum = sum(audio,video, na.rm=T)) %>% 
-  arrange(-aud_vid_sum)
-
-# top100av67_avspread %>% 
-#   mutate(zeroA_V= ifelse(audio==0|video==0,T,F)) %>% 
-#   group_by(zeroA_V) %>% 
-#   tally()
-
-top100audio_monthspread <- top100av67_avspread %>% 
-  dplyr::select(-video, -aud_vid_sum) %>% 
-  spread(month, audio, fill = 0) %>% 
-  rename(six = `06`,
-         seven = `07`) %>% 
-  filter(!(six==0 & seven==0)) %>% 
-  mutate(audio_video="audio")
-
-top100video_monthspread <- top100av67_avspread %>% 
-  dplyr::select(-audio, -aud_vid_sum) %>% 
-  spread(month, video, fill = 0) %>% 
-  rename(six = `06`,
-         seven = `07`) %>% 
-  filter(!(six==0 & seven==0)) %>% 
-  mutate(audio_video="video")
-
-top100_monthspread <- bind_rows(top100audio_monthspread, top100video_monthspread)
-
-#could holmes adjust these as needed
-
-cor_sixavtop <- cor.test(subset(top100av67_avspread, month=="06")$audio, subset(top100av67_avspread, month=="06")$video, method = "spearman") %>% tidy()#.23
-cor_sevavtop <-cor.test(subset(top100av67_avspread, month=="07")$audio, subset(top100av67_avspread, month=="07")$video, method = "spearman") %>% tidy()#.22
-cor_sixsevenAtop <-cor.test(top100audio_monthspread$six, top100audio_monthspread$seven, method = "spearman") %>% tidy()#.67
-cor_sixsevenVtop <- cor.test(top100video_monthspread$six, top100video_monthspread$seven, method = "spearman") %>% tidy()#.36
-cor_AVtop<-cor.test(top100av_spread$audio, top100av_spread$video, method = "spearman") %>% tidy()
-
-#cor top100 by month a vs. v
-#plots in paper draft
-ggplot(top100av67_avspread, aes(audio, video))+facet_wrap(~month)+geom_point(shape=1)+ggtitle("Freq. of Top 100 Words, Audio vs. Video Counts")
-ggplot(top100_monthspread, aes(six, seven))+facet_wrap(~audio_video, scales = "free")+geom_point(shape =1) + ggtitle("Freq. of Top 100 Words, 6 vs 7 mo. Counts")
-
-
+corAVtop67_combo_ps <- ifelse(sum(corAVtop67_combo$pval_adj>0.05)==0, "all adjusted-p<.05","FIXTHIS")
+avtop100_numwords <- top100av_spread %>% nrow()
+avtop100corr_est<- round(cor_AVtop$estimate,2)
+avtop100corr_pval<- ifelse(cor_AVtop$p.value<.0001, "p<.0001", "fix-this")
+avtop100_numwordsnozeros <- top100av_spread_nozeros %>% nrow()
+avtop100corr_estnozeros <- round(cor_AVtopnozeroes$estimate,2)
+avtop100corr_pvalnozeros<- ifelse(cor_AVtopnozeroes$p.value<.0001, "p<.0001", "fix-this")
 ```
 
+Collapsing month, we examined the top 100 most frequent audio and video nouns (n= `r avtop100_numwords` due to ties). These words' frequencies across recording-types correlate significantly (Kendall's tau: `r avtop100corr_estnozeros`, `r avtop100corr_pvalnozeros`,) even when retaining words that only occured in one recording type (Kendall's tau: `r avtop100corr_est`, `r avtop100corr_pval`; see figure XX). Further, we find numerically stronger correlations month-to-month than across recording-types within month (month 6 audio vs. video: tau = `r round(cor_sixavtop$estimate,2)`, month 7 audio vs. video: tau = `r round(cor_sevavtop$estimate,2)`, month 6 vs. 7 audio: tau = `r round(cor_sixsevenAtop$estimate,2)`, month 6 vs. 7 video: tau = `r round(cor_sixsevenVtop$estimate,2)`, `r corAVtop67_combo_ps`; see figure XX). Thus, at the word-level too, month-to-month frequencies appear more stable than cross-recording-type frequencies.
 
-```{r word tallies, echo = F, message = F, warning = F}
-#unique object words across months and recordings types
-overall_tally <- sixseven_basiclevel_home_data %>% 
-  group_by(basic_level) %>%
-  tally() %>% 
-  arrange(-n)
-#ggplot(overall_tally %>% filter(n>1), aes(n))+geom_histogram()+scale_y_log10()+scale_x_log10()
-
-#that happen more than in once
-morethanonce<- sixseven_basiclevel_home_data %>% 
-  group_by(object) %>% 
-  tally() %>% 
-  filter(n>1)
-
-tally_month_av<- sixseven_basiclevel_home_data %>% 
-  group_by(object,audio_video, month) %>%
-  tally() %>% 
-  arrange(-n)
-#plot in paper draft
-ggplot(tally_month_av, aes(n, fill = month))+geom_histogram()+
-  facet_grid(month~audio_video,scales = "free")+
-  scale_x_log10()+scale_y_log10()+ggtitle("Rank by Frequency, A, V, 6, 7")
-
-
-#unique within audio
-audiounique <- sixseven_basiclevel_home_data %>% 
-  filter(audio_video=="audio") %>% 
-  group_by(object) %>%
-  tally() %>% 
-  arrange(-n)
-
-
-#that happen more than in once within audio
-audunique_morethanonce <- sixseven_basiclevel_home_data %>% 
-  filter(audio_video=="audio") %>% 
-  group_by(object) %>% 
-  tally() %>% 
-  filter(n>1)
-
-#unique within video
-videounique <- sixseven_basiclevel_home_data %>% 
-  filter(audio_video=="video") %>% 
-  group_by(object) %>%
-  tally()
-
-#that happen more than in once within video
-vidunique_morethanonce <-sixseven_basiclevel_home_data %>% 
-  filter(audio_video=="video") %>% 
-  group_by(object) %>% 
-  tally() %>% 
-  filter(n>1)
-
-#audio that is not in video
-#video that is not in audio
-#1868 words occured in audio more than once but video never
-aud_morethanonce_nevervid <- audiounique %>% 
-  filter(!object%in% videounique$object & n>1) %>% 
-  mutate(cap = ifelse(tolower(object)!=object, T, F)) %>% 
-  nrow()
-
-#of which 270 were proper nouns
-aud_morethanonce_nevervid_proper <- audiounique %>% 
-  filter(!object%in% videounique$object & n>1) %>% 
-  mutate(cap = ifelse(tolower(object)!=object, T, F)) %>% 
-  group_by(cap) %>% 
-  dplyr::select(-n) %>% 
-  tally()
-
-#201 words occured in video more than once but audio never
-vid_morethanonce_neveraud <- videounique %>% 
-  filter(!object%in% audiounique$object & n>1) %>% 
-  mutate(cap = ifelse(tolower(object)!=object, T, F)) %>% 
-  nrow()
-
-#of which 76 were proper nouns
-vid_morethanonce_neveraud_proper <- videounique %>% 
-  filter(!object%in% audiounique$object & n>1) %>% 
-  mutate(cap = ifelse(tolower(object)!=object, T, F)) %>% 
-  group_by(cap) %>% 
-  dplyr::select(-n) %>% 
-  tally()
+```{r top100_corgraphs, echo = F, fig.width=12}
+gr_top100_monthspread
+gr_top100_avspread
+#need to make a table of the top 10 av/67 words, ask Shannon/Andrei
 ```
 
-```{r tallying graphs, echo = F, warning = F, mesasge = F}
-#top100 graph, log space
-#plot in draft
-ggplot(top100av_spread, aes(audio+.1, video+.1, color = (audio==0 |video==0)))+
-  geom_label_repel(aes(label=object),label.size = .10,
-  label.padding = unit(0.1, "lines"),
-  segment.color = "grey90")+
-  theme_bw(base_size=18)+
-  guides(colour=F)+scale_x_log10()+scale_y_log10()+
-  ggtitle("Top 100 words,log space \n(added .1 before taking log)")
+Finally, looking at just the top ten words by month and recording-type, we again find greater consistency across months than recording modalities (see Figure XX and Table XX). Indeed, top words within recording-type were largely overlapping, while only two words overlapped on all four lists (book and baby). Furthermore, if instead we characterize how words were spread across infants and months, we find that the top audio words were far more common across families than the top video words were (see figure XX). Thus, daylong audio-recordings appear to render more stable high-frequency words across families, across months, than do video-recordings. 
 
+```{r top10noun_freq, echo = F, fig.width=12, warning = F}
+top10_graph
+```  
 
-overall_month_top10 <-sixseven_basiclevel_home_data%>%
-  group_by(audio_video, month, object)%>%
-  summarise(n = n(),
-            nfams = n_distinct(subj)) %>% 
-  top_n(10,n) %>% 
-  arrange(audio_video, month, -n)
-
-#plot in draft
-ggplot(overall_month_top10, aes(n, nfams, label = object, colour = audio_video, fill = object))+
-  facet_wrap(~month)+
-  geom_label_repel(segment.color = "grey50")+
-  theme_bw(base_size=18)+
-  scale_colour_manual(values = c("white","black"))+
-  ggtitle("Top 10 words by recording type and month")+
-  guides(fill=F)
-  
-
-
-# #ggplot(top100av67_avspread, aes(audio+.1, video+.1, color = (audio==0 |video==0)))+
-# ggplot(top100av67_avspread, aes(audio, video, color = (audio==0 |video==0)))+
-#   geom_label_repel(aes(label=object),label.size = .10,
-#   label.padding = unit(0.1, "lines"), size = 3,
-#   point.padding = unit(1.6, 'lines'),
-#   segment.color = '#cccccc',
-#   segment.alpha =.5,
-#   force=.5, fill = "white")+
-# #  nudge_x = ifelse(top100av67_avspread$video == 0, 10, 
-# #                   ifelse(top100av67_avspread$audio ==0, -10, 0)),
-# #  nudge_y = ifelse(top100av67_avspread$video == 0, -40, 
-# #                   ifelse(top100av67_avspread$audio ==0, 20, 0)))+
-#       #arrow = arrow(length = unit(0.02, 'npc')))+
-#   theme_bw(base_size=14)+
-#   guides(color=F)+facet_wrap(~month, nrow=1)+
-#   geom_point()#+scale_x_log10()+scale_y_log10()
-
-```
-
-
-
-```{r wilcox tests AV prop, echo = F, warning = F, message = F}
-#most six props aren't different
-propwsix1 <- wilcox.test(data = subset(sixseven_basiclevel_home_data_agg, month=="06"& subj!="17"), prop_op~audio_video, conf.int=T, paired = T)
-propwsix2 <- wilcox.test(data = subset(sixseven_basiclevel_home_data_agg, month=="06"& subj!="17"), prop_mom~audio_video, conf.int=T, paired = T)
-propwsix3 <- wilcox.test(data = subset(sixseven_basiclevel_home_data_agg, month=="06"& subj!="17"), prop_dad~audio_video, conf.int=T, paired = T)
-propwsix4 <- wilcox.test(data = subset(sixseven_basiclevel_home_data_agg, month=="06"& subj!="17"), propd~audio_video, conf.int=T, paired = T)
-propwsix5 <- wilcox.test(data = subset(sixseven_basiclevel_home_data_agg, month=="06"& subj!="17"), propi~audio_video, conf.int=T, paired = T)
-propwsix6 <- wilcox.test(data = subset(sixseven_basiclevel_home_data_agg, month=="06"& subj!="17"), propr~audio_video, conf.int=T, paired = T)
-propwsix7 <- wilcox.test(data = subset(sixseven_basiclevel_home_data_agg, month=="06"& subj!="17"), propq~audio_video, conf.int=T, paired = T)
-propwsix8 <- wilcox.test(data = subset(sixseven_basiclevel_home_data_agg, month=="06"& subj!="17"), props~audio_video, conf.int=T, paired = T)
-propwsix9 <- wilcox.test(data = subset(sixseven_basiclevel_home_data_agg, month=="06"& subj!="17"), propn~audio_video, conf.int=T, paired = T)
-propwsix10 <- wilcox.test(data = subset(sixseven_basiclevel_home_data_agg, month=="06"& subj!="17"), type_token_ratio~audio_video, conf.int=T, paired = T)
-
-propwsix_ps <- cbind(propwsix1$p.value,propwsix2$p.value,propwsix3$p.value, propwsix4$p.value, propwsix5$p.value, propwsix6$p.value, propwsix7$p.value, propwsix8$p.value, propwsix9$p.value, propwsix10$p.value)
-# round(p.adjust(propwsix_ps, method = "holm"),3) #1, 4,7, 10: prop_op, propd, propq, and ttr
-# round(propwsix_ps, 3)
-# table(propwsix_ps<.05)
-# table(p.adjust(propwsix_ps, method = "holm")<.05) # 3 T 7 False
-# propwsix_estdiff <- cbind(propwsix1$estimate,propwsix2$estimate,propwsix3$estimate, propwsix4$estimate, propwsix5$estimate, propwsix6$estimate, propwsix7$estimate, propwsix8$estimate, propwsix9$estimate, propwsix10$estimate)
-# range((propwsix_estdiff))
-# median(propwsix_estdiff)
-# mean(propwsix_estdiff)
-
-
-#most seven props aren't different
-propwseven1 <- wilcox.test(data = subset(sixseven_basiclevel_home_data_agg, month=="07"), prop_op~audio_video, conf.int=T, paired = T)
-propwseven2 <- wilcox.test(data = subset(sixseven_basiclevel_home_data_agg, month=="07"), prop_mom~audio_video, conf.int=T, paired = T)
-propwseven3 <- wilcox.test(data = subset(sixseven_basiclevel_home_data_agg, month=="07"), prop_dad~audio_video, conf.int=T, paired = T)
-propwseven4 <- wilcox.test(data = subset(sixseven_basiclevel_home_data_agg, month=="07"), propd~audio_video, conf.int=T, paired = T)
-propwseven5 <- wilcox.test(data = subset(sixseven_basiclevel_home_data_agg, month=="07"), propi~audio_video, conf.int=T, paired = T)
-propwseven6 <- wilcox.test(data = subset(sixseven_basiclevel_home_data_agg, month=="07"), propr~audio_video, conf.int=T, paired = T)
-propwseven7 <- wilcox.test(data = subset(sixseven_basiclevel_home_data_agg, month=="07"), propq~audio_video, conf.int=T, paired = T)
-propwseven8 <- wilcox.test(data = subset(sixseven_basiclevel_home_data_agg, month=="07"), props~audio_video, conf.int=T, paired = T)
-propwseven9 <- wilcox.test(data = subset(sixseven_basiclevel_home_data_agg, month=="07"), propn~audio_video, conf.int=T, paired = T)
-propwseven10 <- wilcox.test(data = subset(sixseven_basiclevel_home_data_agg, month=="07"), type_token_ratio~audio_video, conf.int=T, paired = T)
-
-propwseven_ps <- cbind(propwseven1$p.value,propwseven2$p.value,propwseven3$p.value, propwseven4$p.value, propwseven5$p.value, propwseven6$p.value, propwseven7$p.value, propwseven8$p.value, propwseven9$p.value, propwseven10$p.value)
-# round(p.adjust(propwseven_ps, method = "holm"),3) #1, 2,3,4,7,10: prop_op, prop_mom, prop_dad, propd, propq, and ttr
-# round(propwseven_ps, 3)
-# table(propwseven_ps<.05)
-# table(p.adjust(propwseven_ps, method = "holm")<.05)
-
-propwseven_estdiff <- cbind(propwseven1$estimate,propwseven2$estimate,propwseven3$estimate, propwseven4$estimate, propwseven5$estimate, propwseven6$estimate, propwseven7$estimate, propwseven8$estimate, propwseven9$estimate, propwseven10$estimate)
-# range((propwseven_estdiff))
-# median(propwseven_estdiff)
-# mean(propwseven_estdiff)
-
-```
-
-```{r prop AV cor tests, echo = F, warning = F, message = F}
-#only propi is correlated at 6 months, audio to video
-propcsix1 <- cor.test(data=subset(sixseven_spreadAV, month=="06"& subj!="17"), ~v_prop_op+a_prop_op,conf.int=T, method = "kendall")
-propcsix2 <- cor.test(data=subset(sixseven_spreadAV, month=="06"& subj!="17"), ~v_prop_mom+a_prop_mom,conf.int=T, method = "kendall")
-propcsix3 <- cor.test(data=subset(sixseven_spreadAV, month=="06"& subj!="17"), ~v_prop_dad+a_prop_dad,conf.int=T, method = "kendall")
-propcsix4 <- cor.test(data=subset(sixseven_spreadAV, month=="06"& subj!="17"), ~v_propd+a_propd,conf.int=T, method = "kendall")
-propcsix5 <- cor.test(data=subset(sixseven_spreadAV, month=="06"& subj!="17"), ~v_propi+a_propi,conf.int=T, method = "kendall")
-propcsix6 <- cor.test(data=subset(sixseven_spreadAV, month=="06"& subj!="17"), ~v_propr+a_propr,conf.int=T, method = "kendall")
-propcsix7 <- cor.test(data=subset(sixseven_spreadAV, month=="06"& subj!="17"), ~v_propq+a_propq,conf.int=T, method = "kendall")
-propcsix8 <- cor.test(data=subset(sixseven_spreadAV, month=="06"& subj!="17"), ~v_props+a_props,conf.int=T, method = "kendall")
-propcsix9 <- cor.test(data=subset(sixseven_spreadAV, month=="06"& subj!="17"), ~v_propn+a_propn,conf.int=T, method = "kendall")
-propcsix10 <- cor.test(data=subset(sixseven_spreadAV, month=="06"& subj!="17"), ~v_type_token_ratio+a_type_token_ratio,conf.int=T, method = "kendall")
-
-propcsix_ps <- cbind(propcsix1$p.value,propcsix2$p.value,propcsix3$p.value, propcsix4$p.value, propcsix5$p.value, propcsix6$p.value, propcsix7$p.value, propcsix8$p.value, propcsix9$p.value, propcsix10$p.value)
-# round(p.adjust(propcsix_ps, method = "holm"),3) #only propi
-# round(propcsix_ps, 3)
-# table(propcsix_ps<.05)
-# table(p.adjust(propcsix_ps, method = "holm")<.05)
-# propcsix5
-
-#4 seven props a vs. v are correlated
-propcseven1 <- cor.test(data=subset(sixseven_spreadAV, month=="07"), ~v_prop_op+a_prop_op,conf.int=T, method = "kendall")
-propcseven2 <- cor.test(data=subset(sixseven_spreadAV, month=="07"), ~v_prop_mom+a_prop_mom,conf.int=T, method = "kendall")
-propcseven3 <- cor.test(data=subset(sixseven_spreadAV, month=="07"), ~v_prop_dad+a_prop_dad,conf.int=T, method = "kendall")
-propcseven4 <- cor.test(data=subset(sixseven_spreadAV, month=="07"), ~v_propd+a_propd,conf.int=T, method = "kendall")
-propcseven5 <- cor.test(data=subset(sixseven_spreadAV, month=="07"), ~v_propi+a_propi,conf.int=T, method = "kendall")
-propcseven6 <- cor.test(data=subset(sixseven_spreadAV, month=="07"), ~v_propr+a_propr,conf.int=T, method = "kendall")
-propcseven7 <- cor.test(data=subset(sixseven_spreadAV, month=="07"), ~v_propq+a_propq,conf.int=T, method = "kendall")
-propcseven8 <- cor.test(data=subset(sixseven_spreadAV, month=="07"), ~v_props+a_props,conf.int=T, method = "kendall")
-propcseven9 <- cor.test(data=subset(sixseven_spreadAV, month=="07"), ~v_propn+a_propn,conf.int=T, method = "kendall")
-propcseven10 <- cor.test(data=subset(sixseven_spreadAV, month=="07"), ~v_type_token_ratio+a_type_token_ratio,conf.int=T, method = "kendall")
-
-propcseven_ps <- cbind(propcseven1$p.value,propcseven2$p.value,propcseven3$p.value, propcseven4$p.value, propcseven5$p.value, propcseven6$p.value, propcseven7$p.value, propcseven8$p.value, propcseven9$p.value, propcseven10$p.value)
-# round(p.adjust(propcseven_ps, method = "holm"),3) #2,3,4,6: propmom, propdad, propd, propr
-# round(propcseven_ps, 3)
-# table(propcseven_ps<.05)
-# table(p.adjust(propcseven_ps, method = "holm")<.05)
-# 
-# propcseven_taus <- cbind(propcseven2$estimate,propcseven3$estimate, propcseven4$estimate, propcseven6$estimate) 
-# range(propcseven_taus)
-
-
-
-```
-
-todo: 
-
-#tables
-#by hour
-
-
-
-
-
-                  
