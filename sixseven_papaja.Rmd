@@ -1,18 +1,62 @@
 ---
-title: 'Talk, You’re On Camera! Or, Comparing Naturalistic Audio and Video Recordings of Infants'
-author: "Elika Bergelson"
-output:
-  pdf_document: default
-  html_document: default
+title             : "Talk, You’re On Camera! Or, Comparing Naturalistic Audio and Video Recordings of Infants"
+shorttitle        : "Talk, You’re On Camera!"
 
+author: 
+  - name          : "Elika Bergelson"
+    affiliation   : "1"
+    corresponding : yes    # Define only one corresponding author
+    address       : "Postal address"
+    email         : "elika.bergelson@duke.edu"
+  - name          : "Andrei Amatuni"
+    affiliation   : "1"
+  - name          : "Shannon Dailey"
+    affiliation   : "1"
+  - name          : "Sharath Koorathota"
+    affiliation   : "2"
+  - name          : "Shaelise Tor"
+    affiliation   : "2"
+    
+affiliation:
+  - id            : "1"
+    institution   : "Duke University"
+  - id            : "2"
+    institution   : "University of Rochester"
+
+author_note: |
+  Add complete departmental affiliations for each author here. Each new line herein must be indented, like this line.
+
+  Enter author note here.
 
 abstract: |
   Measurements of infants’ experiences in their typical daily environments provide critical information about early development. However, the role of sampling methods in providing this information is rarely examined. Here we directly compare language input measures collected by hourlong video- and daylong audio-recording within the same group of 44 infants, at 6 and at 7 months. Month to month, our results are incredibly consistent, suggesting our methods obtain reasonable estimates of nouns in the input across the month-long gap. However, comparing recording-types, we find large differences across language quantity and lexical diversity, talker variability, utterance type, and referential transparency. Put briefly, video recordings featured far denser quantities of nouns, relatively more input from mothers, more questions and declaratives, and more talk about present objects. This suggests short video-recordings may inflate language input estimates, and should be used cautiously for extrapolation about common words, talkers, and situational/contextual features at larger timescales. Analyses based on counts and proportions often led to different conclusions; we suggest proportions may provide ill-advised compression of the information available to infants. Even when measures are standardized per unit time, or computed proportionally, hourlong video and daylong audio-recordings provide a fairly divergent picture of the input infants hear, and therefore learn from, in their daily lives. If our theories are to be held accountable to our observations, we suggest greater care be taken to unpack the ramifications of underlying methodological and analytic decisions for measuring infant language input.
   
-bibliography: sixseven.bib
+keywords          : "keywords"
+# wordcount         : "X"
+
+bibliography      : ["sixseven.bib"]
+
+figsintext        : no
+figurelist        : no
+tablelist         : no
+footnotelist      : no
+lineno            : no
+mask              : no
+
+class             : "man"
+output            : papaja::apa6_pdf
 ---
 
-# Introduction
+```{r load_packages, include = FALSE}
+library("papaja")
+```
+
+```{r analysis_preferences}
+# Seed for random number generation
+set.seed(42)
+```
+
+# Introduction 
 
 Researchers have studied development by observing infants experiencing their natural habitats for over a century (Taine, 1876,Williams, 1936). Over the past 20-30 years, written records have been increasingly supplemented with annotated audio and video recordings, which have described the linguistic, social, and physical landscape in which infants learn. Such data --often shared through repositories like CHILDES and Databrary--in turn provide a proxy for various ‘input’ measures in theories of psycho-social, motor, and in particular, linguistic development (MacWhinney, 2001). 
 
@@ -34,6 +78,33 @@ Second, we assess input-stability within sampling method: do infants receive qua
  
 Thus, our main goal was to compare language input young infants receive across four key properties (frequency,  utterance-type, referential transparency, and talker), as measured by an hour of video and a (separate) full-day audio-recording, each at two time-points. This seemingly methodological question has deep implications for developmental theory: we examine how sampling and aggregation approaches may alter conclusions about the linguistic input that in turn drives early development.
 
+
+# Methods
+
+## Participants
+Participants were recruited from an existing database of families from local hospitals, or who heard about the BabyLab from friends, family, and outreach. Forty-six participants enrolled; two dropped out in the early stages of the project leaving 44 infants in the final sample. All infants were full-term (40 ± 3 weeks), had no known vision or hearing problems, and heard >75% spoken English in the home. Participants were 95% white; 75% of mothers had a B.A. or higher. The families were enrolled in a yearlong study that included monthly audio- and video-recordings, as well as in-lab visits every other month. Here we report on the home recording data from the first two timepoints (6 and 7 months) of this study, for which participants were compensated $10; see table XX. 
+
+## Procedures
+Participants gave consent at an initial lab visit for the larger study through a process approved by the University of Rochester IRB. Questionnaires about various aspects of the family’s and infant’s background conducted during lab visits, not germane to the present analysis, are reported elsewhere (Bergelson & Aslin, 2017b; Laing and Bergelson, under review).  Four recordings were collected for each infant: an audio- and video-recording at six and at seven months. Each recording was on a different day. See table XX.
+
+Audio-video release forms were given to parents and collected after the audio and video recordings for the month were complete. Parents could opt to share the data with other authorized researchers and/or to have excerpts used for academic presentation. The released audio and video files can be accessed by registered researchers on Databrary. 
+
+## Video-Recordings
+Researchers visited infants’ homes each month to video-record a typical hour of infants life from their own perspective. To achieve this, infants were outfitted with a hat or headband affixed with two small, lightweight Looxcie cameras (22g each). One camera was oriented slightly down and the other slightly up, to capture most of the infant's visual field (verified by Bluetooth with an iPad/iPhone during setup). A standard camcorder (Panasonic HC-V100 or Sony HDR-CX240) on a tripod was set up in a location that could best capture the infant. Parents were asked to move this camera with them if they changed rooms. After set-up, experimenters left for one hour.
+
+## Audio-Recordings
+Audio-recordings captured a full day (up to 16 hours) of infants’ language input. Parents were given vests with a small chest-pocket, and LENAs (LENA Foundation, Boulder, CO), small audio-recorders (<60g) that fit into the vest pocket. Parents were asked to put the vest and recorder on babies from when they awoke to when they went to bed (with the exceptions of naps and baths). Parents were permitted to pause the recorder at any time but were asked to keep such pauses minimal.
+
+## Data Processing
+Details of our entire data processing pipeline are on our lab wiki (https://osf.io/cxwyz/wiki/home/). Videos were processed using Sony Vegas and in-house video-editing scripts. Footage was aligned in a single, multi-camera view before manual language annotation in Datavyu. Audio recordings were initially processed by LENA proprietary software, which segments and diarizes each audio file; this output was then converted to CLAN format for further processing and manual annotation. Through in-house scripts, long periods of silence were demarcated in these CLAN files (e.g. when the audio vest was removed or during naps). The CLAN files were then used for manual language annotation. 
+
+## Language Annotation
+Recordings were next annotated by trained researchers. The “sparse annotation” entailed marking each concrete noun heard by the child. This includes words directed to or easily overheard by the child (e.g. words directed at a sibling next to the infant), but not distant or background language (e.g. background television). We operationalized “object words” as concrete, imageable nouns (e.g. shoe, arm). For each object word, we included the word (as said by the speaker, e.g. ‘teethies’), and lemmatized to it’s ‘basic level’ or dictionary form (e.g. tooth), along with three properties: utterance-type, object presence, and talker. Utterance-type classified each object word utterance as declarative, question, imperative, reading, singing, short-phrase, or unclear. Short-phrase utterances include words in isolation and short, simple noun phrases (e.g. “the red ball” or “kitty’s paw”). Object-presence was a binary measure of whether the object was present and attended to. Lastly, the word’s talker was recorded, including live interlocutors and electronics: mother, brother, toy, etc. 
+
+We assessed intercoder reliability on a random contiguous 10% of the annotations in each file. 
+
+
+# Results
 
 
 ```{r read in data, comment=F, message=F, hide = T, warning = F, echo = F}
@@ -357,3 +428,16 @@ Finally, looking at just the top ten words by month and recording-type, we again
 top10_graph
 ```  
 
+
+# Discussion
+
+
+\newpage
+
+# References
+```{r create_r-references}
+r_refs(file = "r-references.bib")
+```
+
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
