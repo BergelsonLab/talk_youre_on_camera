@@ -15,7 +15,7 @@ sixseven_basiclevel_home_data <- read_feather("data/sixsevmonth_basiclevel_home_
 #source("seedlings_basiclevels_dataprep_sixseven.R")
 
 
-sixseven_basiclevel_home_data_agg <- read_feather("data/all_basiclevel_home_data_agg_feather10-31-17")%>%
+sixseven_basiclevel_home_data_agg <- read_feather("data/all_basiclevel_home_data_agg_feather12-11-17")%>%
   dplyr::filter(month %in% c("06","07"))%>%
 #sixseven_basiclevel_home_data_agg <- read_feather("data/sixsevmonth_basiclevel_home_data_agg_feather")%>%
   droplevels() %>% 
