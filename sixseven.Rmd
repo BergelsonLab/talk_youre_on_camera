@@ -2,10 +2,8 @@
 title: 'Talk, You’re On Camera! Or, Comparing Naturalistic Audio and Video Recordings of Infants'
 author: "Elika Bergelson"
 output:
-  pdf_document: default
   html_document: default
-
-
+  pdf_document: default
 abstract: |
   Measurements of infants’ experiences in their typical daily environments provide critical information about early development. However, the role of sampling methods in providing this information is rarely examined. Here we directly compare language input measures collected by hourlong video- and daylong audio-recording within the same group of 44 infants, at 6 and at 7 months. Month to month, our results are incredibly consistent, suggesting our methods obtain reasonable estimates of nouns in the input across the month-long gap. However, comparing recording-types, we find large differences across language quantity and lexical diversity, talker variability, utterance type, and referential transparency. Put briefly, video recordings featured far denser quantities of nouns, relatively more input from mothers, more questions and declaratives, and more talk about present objects. This suggests short video-recordings may inflate language input estimates, and should be used cautiously for extrapolation about common words, talkers, and situational/contextual features at larger timescales. Analyses based on counts and proportions often led to different conclusions; we suggest proportions may provide ill-advised compression of the information available to infants. Even when measures are standardized per unit time, or computed proportionally, hourlong video and daylong audio-recordings provide a fairly divergent picture of the input infants hear, and therefore learn from, in their daily lives. If our theories are to be held accountable to our observations, we suggest greater care be taken to unpack the ramifications of underlying methodological and analytic decisions for measuring infant language input.
   
