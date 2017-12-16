@@ -126,7 +126,6 @@ getmode <- function(v) {
 # make APA format
 # cut down to 4k words total if possible
 ```
-#Results 
 ##Analysis Plan
 Based on the coding scheme above, we derived count (n=12) and proportional (n=10) measures from each recordings' annotations for each child (n=44), recording-type (audio, video), and month (six, seven). See Table XX. We also normalized the count measures by recording length; further details are below. We initially created multi-level models, with each of the 22 measures as the dependent variable,  recording-type and month as fixed effects, and participant as a random effect (i.e. dv ~ recording_type + month + (1|subj)). Month was not a significant predictor in any of the 22 models; recording-type was in 17/22 models (see S.I.). However, since many of the models showed structured (generally funnel-shaped) residuals that limited interpretation across measures, we instead report a simple set of nonparametric analyses.
 
@@ -152,10 +151,12 @@ wvs_ps <- ifelse(sum(wvs$pval_adj<0.05)==0, "all adjusted-p>.05","FIXTHIS")
 We first analyzed the 12 count measures in month six versus seven, by recording-type. Across children, none of the 12 differed by month within audio recordings (`r was_ps`), or within video recordings (`r wvs_ps`.) Testing the correlations, all 12 count measures correlated significantly month-to-month for audio (Kendall's tau ranged from `r cas_mintau` - `r cas_maxtau`, `r cas_taup`), and 11/12 did so for video (Kendall's taus ranged from `r cvs_mintau` - `r cvs_maxtau`, `r cvs_sigpval`), excluding number of nouns heard in reading (`r cvs_nonsigpval`). Thus, within recording type, the count-based metrics of the object words infants heard were statistically equivalent in month six and seven, and correlated significantly within children month-to-month (except 1/24 correlations); see figure XX. This suggests that parents are acting naturally, or at least consistently, during our home recordings each month.
 
 ```{r gr_derived_counts_67_diff, echo = F, fig.height = 8, warning = F}
+#this figure is not showing in the references section
 gr_countvals_long
 
 ```
 ```{r gr_derived_counts_67_corr, echo = F, fig.width=12, fig.height=3, warning = F}
+#this figure is not showing in the references section
 
 gr_count_cor_67_facetav
 
@@ -180,7 +181,7 @@ audnosilM_SD_R <- paste(aud_nosilM*60, ", SD=",aud_nosilSD*60,", R=",aud_nosilmi
 ```
 
 ##Count Measures, Audio- vs. Video-recordings
-We next assessed our count measures across recording-types, examing how noun input scaled between hour-long video-recordings and daylong audio-recordings. Modally, videos were an hour (`r vidmode` min, *M*=`r vidM_SD_R`), and audio-recordings were 16 hours (`r audmode` min, *M*=`r audM_SD_Rmin`), the maximum capacity of the LENA device. While determining the exact onsets and offsets of naps from audio alone is not possible, by removing the 'silent' portions of the recordings (see Methods), we estimated an upper-limit on infants' awake (i.e. non-silent) time (Mode = `r audmode_nosil_hr`, *M* = `r audnosilM_SD_R` ). This comports with established norms for 6–8-month-olds in the US (Mandel et al, 2010), which are 3 hours of daytime sleep, and 10 hours of nighttime sleep. Thus, 16 hours of recording beginning when the child wakes up should capture ~11 daytime waking hours, in line with our silence demarcations. Infants were always awake during video recordings (save one infant, who fell asleep before the recording-hour ended; that video was stopped at sleep onset).
+We next assessed our count measures across recording-types, examing how noun input scaled between hour-long video-recordings and daylong audio-recordings. Modally, videos were an hour (`r vidmode` min, *M*=`r vidM_SD_R`), and audio-recordings were 16 hours (`r audmode` min, *M*=`r audM_SD_Rmin`), the maximum capacity of the LENA device. While determining the exact onsets and offsets of naps from audio alone is not possible, by removing the 'silent' portions of the recordings (see Methods), we estimated an upper-limit on infants' awake (i.e. non-silent) time (Mode = `r audmode_nosil_hr`, *M* = `r audnosilM_SD_R` ). This comports with established norms for 6–8-month-olds in the US (**ADD REF:** Mandel et al, 2010), which are 3 hours of daytime sleep, and 10 hours of nighttime sleep. Thus, 16 hours of recording beginning when the child wakes up should capture ~11 daytime waking hours, in line with our silence demarcations. Infants were always awake during video recordings (save one infant, who fell asleep before the recording-hour ended; that video was stopped at sleep onset).
 
 
 ```{r scaling examination, echo = F, warning = F, message = F}
@@ -296,14 +297,15 @@ countvals_normed_table
 
 With the normed data, we found identical patterns when looking within month six and seven: `r wsix_wsev_sigps`/12 of our count-based metrics (in each month) occurred at significantly lower rates in audio recordings than video recordings (adjusted-p<.05). The three that were statistically indistinguishable were nouns/minute produced (1) by fathers, (2) in reading, and (3) in singing (all adjusted-p>.05). These same three measures had a large number of zero values; see table XX. We return to the topic of unattested low-frequency events in corpora in the discussion.
 
-The pattern of correlations across recording-types was mixed: in month six, audio vs. video normed count data only correlated significanly for 3/12 metrics, which were all utterance-type measures: declaratives (tau = `r tau_six_d`), questions (tau = `r tau_six_q`), and imperatives (tau = `r tau_six_i`; `r csix_taus_pval`). For month seven, 11/12 metrics correlated in audio vs. video data; number of nouns per minute heard in singing did not (excluding singing, `r tau_sev_min` - `r tau_sev_max`, `r csev_taus_pval`). See table XX and figure YY. 
+The pattern of correlations across recording-types was mixed: in month six, audio vs. video normed count data only correlated significanly for 3/12 metrics, which were all utterance-type measures: declaratives (tau = `r tau_six_d`), questions (tau = `r tau_six_q`), and imperatives (tau = `r tau_six_i`; `r csix_taus_pval`). For month seven, 11/12 metrics correlated in audio vs. video data; number of nouns per minute heard in singing did not (excluding singing, `r tau_sev_min` - `r tau_sev_max`, `r csev_taus_pval`). See table XX and figure YY  \@ref(fig:gr_derived_counts_corr). 
 
 ```{r gr_derived_counts_diff, echo = F, warning = F}
+#this is being added to references but not knitted into this section
 gr_countvals_long_norm
-
 ```
 
 ```{r gr_derived_counts_corr, echo = F, fig.width=12,  fig.height= 3, warning = F}
+#this is being added to references but not knitted into this section
 
 gr_count_cor_VA_facetmonth_norm
 
