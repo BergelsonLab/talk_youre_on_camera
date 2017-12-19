@@ -49,6 +49,7 @@ output            : papaja::apa6_pdf
 
 ```{r load_packages, include = FALSE}
 library("papaja")
+library("knitr")
 ```
 
 ```{r analysis_preferences}
@@ -441,6 +442,9 @@ Finally, looking at just the top ten words by month and recording-type, we again
 top10_graph
 ```  
 
+```{r colorful_table, fig.height = 2}
+knitr::include_graphics("data/colorful_table.png")
+```
 
 # Discussion
 
