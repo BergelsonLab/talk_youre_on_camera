@@ -405,73 +405,88 @@ propvals_long %>%
   summarise(shap.pval = shapiro.test(propval)$p.value) %>% 
   filter(shap.pval>.05)
 # # Lmer_prop -------------------------------------------------------------
-# #6/10 have av as a sign predictor; none have age. i, n, r, and s have neither (though s has an ix)
+# #6/10 have av as a sig predictor; none have age. i, n, r, and s have neither (though s has an ix)
+# #normal resid: prop_op, propd, TTR
+# #normal resid
 # mod_prop_op <- lmer(data = sixseven_basiclevel_home_data_agg, prop_op~month+audio_video + (1|subj))
 # mod_prop_opix <- lmer(data = sixseven_basiclevel_home_data_agg, prop_op~month*audio_video + (1|subj))
 # summary(mod_prop_op)
 # anova(mod_prop_op, mod_prop_opix)
 # plot(mod_prop_op)
+# shapiro.test(resid(mod_prop_op))
 # 
+# #weird resid
 # mod_prop_mom <- lmer(data = sixseven_basiclevel_home_data_agg, prop_mom~month+audio_video + (1|subj))
 # mod_prop_momix <- lmer(data = sixseven_basiclevel_home_data_agg, prop_mom~month*audio_video + (1|subj))
 # summary(mod_prop_mom)
 # anova(mod_prop_mom, mod_prop_momix)
 # plot(mod_prop_mom)
+# shapiro.test(resid(mod_prop_mom))
 # 
+# #weird resid
 # mod_prop_dad <- lmer(data = sixseven_basiclevel_home_data_agg, prop_dad~month+audio_video + (1|subj))
 # mod_prop_dadix <- lmer(data = sixseven_basiclevel_home_data_agg, prop_dad~month*audio_video + (1|subj))
 # summary(mod_prop_dad)
 # anova(mod_prop_dad, mod_prop_dadix)
 # plot(mod_prop_dad)
+# shapiro.test(resid(mod_prop_dad))
 # 
+# #normal resid
 # mod_propd <- lmer(data = sixseven_basiclevel_home_data_agg, propd~month+audio_video + (1|subj))
 # mod_propdix <- lmer(data = sixseven_basiclevel_home_data_agg, propd~month*audio_video + (1|subj))
 # summary(mod_propd)
 # anova(mod_propd, mod_propdix)
 # plot(mod_propd)
+# shapiro.test(resid(mod_propd))
 # 
-# #neither
+# #neither; weird resid
 # mod_propi <- lmer(data = sixseven_basiclevel_home_data_agg, propi~month+audio_video + (1|subj))
 # mod_propiix <- lmer(data = sixseven_basiclevel_home_data_agg, propi~month*audio_video + (1|subj))
 # summary(mod_propi)
 # anova(mod_propi, mod_propiix)
 # plot(mod_propi)
+# shapiro.test(resid(mod_propi))
 # 
-# #neither
+# #neither; weird resid
 # mod_propn <- lmer(data = sixseven_basiclevel_home_data_agg, propn~month+audio_video + (1|subj))
 # mod_propnix <- lmer(data = sixseven_basiclevel_home_data_agg, propn~month*audio_video + (1|subj))
 # summary(mod_propn)
 # anova(mod_propn, mod_propnix)
 # plot(mod_propn)
+# shapiro.test(resid(mod_propn))
 # 
-# 
+# #weird resid
 # mod_propq <- lmer(data = sixseven_basiclevel_home_data_agg, propq~month+audio_video + (1|subj))
 # mod_propqix <- lmer(data = sixseven_basiclevel_home_data_agg, propq~month*audio_video + (1|subj))
 # summary(mod_propq)
 # anova(mod_propq, mod_propqix)
 # plot(mod_propq)
+# shapiro.test(resid(mod_propq))
 # 
-# #neither
+# #neither; weird resid
 # mod_propr <- lmer(data = sixseven_basiclevel_home_data_agg, propr~month+audio_video + (1|subj))
 # mod_proprix <- lmer(data = sixseven_basiclevel_home_data_agg, propr~month*audio_video + (1|subj))
 # summary(mod_propr)
 # anova(mod_propr, mod_proprix)
 # plot(mod_propr)
+# shapiro.test(resid(mod_propr))
 # 
-# #no ME, sig interaction, weird resids
+# #no ME, sig interaction, weird resid both ix and reg
 # mod_props <- lmer(data = sixseven_basiclevel_home_data_agg, props~month+audio_video + (1|subj))
 # mod_propsix <- lmer(data = sixseven_basiclevel_home_data_agg, props~month*audio_video + (1|subj))
 # summary(mod_props)
 # anova(mod_props, mod_propsix)
 # plot(mod_propsix)
+# shapiro.test(resid(mod_propsix))
+# shapiro.test(resid(mod_props))
 # 
-# 
+# #normal resid
 # mod_type_token_ratio <- lmer(data = sixseven_basiclevel_home_data_agg, type_token_ratio~month+audio_video + (1|subj))
 # mod_type_token_ratioix <- lmer(data = sixseven_basiclevel_home_data_agg, type_token_ratio~month*audio_video + (1|subj))
 # summary(mod_type_token_ratio)
 # anova(mod_type_token_ratio, mod_type_token_ratioix)
 # plot(mod_type_token_ratio)
-# 
+# shapiro.test(resid(mod_type_token_ratio))
 # 
 # # lmer count_norm ---------------------------------------------------------
 # #11/12 have av as a sig predictor; none have age as a sig predictor; FAT has neither
@@ -480,6 +495,7 @@ propvals_long %>%
 # summary(mod_y_op)
 # anova(mod_y_op, mod_y_opix)
 # plot(mod_y_op)
+# shapiro.test(resid(mod_y_op))
 # 
 # mod_MOT <- lmer(data =subset(countvals_long_norm, norm_meas=="MOT"), normval~month+audio_video + (1|subj))
 # mod_MOTix <- lmer(data = subset(countvals_long_norm, norm_meas=="MOT"), normval~month*audio_video + (1|subj))
@@ -553,3 +569,102 @@ propvals_long %>%
 # summary(mod_speakers)
 # anova(mod_speakers, mod_speakers_ix)
 # plot(mod_speakers)
+# 
+# 
+# # lmer_log space count vars -----------------------------------------------
+# #tokens, q, d, MOT have normal resids
+# #not normal resids
+# mod_y_op <- lmer(data = subset(countvals_long_norm, norm_meas=="y_op"), log(normval+1)~month+audio_video + (1|subj))
+# mod_y_opix <- lmer(data = subset(countvals_long_norm, norm_meas=="y_op"), log(normval+1)~month*audio_video + (1|subj))
+# summary(mod_y_op)
+# anova(mod_y_op, mod_y_opix)
+# plot(mod_y_op)
+# shapiro.test(resid(mod_y_op))
+# 
+# #normal resid
+# mod_MOT <- lmer(data =subset(countvals_long_norm, norm_meas=="MOT"), log(normval+1)~month+audio_video + (1|subj))
+# mod_MOTix <- lmer(data = subset(countvals_long_norm, norm_meas=="MOT"), log(normval+1)~month*audio_video + (1|subj))
+# summary(mod_MOT)
+# anova(mod_MOT, mod_MOTix)
+# plot(mod_MOT)
+# shapiro.test(resid(mod_MOT))
+# 
+# #neither, weird resid
+# mod_FAT <- lmer(data = subset(countvals_long_norm, norm_meas=="FAT"), log(normval+1)~month+audio_video + (1|subj))
+# mod_FATix <- lmer(data = subset(countvals_long_norm, norm_meas=="FAT"), log(normval+1)~month*audio_video + (1|subj))
+# summary(mod_FAT)
+# anova(mod_FAT, mod_FATix)
+# plot(mod_FAT)
+# shapiro.test(resid(mod_FAT))
+# 
+# #normal resid
+# mod_d <- lmer(data = subset(countvals_long_norm, norm_meas=="d"), log(normval+1)~month+audio_video + (1|subj))
+# mod_dix <- lmer(data = subset(countvals_long_norm, norm_meas=="d"), log(normval+1)~month*audio_video + (1|subj))
+# summary(mod_d)
+# anova(mod_d, mod_dix)
+# plot(mod_d)
+# shapiro.test(resid(mod_d))
+# 
+# #weird resids
+# mod_i <- lmer(data = subset(countvals_long_norm, norm_meas=="i"), log(normval+1)~month+audio_video + (1|subj))
+# mod_iix <- lmer(data = subset(countvals_long_norm, norm_meas=="i"), log(normval+1)~month*audio_video + (1|subj))
+# summary(mod_i)
+# anova(mod_i, mod_iix)
+# plot(mod_i)
+# shapiro.test(resid(mod_i))
+# 
+# #weird resids
+# mod_n <- lmer(data = subset(countvals_long_norm, norm_meas=="n"), log(normval+1)~month+audio_video + (1|subj))
+# mod_nix <- lmer(data = subset(countvals_long_norm, norm_meas=="n"), log(normval+1)~month*audio_video + (1|subj))
+# summary(mod_n)
+# anova(mod_n, mod_nix)
+# plot(mod_n)
+# shapiro.test(resid(mod_n))
+# 
+# #normal resid
+# mod_q <- lmer(data = subset(countvals_long_norm, norm_meas=="q"), log(normval+1)~month+audio_video + (1|subj))
+# mod_qix <- lmer(data = subset(countvals_long_norm, norm_meas=="q"), log(normval+1)~month*audio_video + (1|subj))
+# summary(mod_q)
+# anova(mod_q, mod_qix)
+# plot(mod_q)
+# shapiro.test(resid(mod_q))
+# 
+# #av but no ix (not like un-log space); weird resid
+# mod_r <- lmer(data = subset(countvals_long_norm, norm_meas=="r"), log(normval+1)~month+audio_video + (1|subj))
+# mod_rix <- lmer(data = subset(countvals_long_norm, norm_meas=="r"), log(normval+1)~month*audio_video + (1|subj))
+# summary(mod_r)
+# anova(mod_r, mod_rix)
+# plot(mod_r)
+# shapiro.test(resid(mod_r))
+# 
+# #weird resids
+# mod_s <- lmer(data = subset(countvals_long_norm, norm_meas=="s"), log(normval+1)~month+audio_video + (1|subj))
+# mod_s_ix <- lmer(data = subset(countvals_long_norm, norm_meas=="s"), log(normval+1)~month*audio_video + (1|subj))
+# summary(mod_s)
+# anova(mod_s, mod_s_ix)
+# plot(mod_s_ix)
+# shapiro.test(resid(mod_s))
+# 
+# #weird resids
+# mod_types <- lmer(data = subset(countvals_long_norm, norm_meas=="numtypes"), log(normval+1)~month+audio_video + (1|subj))
+# mod_types_ix <- lmer(data = subset(countvals_long_norm, norm_meas=="numtypes"), log(normval+1)~month*audio_video + (1|subj))
+# summary(mod_types)
+# anova(mod_types, mod_types_ix)
+# plot(mod_types)
+# shapiro.test(resid(mod_types))
+# 
+# #normal resids
+# mod_tokens <- lmer(data = subset(countvals_long_norm, norm_meas=="numtokens"), log(normval+1)~month+audio_video + (1|subj))
+# mod_tokens_ix <- lmer(data = subset(countvals_long_norm, norm_meas=="numtokens"), log(normval+1)~month*audio_video + (1|subj))
+# summary(mod_tokens)
+# anova(mod_tokens, mod_tokens_ix)
+# plot(mod_tokens)
+# shapiro.test(resid(mod_tokens))
+# 
+# #weird resids
+# mod_speakers <- lmer(data = subset(countvals_long_norm, norm_meas=="numspeakers"), log(normval+1)~month+audio_video + (1|subj))
+# mod_speakers_ix <- lmer(data = subset(countvals_long_norm, norm_meas=="numspeakers"), log(normval+1)~month*audio_video + (1|subj))
+# summary(mod_speakers)
+# anova(mod_speakers, mod_speakers_ix)
+# plot(mod_speakers)
+# shapiro.test(resid(mod_speakers))
