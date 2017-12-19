@@ -459,12 +459,13 @@ adjusted-p\textless{}.05), excluding number of nouns heard in reading
 (adjusted-p\textgreater{}.05). Thus, within recording type, the
 count-based metrics of the object words infants heard were statistically
 equivalent in month six and seven, and correlated significantly within
-children month-to-month (except 1/24 correlations); see figure XX. This
-suggests that parents are acting naturally, or at least consistently,
-during our home recordings each month.
+children month-to-month (except 1/24 correlations); see Figure
+\ref{fig:gr-derived-counts-67-corr}. This suggests that parents are
+acting naturally, or at least consistently, during our home recordings
+each month.
 
-\includegraphics{sixseven_papaja_files/figure-latex/gr_derived_counts_67_diff-1.pdf}
-\includegraphics{sixseven_papaja_files/figure-latex/gr_derived_counts_67_corr-1.pdf}
+\includegraphics{sixseven_papaja_files/figure-latex/gr-derived-counts-67-diff-1.pdf}
+\includegraphics{sixseven_papaja_files/figure-latex/gr-derived-counts-67-corr-1.pdf}
 
 \subsection{Count Measures, Audio-
 vs.~Video-recordings}\label{count-measures-audio--vs.video-recordings}
@@ -570,23 +571,31 @@ calculation, this allows us to retain zero values, rendering more
 readily interpretable results across our count and proportional
 measures.
 
-\begin{verbatim}
-## # A tibble: 12 x 3
-##      norm_meas  `06`  `07`
-##         <fctr> <dbl> <dbl>
-##  1        y_op   2.9   2.8
-##  2         MOT   2.9   3.2
-##  3         FAT   1.5   0.8
-##  4           d   1.9   1.8
-##  5           q   3.1   3.0
-##  6           n   2.9   2.2
-##  7           s   1.8   3.0
-##  8           r   4.0   2.1
-##  9           i   2.4   2.8
-## 10    numtypes   3.1   2.9
-## 11   numtokens   2.4   2.3
-## 12 numspeakers   4.4   3.6
-\end{verbatim}
+\begin{table}[tbp]
+\begin{center}
+\begin{threeparttable}
+\caption{\label{tab:normtable}}
+\begin{tabular}{lll}
+\toprule
+norm\_meas & \multicolumn{1}{c}{06} & \multicolumn{1}{c}{07}\\
+\midrule
+y\_op & 2.90 & 2.80\\
+MOT & 2.90 & 3.20\\
+FAT & 1.50 & 0.80\\
+d & 1.90 & 1.80\\
+q & 3.10 & 3.00\\
+n & 2.90 & 2.20\\
+s & 1.80 & 3.00\\
+r & 4.00 & 2.10\\
+i & 2.40 & 2.80\\
+numtypes & 3.10 & 2.90\\
+numtokens & 2.40 & 2.30\\
+numspeakers & 4.40 & 3.60\\
+\bottomrule
+\end{tabular}
+\end{threeparttable}
+\end{center}
+\end{table}
 
 With the normed data, we found identical patterns when looking within
 month six and seven: /12 of our count-based metrics (in each month)
@@ -605,19 +614,20 @@ six, audio vs.~video normed count data only correlated significanly for
 adjusted-p\textless{}.05). For month seven, 11/12 metrics correlated in
 audio vs.~video data; number of nouns per minute heard in singing did
 not (excluding singing, 0.27 - 0.53, all adjusted-p\textless{}.05). See
-Table \ref{tab:gr-derived-counts-diff} and Figure
-\ref{fig:gr-derived-counts-corr}.
+Table \ref{tab:normtable} and Figures \ref{fig:gr-derived-counts-diff}
+and \ref{fig:gr-derived-counts-corr}.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics{sixseven_papaja_files/figure-latex/gr-derived-counts-diff-1.pdf}
-\caption{}
+\caption{\label{fig:gr-derived-counts-diff}Normalized variable counts by
+month}
 \end{figure}
 
 \begin{figure}[htbp]
 \centering
 \includegraphics{sixseven_papaja_files/figure-latex/gr-derived-counts-corr-1.pdf}
-\caption{}
+\caption{\label{fig:gr-derived-counts-corr}Normalized count correlations}
 \end{figure}
 
 \subsection{Proportion Measures, Month 6
@@ -639,7 +649,7 @@ correlations between the proportional measures across children at month
 six and seven were variable, especially for video-recordings.
 
 \includegraphics{sixseven_papaja_files/figure-latex/gr_derived_props-1.pdf}
-\includegraphics{sixseven_papaja_files/figure-latex/gr_derived_props-2.pdf}
+\includegraphics{sixseven_papaja_files/figure-latex/gr_derived_props_corr_67-1.pdf}
 
 \subsection{Proportion Measures, Audio-
 vs.~Video-recordings}\label{proportion-measures-audio--vs.video-recordings}

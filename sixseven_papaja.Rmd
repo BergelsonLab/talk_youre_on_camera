@@ -148,18 +148,15 @@ wvs_ps <- ifelse(sum(wvs$pval_adj<0.05)==0, "all adjusted-p>.05","FIXTHIS")
 ```
 
 ##Count Measures, Month 6 vs. 7
-We first analyzed the 12 count measures in month six versus seven, by recording-type. Across children, none of the 12 differed by month within audio recordings (`r was_ps`), or within video recordings (`r wvs_ps`.) Testing the correlations, all 12 count measures correlated significantly month-to-month for audio (Kendall's tau ranged from `r cas_mintau` - `r cas_maxtau`, `r cas_taup`), and 11/12 did so for video (Kendall's taus ranged from `r cvs_mintau` - `r cvs_maxtau`, `r cvs_sigpval`), excluding number of nouns heard in reading (`r cvs_nonsigpval`). Thus, within recording type, the count-based metrics of the object words infants heard were statistically equivalent in month six and seven, and correlated significantly within children month-to-month (except 1/24 correlations); see figure XX. This suggests that parents are acting naturally, or at least consistently, during our home recordings each month.
+We first analyzed the 12 count measures in month six versus seven, by recording-type. Across children, none of the 12 differed by month within audio recordings (`r was_ps`), or within video recordings (`r wvs_ps`.) Testing the correlations, all 12 count measures correlated significantly month-to-month for audio (Kendall's tau ranged from `r cas_mintau` - `r cas_maxtau`, `r cas_taup`), and 11/12 did so for video (Kendall's taus ranged from `r cvs_mintau` - `r cvs_maxtau`, `r cvs_sigpval`), excluding number of nouns heard in reading (`r cvs_nonsigpval`). Thus, within recording type, the count-based metrics of the object words infants heard were statistically equivalent in month six and seven, and correlated significantly within children month-to-month (except 1/24 correlations); see Figure \@ref(fig:gr-derived-counts-67-corr). This suggests that parents are acting naturally, or at least consistently, during our home recordings each month.
 
-```{r gr_derived_counts_67_diff, echo = F, fig.height = 8, warning = F}
+```{r gr-derived-counts-67-diff, echo = F, fig.height = 8, warning = F}
 #this figure is not showing in the references section
 gr_countvals_long
-
 ```
-```{r gr_derived_counts_67_corr, echo = F, fig.width=12, fig.height=3, warning = F}
+```{r gr-derived-counts-67-corr, fig.cap = "Count correlations", echo = F, fig.width=12, fig.height=3, warning = F}
 #this figure is not showing in the references section
-
 gr_count_cor_67_facetav
-
 ```
 
 ```{r lengths, echo = F, warning = F, message = F}
@@ -284,7 +281,7 @@ apa_table(vars_with_NAs)
 ```
 
 We next normed our count values by the number of minutes in each. For example, if an infant heard 500 noun-tokens in 800 minutes of non-silent audio-recording, and 200 in 60 minutes of videos, this was normed to .62 and 3.3 noun-tokens per minute, respectively. Unlike for the audio-boost calculation, this allows us to retain zero values, rendering more readily interpretable results across our count and proportional measures.
-```{r normtable, echo = F, warning = F}
+```{r normtable, echo = F, warning = F, results = "asis"}
 countvals_normed_table <- countvals_long_norm %>% 
   group_by(audio_video, month, norm_meas) %>% 
   summarise(mnv = mean(normval)) %>% 
@@ -293,20 +290,20 @@ countvals_normed_table <- countvals_long_norm %>%
   dplyr::select(month, norm_meas, norm_inflation) %>% 
   spread(month, norm_inflation) %>% 
   mutate_if(is.numeric, funs(round(.,1)))
-countvals_normed_table
+apa_table(countvals_normed_table)
 ```
 
 
 With the normed data, we found identical patterns when looking within month six and seven: `r wsix_wsev_sigps`/12 of our count-based metrics (in each month) occurred at significantly lower rates in audio recordings than video recordings (adjusted-p<.05). The three that were statistically indistinguishable were nouns/minute produced (1) by fathers, (2) in reading, and (3) in singing (all adjusted-p>.05). These same three measures had a large number of zero values; see table XX. We return to the topic of unattested low-frequency events in corpora in the discussion.
 
-The pattern of correlations across recording-types was mixed: in month six, audio vs. video normed count data only correlated significanly for 3/12 metrics, which were all utterance-type measures: declaratives (tau = `r tau_six_d`), questions (tau = `r tau_six_q`), and imperatives (tau = `r tau_six_i`; `r csix_taus_pval`). For month seven, 11/12 metrics correlated in audio vs. video data; number of nouns per minute heard in singing did not (excluding singing, `r tau_sev_min` - `r tau_sev_max`, `r csev_taus_pval`). See Table \@ref(tab:gr-derived-counts-diff) and Figure \@ref(fig:gr-derived-counts-corr). 
+The pattern of correlations across recording-types was mixed: in month six, audio vs. video normed count data only correlated significanly for 3/12 metrics, which were all utterance-type measures: declaratives (tau = `r tau_six_d`), questions (tau = `r tau_six_q`), and imperatives (tau = `r tau_six_i`; `r csix_taus_pval`). For month seven, 11/12 metrics correlated in audio vs. video data; number of nouns per minute heard in singing did not (excluding singing, `r tau_sev_min` - `r tau_sev_max`, `r csev_taus_pval`). See Table \@ref(tab:normtable) and Figures \@ref(fig:gr-derived-counts-diff) and \@ref(fig:gr-derived-counts-corr). 
 
-```{r gr-derived-counts-diff, echo = F, warning = F}
+```{r gr-derived-counts-diff, fig.cap = "Normalized variable counts by month", echo = F, warning = F}
 #this is being added to references but not knitted into this section
 gr_countvals_long_norm
 ```
 
-```{r gr-derived-counts-corr, echo = F, fig.width=12,  fig.height= 3, warning = F}
+```{r gr-derived-counts-corr, fig.cap = "Normalized count correlations", echo = F, fig.width=12,  fig.height= 3, warning = F}
 #this is being added to references but not knitted into this section
 
 gr_count_cor_VA_facetmonth_norm
@@ -328,6 +325,8 @@ Turning to the 10 proportion measures, as with the count measures, there were no
 
 ```{r gr_derived_props, echo = F, fig.width=12, fig.height = 5, warning = F}
 gr_propvals_long
+```
+```{r gr_derived_props_corr_67, echo = F, fig.width=12, fig.height = 5, warning = F}
 gr_prop_cor_67_facetav
 
 ```
