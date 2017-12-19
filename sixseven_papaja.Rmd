@@ -36,7 +36,7 @@ keywords          : "keywords"
 
 bibliography      : ["sixseven.bib", "r-references.bib"]
 
-figsintext        : no
+figsintext        : yes
 figurelist        : no
 tablelist         : no
 footnotelist      : no
@@ -254,9 +254,9 @@ csev_taus_pval <- ifelse(sum(cseven_taus_sig$pval_adj>0.05)==0, "all adjusted-p<
 
 To examine how the hour-long video data 'scale' to day-length data descriptively, we divided the 12 audio count metrics by the 12 video count metrics for each child, to derive 'audio-boost' scores. This showed that the audio-recordings were ~`r aboost_timemin`x longer than the videos, or `r aboost_timemin_nosil`x longer if only 'non-silent' portions of the audio-recording are included. However, rather than a concomitant 10-fold increase in our count metrics (as would be expected if the video captured a 'representative' hour of the day), the boost was closer to fivefold across measures; see Table XX. This suggests that the videos, by and large, had a denser concentration of nouns across our measures than did the audio recordings. 
 
-Notably, 'zero' values (e.g. recordings in which there were no nouns heard in singing) were omitted from the audio-boost computations given that they result in undefined values for a given child in a given month. The majority of variables had at least one such value, with over 1/3 of video recordings lacking instances of nouns heard in singing, reading, or by fathers each month; see Table XX.
+Notably, 'zero' values (e.g. recordings in which there were no nouns heard in singing) were omitted from the audio-boost computations given that they result in undefined values for a given child in a given month. The majority of variables had at least one such value, with over 1/3 of video recordings lacking instances of nouns heard in singing, reading, or by fathers each month; see Table \@ref(tab:propna-missing-tables).
 
-```{r propna_missing_tables, echo = F, warning = F, message = F}
+```{r propna-missing-tables, echo = F, warning = F, message = F, results = "asis"}
 #need to ask Shannon/Andrei to draft supplementals
 # prop of kids with NAs for each cat, each month
 propkids_with_NAs <- sixseven_spreadAV %>% 
@@ -277,8 +277,10 @@ vars_with_NAs <- sixseven_spreadAV %>%
   mutate_if(is.numeric, funs(na_if(., 0))) %>%
   summarise_if(is.numeric, funs(round(sum(is.na(.))/44,2)))%>% 
   dplyr::select_if(any_vars(.>0))
-propkids_with_NAs
-vars_with_NAs
+
+# these two tables should be split up into 2 separate R chunks, and 2 cross refs
+apa_table(propkids_with_NAs)
+apa_table(vars_with_NAs)
 ```
 
 We next normed our count values by the number of minutes in each. For example, if an infant heard 500 noun-tokens in 800 minutes of non-silent audio-recording, and 200 in 60 minutes of videos, this was normed to .62 and 3.3 noun-tokens per minute, respectively. Unlike for the audio-boost calculation, this allows us to retain zero values, rendering more readily interpretable results across our count and proportional measures.
@@ -297,14 +299,14 @@ countvals_normed_table
 
 With the normed data, we found identical patterns when looking within month six and seven: `r wsix_wsev_sigps`/12 of our count-based metrics (in each month) occurred at significantly lower rates in audio recordings than video recordings (adjusted-p<.05). The three that were statistically indistinguishable were nouns/minute produced (1) by fathers, (2) in reading, and (3) in singing (all adjusted-p>.05). These same three measures had a large number of zero values; see table XX. We return to the topic of unattested low-frequency events in corpora in the discussion.
 
-The pattern of correlations across recording-types was mixed: in month six, audio vs. video normed count data only correlated significanly for 3/12 metrics, which were all utterance-type measures: declaratives (tau = `r tau_six_d`), questions (tau = `r tau_six_q`), and imperatives (tau = `r tau_six_i`; `r csix_taus_pval`). For month seven, 11/12 metrics correlated in audio vs. video data; number of nouns per minute heard in singing did not (excluding singing, `r tau_sev_min` - `r tau_sev_max`, `r csev_taus_pval`). See table XX and figure YY. 
+The pattern of correlations across recording-types was mixed: in month six, audio vs. video normed count data only correlated significanly for 3/12 metrics, which were all utterance-type measures: declaratives (tau = `r tau_six_d`), questions (tau = `r tau_six_q`), and imperatives (tau = `r tau_six_i`; `r csix_taus_pval`). For month seven, 11/12 metrics correlated in audio vs. video data; number of nouns per minute heard in singing did not (excluding singing, `r tau_sev_min` - `r tau_sev_max`, `r csev_taus_pval`). See Table \@ref(tab:gr-derived-counts-diff) and Figure \@ref(fig:gr-derived-counts-corr). 
 
-```{r gr_derived_counts_diff, echo = F, warning = F}
+```{r gr-derived-counts-diff, echo = F, warning = F}
 #this is being added to references but not knitted into this section
 gr_countvals_long_norm
 ```
 
-```{r gr_derived_counts_corr, echo = F, fig.width=12,  fig.height= 3, warning = F}
+```{r gr-derived-counts-corr, echo = F, fig.width=12,  fig.height= 3, warning = F}
 #this is being added to references but not knitted into this section
 
 gr_count_cor_VA_facetmonth_norm
@@ -416,17 +418,22 @@ avtop100corr_estnozeros <- round(cor_AVtopnozeroes$estimate,2)
 avtop100corr_pvalnozeros<- ifelse(cor_AVtopnozeroes$p.value<.0001, "p<.0001", "fix-this")
 ```
 
-Collapsing month, we examined the top 100 most frequent nouns from audio- and video-recordings (n=`r avtop100_numwords` due to ties, n=`r avtop100_numwordsnozeros` without words that occurred zero times in one recording-type). Frequency across recording-types correlated significantly (Kendall's tau: `r avtop100corr_estnozeros`, `r avtop100corr_pvalnozeros`,) even with zero-frequency words included (Kendall's tau: `r avtop100corr_est`, `r avtop100corr_pval`; see figure XX). Further, we found numerically stronger correlations month-to-month than across recording-types within month (month 6 audio vs. video: tau = `r round(cor_sixavtop$estimate,2)`, month 7 audio vs. video: tau = `r round(cor_sevavtop$estimate,2)`, month 6 vs. 7 audio: tau = `r round(cor_sixsevenAtop$estimate,2)`, month 6 vs. 7 video: tau = `r round(cor_sixsevenVtop$estimate,2)`, `r corAVtop67_combo_ps`; see figure XX). Thus, at the word-level too, month-to-month measures appear more stable than cross-recording-type measures
+Collapsing month, we examined the top 100 most frequent nouns from audio- and video-recordings (n=`r avtop100_numwords` due to ties, n=`r avtop100_numwordsnozeros` without words that occurred zero times in one recording-type). Frequency across recording-types correlated significantly (Kendall's tau: `r avtop100corr_estnozeros`, `r avtop100corr_pvalnozeros`,) even with zero-frequency words included (Kendall's tau: `r avtop100corr_est`, `r avtop100corr_pval`; see Figure \@ref(fig:top100-corr-rectype)). Further, we found numerically stronger correlations month-to-month than across recording-types within month (month 6 audio vs. video: tau = `r round(cor_sixavtop$estimate,2)`, month 7 audio vs. video: tau = `r round(cor_sevavtop$estimate,2)`, month 6 vs. 7 audio: tau = `r round(cor_sixsevenAtop$estimate,2)`, month 6 vs. 7 video: tau = `r round(cor_sixsevenVtop$estimate,2)`, `r corAVtop67_combo_ps`; see Figure \@ref(fig:top100-corr-month)). Thus, at the word-level too, month-to-month measures appear more stable than cross-recording-type measures
 
-```{r top100_corgraphs, echo = F, fig.height=5}
-gr_top100_monthspread
+```{r top100-corr-rectype, fig.cap = "Top 100 words correlations by recording type",echo = F, fig.height=5}
 gr_top100_avspread
 #need to make a table of the top 10 av/67 words, ask Shannon/Andrei
 ```
 
-Finally, looking at just the top ten words by month and recording-type, we again find greater consistency across months than recording-types (see Figure XX and Table XX). Indeed, top words within recording-type were largely overlapping, while only two words overlapped on all four lists (book and baby). Furthermore, characterizing how words were spread across infants and months, we find that the top audio words were far more common across families than the top video words were (see figure XX). Thus, daylong audio-recordings appear to render more stable high-frequency words across families and across months than do video-recordings. 
+```{r top100-corr-month, fig.cap = "Top 100 words correlations by month",echo = F, fig.height=5}
+gr_top100_monthspread
+```
 
-```{r top10noun_freq, echo = F, fig.width=12, warning = F}
+
+
+Finally, looking at just the top ten words by month and recording-type, we again find greater consistency across months than recording-types (see Figure XX and Table XX). Indeed, top words within recording-type were largely overlapping, while only two words overlapped on all four lists (book and baby). Furthermore, characterizing how words were spread across infants and months, we find that the top audio words were far more common across families than the top video words were (see Figure \@ref(fig:top10noun-freq)). Thus, daylong audio-recordings appear to render more stable high-frequency words across families and across months than do video-recordings. 
+
+```{r top10noun-freq, fig.cap = "Top 10 words by month and recording type", echo = F, fig.width=12, warning = F}
 top10_graph
 ```  
 

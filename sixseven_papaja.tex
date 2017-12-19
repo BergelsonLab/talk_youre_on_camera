@@ -1,4 +1,4 @@
-\documentclass[man]{apa6}
+\documentclass[floatsintext,man]{apa6}
 
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
@@ -39,12 +39,6 @@
   {\begin{landscape}\begin{center}\begin{ThreePartTable}}
   {\end{ThreePartTable}\end{center}\end{landscape}}
 
-  \usepackage{ifthen} % Only add declarations when endfloat package is loaded
-  \ifthenelse{\equal{\string man}{\string man}}{%
-   \DeclareDelayedFloatFlavor{ThreePartTable}{table} % Make endfloat play with longtable
-   % \DeclareDelayedFloatFlavor{ltable}{table} % Make endfloat play with lscape
-   \DeclareDelayedFloatFlavor{lltable}{table} % Make endfloat play with lscape & longtable
-  }{}%
 
 
 
@@ -332,7 +326,7 @@ Participants were recruited from an existing database of families from
 local hospitals, or who heard about the BabyLab from friends, family,
 and outreach. Forty-six participants enrolled; two dropped out in the
 early stages of the project leaving 44 infants in the final sample. All
-infants were full-term (40 Â± 3 weeks), had no known vision or hearing
+infants were full-term (40 ± 3 weeks), had no known vision or hearing
 problems, and heard \textgreater{}75\% spoken English in the home.
 Participants were 95\% white; 75\% of mothers had a B.A. or higher. The
 families were enrolled in a yearlong study that included monthly audio-
@@ -485,7 +479,7 @@ audio alone is not possible, by removing the \enquote{silent} portions
 of the recordings (see Methods), we estimated an upper-limit on infants'
 awake (i.e.~non-silent) time (Mode = 10.90, \emph{M} = 603, SD=106.8,
 R=385.2-951 min ). This comports with established norms for
-6â8-month-olds in the US (\textbf{ADD REF:} Mandel et al, 2010), which
+6--8-month-olds in the US (\textbf{ADD REF:} Mandel et al, 2010), which
 are 3 hours of daytime sleep, and 10 hours of nighttime sleep. Thus, 16
 hours of recording beginning when the child wakes up should capture
 \textasciitilde{}11 daytime waking hours, in line with our silence
@@ -534,22 +528,39 @@ nouns heard in singing) were omitted from the audio-boost computations
 given that they result in undefined values for a given child in a given
 month. The majority of variables had at least one such value, with over
 1/3 of video recordings lacking instances of nouns heard in singing,
-reading, or by fathers each month; see Table XX.
+reading, or by fathers each month; see Table
+\ref{tab:propna-missing-tables}.
 
-\begin{verbatim}
-## # A tibble: 2 x 11
-##    month v_MOT a_FAT v_FAT   v_q   v_i   a_s   v_s   a_r   v_r   v_n
-##   <fctr> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-## 1     06  0.16  0.05  0.52  0.00  0.07  0.07  0.32  0.25  0.55  0.02
-## 2     07  0.09  0.09  0.75  0.02  0.07  0.07  0.34  0.25  0.50  0.07
-\end{verbatim}
+\begin{table}[tbp]
+\begin{center}
+\begin{threeparttable}
+\caption{\label{tab:propna-missing-tables}}
+\begin{tabular}{lllllllllll}
+\toprule
+month & \multicolumn{1}{c}{v\_MOT} & \multicolumn{1}{c}{a\_FAT} & \multicolumn{1}{c}{v\_FAT} & \multicolumn{1}{c}{v\_q} & \multicolumn{1}{c}{v\_i} & \multicolumn{1}{c}{a\_s} & \multicolumn{1}{c}{v\_s} & \multicolumn{1}{c}{a\_r} & \multicolumn{1}{c}{v\_r} & \multicolumn{1}{c}{v\_n}\\
+\midrule
+06 & 0.16 & 0.05 & 0.52 & 0.00 & 0.07 & 0.07 & 0.32 & 0.25 & 0.55 & 0.02\\
+07 & 0.09 & 0.09 & 0.75 & 0.02 & 0.07 & 0.07 & 0.34 & 0.25 & 0.50 & 0.07\\
+\bottomrule
+\end{tabular}
+\end{threeparttable}
+\end{center}
+\end{table}
 
-\begin{verbatim}
-## # A tibble: 1 x 8
-##   v_MOT a_FAT v_FAT   v_i   a_s   v_s   a_r   v_r
-##   <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-## 1  0.09  0.02  0.52  0.02  0.02  0.11  0.16  0.34
-\end{verbatim}
+\begin{table}[tbp]
+\begin{center}
+\begin{threeparttable}
+\caption{\label{tab:propna-missing-tables}}
+\begin{tabular}{llllllll}
+\toprule
+v\_MOT & \multicolumn{1}{c}{a\_FAT} & \multicolumn{1}{c}{v\_FAT} & \multicolumn{1}{c}{v\_i} & \multicolumn{1}{c}{a\_s} & \multicolumn{1}{c}{v\_s} & \multicolumn{1}{c}{a\_r} & \multicolumn{1}{c}{v\_r}\\
+\midrule
+0.09 & 0.02 & 0.52 & 0.02 & 0.02 & 0.11 & 0.16 & 0.34\\
+\bottomrule
+\end{tabular}
+\end{threeparttable}
+\end{center}
+\end{table}
 
 We next normed our count values by the number of minutes in each. For
 example, if an infant heard 500 noun-tokens in 800 minutes of non-silent
@@ -594,17 +605,18 @@ six, audio vs.~video normed count data only correlated significanly for
 adjusted-p\textless{}.05). For month seven, 11/12 metrics correlated in
 audio vs.~video data; number of nouns per minute heard in singing did
 not (excluding singing, 0.27 - 0.53, all adjusted-p\textless{}.05). See
-table XX and figure YY @ref(fig:gr\_derived\_counts\_corr).
+Table \ref{tab:gr-derived-counts-diff} and Figure
+\ref{fig:gr-derived-counts-corr}.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics{sixseven_papaja_files/figure-latex/gr_derived_counts_diff-1.pdf}
+\includegraphics{sixseven_papaja_files/figure-latex/gr-derived-counts-diff-1.pdf}
 \caption{}
 \end{figure}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics{sixseven_papaja_files/figure-latex/gr_derived_counts_corr-1.pdf}
+\includegraphics{sixseven_papaja_files/figure-latex/gr-derived-counts-corr-1.pdf}
 \caption{}
 \end{figure}
 
@@ -690,16 +702,27 @@ audio- and video-recordings (n=136 due to ties, n=68 without words that
 occurred zero times in one recording-type). Frequency across
 recording-types correlated significantly (Kendall's tau: 0.39,
 p\textless{}.0001,) even with zero-frequency words included (Kendall's
-tau: 0.25, p\textless{}.0001; see figure XX). Further, we found
-numerically stronger correlations month-to-month than across
-recording-types within month (month 6 audio vs.~video: tau = 0.15, month
-7 audio vs.~video: tau = 0.15, month 6 vs.~7 audio: tau = 0.50, month 6
-vs.~7 video: tau = 0.26, all adjusted-p\textless{}.05; see figure XX).
-Thus, at the word-level too, month-to-month measures appear more stable
-than cross-recording-type measures
+tau: 0.25, p\textless{}.0001; see Figure \ref{fig:top100-corr-rectype}).
+Further, we found numerically stronger correlations month-to-month than
+across recording-types within month (month 6 audio vs.~video: tau =
+0.15, month 7 audio vs.~video: tau = 0.15, month 6 vs.~7 audio: tau =
+0.50, month 6 vs.~7 video: tau = 0.26, all adjusted-p\textless{}.05; see
+Figure \ref{fig:top100-corr-month}). Thus, at the word-level too,
+month-to-month measures appear more stable than cross-recording-type
+measures
 
-\includegraphics{sixseven_papaja_files/figure-latex/top100_corgraphs-1.pdf}
-\includegraphics{sixseven_papaja_files/figure-latex/top100_corgraphs-2.pdf}
+\begin{figure}[htbp]
+\centering
+\includegraphics{sixseven_papaja_files/figure-latex/top100-corr-rectype-1.pdf}
+\caption{\label{fig:top100-corr-rectype}Top 100 words correlations by
+recording type}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{sixseven_papaja_files/figure-latex/top100-corr-month-1.pdf}
+\caption{\label{fig:top100-corr-month}Top 100 words correlations by month}
+\end{figure}
 
 Finally, looking at just the top ten words by month and recording-type,
 we again find greater consistency across months than recording-types
@@ -707,15 +730,15 @@ we again find greater consistency across months than recording-types
 were largely overlapping, while only two words overlapped on all four
 lists (book and baby). Furthermore, characterizing how words were spread
 across infants and months, we find that the top audio words were far
-more common across families than the top video words were (see figure
-XX). Thus, daylong audio-recordings appear to render more stable
-high-frequency words across families and across months than do
-video-recordings.
+more common across families than the top video words were (see Figure
+\ref{fig:top10noun-freq}). Thus, daylong audio-recordings appear to
+render more stable high-frequency words across families and across
+months than do video-recordings.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics{sixseven_papaja_files/figure-latex/top10noun_freq-1.pdf}
-\caption{}
+\includegraphics{sixseven_papaja_files/figure-latex/top10noun-freq-1.pdf}
+\caption{\label{fig:top10noun-freq}Top 10 words by month and recording type}
 \end{figure}
 
 \section{Discussion}\label{discussion}
