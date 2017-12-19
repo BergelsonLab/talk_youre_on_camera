@@ -400,10 +400,13 @@ gr_prop_cor_VA_facetmonth
 Turning to correlations across recording-types, in month six only the proportion of imperatives reached significance (Kendall's tau =`r propcsixs_sigtau`, adj-p<.05). At seven months, three of the variables that differed significantly also correlated significantly (proportion of noun input from fathers and mothers, and in declaratives), along with the proportion of nouns heard in reading, (all four adj-p<.05, Kendall's tau range: `r min(propcsevens_sigtau)` - `r max(propcsevens_sigtau)`).
 
 #Noun Frequency and Prevalence 
-We conclude with a set of highly exploratory analyses at the word level, which aim to provide a first-pass characterization of whether audio and video recordings captured the same nouns and the same relative frequencies by examining word frequency across each month, recording type, and infant. The distribution of nouns in our recordings was zipfian: of the `r totaln_objectwords`unique object words (`r totaln_bl` lemmas) heard across months and recording types, only `r totaln_once_objectwords` (`r totaln_once_bl` lemmas) were heard more than once (see figure XX).
+We conclude with a set of highly exploratory analyses at the word level, which aim to provide a first-pass characterization of whether audio and video recordings captured the same nouns and the same relative frequencies by examining word frequency across each month, recording type, and infant. The distribution of nouns in our recordings was zipfian: of the `r totaln_objectwords`unique object words (`r totaln_bl` lemmas) heard across months and recording types, only `r totaln_once_objectwords` (`r totaln_once_bl` lemmas) were heard more than once (see Figures \@ref(fig:zipfian) and \@ref(fig:top-100-logspace)).
 
-```{r noun_freq, echo = F, fig.height = 5, warning = F, message= F}
+```{r zipfian, fig.cap = "Zipfian word frequency distributions", echo = F, fig.height = 5, warning = F, message= F}
 zipf_av_67
+```
+
+```{r top-100-logspace, fig.cap = "Top 100 words in log space", echo = F, fig.height = 5, warning = F, message= F}
 top100_logspace_av_graph
 ```  
 

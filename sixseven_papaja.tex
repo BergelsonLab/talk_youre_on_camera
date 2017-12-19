@@ -692,10 +692,19 @@ frequencies by examining word frequency across each month, recording
 type, and infant. The distribution of nouns in our recordings was
 zipfian: of the 5801unique object words (3137 lemmas) heard across
 months and recording types, only 2482 (960 lemmas) were heard more than
-once (see figure XX).
+once (see Figures \ref{fig:zipfian} and \ref{fig:top-100-logspace}).
 
-\includegraphics{sixseven_papaja_files/figure-latex/noun_freq-1.pdf}
-\includegraphics{sixseven_papaja_files/figure-latex/noun_freq-2.pdf}
+\begin{figure}[htbp]
+\centering
+\includegraphics{sixseven_papaja_files/figure-latex/zipfian-1.pdf}
+\caption{\label{fig:zipfian}Zipfian word frequency distributions}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{sixseven_papaja_files/figure-latex/top-100-logspace-1.pdf}
+\caption{\label{fig:top-100-logspace}Top 100 words in log space}
+\end{figure}
 
 Collapsing month, we examined the top 100 most frequent nouns from
 audio- and video-recordings (n=136 due to ties, n=68 without words that
