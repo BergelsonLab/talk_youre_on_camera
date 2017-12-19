@@ -154,6 +154,7 @@ We first analyzed the 12 count measures in month six versus seven, by recording-
 #this figure is not showing in the references section
 gr_countvals_long
 ```
+
 ```{r gr-derived-counts-67-corr, fig.cap = "Count correlations", echo = F, fig.width=12, fig.height=3, warning = F}
 #this figure is not showing in the references section
 gr_count_cor_67_facetav
@@ -326,6 +327,7 @@ Turning to the 10 proportion measures, as with the count measures, there were no
 ```{r gr_derived_props, echo = F, fig.width=12, fig.height = 5, warning = F}
 gr_propvals_long
 ```
+
 ```{r gr_derived_props_corr_67, echo = F, fig.width=12, fig.height = 5, warning = F}
 gr_prop_cor_67_facetav
 
