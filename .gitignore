@@ -32,3 +32,5 @@ sixseven_papaja_files
 *.aux
 *.log
 *.fls
+*.out
+*.fdb_latexmk
