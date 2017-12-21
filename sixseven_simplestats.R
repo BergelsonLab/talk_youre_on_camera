@@ -64,7 +64,45 @@ cs <- bind_rows(c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12) %>%
 cs %>% filter(pval_adj<.05)
 c_taus_sig <- filter(cs, pval_adj<.05)
 
+# Count Vars NOT normed: a vs. v, kendall's corr ------------------------------------------------------
+## only singing doesn't correlate
+#nb there's no subj 17 for 06 audio, so that line is missing in orig df deliberately
 
+cnn1 <- cor.test(data=sixseven_spreadAV_collapsed, ~v_numtokens+a_numtokens,conf.int=T, method = "kendall")%>% tidy() %>% mutate(comp = "c_numtok")
+cnn2 <- cor.test(data=sixseven_spreadAV_collapsed, ~v_numtypes+a_numtypes,conf.int=T, method = "kendall")%>% tidy() %>% mutate(comp = "c_numtyp")
+cnn3 <- cor.test(data=sixseven_spreadAV_collapsed, ~v_numspeakers+a_numspeakers,conf.int=T, method = "kendall")%>% tidy() %>% mutate(comp = "c_numsp")
+cnn4 <- cor.test(data=sixseven_spreadAV_collapsed, ~v_MOT+a_MOT,conf.int=T, method = "kendall")%>% tidy() %>% mutate(comp = "c_MOT")
+cnn5 <- cor.test(data=sixseven_spreadAV_collapsed, ~v_FAT+a_FAT,conf.int=T, method = "kendall")%>% tidy() %>% mutate(comp = "c_FAT")
+cnn6 <- cor.test(data=sixseven_spreadAV_collapsed, ~v_d+a_d,conf.int=T, method = "kendall")%>%  tidy() %>% mutate(comp = "c_d")
+cnn7 <- cor.test(data=sixseven_spreadAV_collapsed, ~v_q+a_q,conf.int=T, method = "kendall")%>%  tidy() %>% mutate(comp = "c_q")
+cnn8 <- cor.test(data=sixseven_spreadAV_collapsed, ~v_r+a_r,conf.int=T, method = "kendall")%>%  tidy() %>% mutate(comp = "c_r")
+cnn9 <- cor.test(data=sixseven_spreadAV_collapsed, ~v_s+a_s,conf.int=T, method = "kendall")%>%  tidy() %>% mutate(comp = "c_s")
+cnn10 <- cor.test(data=sixseven_spreadAV_collapsed, ~v_i+a_i,conf.int=T, method = "kendall")%>%  tidy() %>% mutate(comp = "c_i")
+cnn11 <- cor.test(data=sixseven_spreadAV_collapsed, ~v_n+a_n,conf.int=T, method = "kendall")%>%  tidy() %>% mutate(comp = "c_n")
+cnn12 <- cor.test(data=sixseven_spreadAV_collapsed, ~v_y_op+a_y_op,conf.int=T, method = "kendall")%>%  tidy() %>% mutate(comp = "c_yop")
+
+cnns <- bind_rows(cnn1, cnn2, cnn3, cnn4, cnn5, cnn6, cnn7, cnn8, cnn9, cnn10, cnn11, cnn12) %>% 
+  mutate(pval_adj = p.adjust(p.value, method = "holm"))
+cnns %>% filter(pval_adj<.05)
+cnn_taus_sig <- filter(cnns, pval_adj<.05)
+
+
+# corr tests for top words ------------------------------------------------
+#n.b. these are teh same as cor_AVtop and cor_AVtopnozeroes in the wilcoxon_corrs_sixseven.R
+# should remove from there for cleaning pass
+cor_AVtop_collapsed <-cor.test(top100av_spread$audio,
+                     top100av_spread$video,
+                     method = "kendall") %>% tidy()
+cor_AVtopnozeroes_collapsed <- cor.test(top100av_spread_nozeros$audio,
+                              top100av_spread_nozeros$video,
+                              method = "kendall") %>% tidy()# sig cor, but ~1/2 are 0s
+
+# shapiro tests -----------------------------------------------------------
+#only 4 are normal: numtypes, tokens, speakers, and MOT
+countvals_long_norm_collapsed %>% 
+  group_by(norm_meas, audio_video) %>% 
+  summarise(shap.pval = shapiro.test(normval)$p.value) %>% 
+  filter(shap.pval>.05)
 
 #foregoing the proportion versions for now
 # Prop Vars: a vs. v, wilcoxon ------------------------------------------------------
