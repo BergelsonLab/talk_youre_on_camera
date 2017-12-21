@@ -222,10 +222,65 @@ countvals_long_norm <- sixseven_spreadAV_normmin %>%
                                   quant = c("numtypes","numtokens"),
                                   op = "y_op"))
 
+# a_boost and v_boost -----------------------------------------------------
+
+#count comparison by min
+#avg a-boost, removing any NAs
+aboost_mean <- sixseven_spreadAV %>% 
+  dplyr::select(subj, month, a_total_min, a_tot_nosilsk, a_tot_nosil,v_total_min,
+                a_numtypes, v_numtypes, a_numtokens, v_numtokens, a_numspeakers, v_numspeakers,a_MOT, v_MOT, a_FAT, v_FAT, a_d, v_d, a_q, v_q, a_i, v_i, a_s, v_s, a_r, v_r, a_n, v_n, a_y_op, v_y_op) %>% 
+  mutate_if(is.numeric, funs(na_if(., 0)))  %>% 
+  group_by(month) %>% 
+  summarise(
+    aboost_min = mean(a_total_min/v_total_min),
+    aboost_awakemin = mean(a_tot_nosil/v_total_min),
+    aboost_types =mean(a_numtypes/v_numtypes, na.rm=T),
+    aboost_tokens = mean(a_numtokens/v_numtokens, na.rm=T),
+    aboost_speakers = mean(a_numspeakers/v_numspeakers, na.rm=T),
+    aboost_MOT = mean(a_MOT/v_MOT, na.rm=T),
+    aboost_FAT = mean(a_FAT/v_FAT, na.rm=T),
+    aboost_d = mean(a_d/v_d, na.rm=T),
+    aboost_q = mean(a_q/v_q, na.rm=T),
+    aboost_i = mean(a_i/v_i, na.rm=T),
+    aboost_s = mean(a_s/v_s, na.rm=T),
+    aboost_r = mean(a_r/v_r, na.rm=T),
+    aboost_n = mean(a_n/v_n, na.rm=T),
+    aboost_op = mean(a_y_op/v_y_op, na.rm=T),
+    comp = "mean_aboost") %>% 
+  mutate_if(is.numeric, funs(round(., 2)))
+# sd of a_boost, removing NAs
+aboost_sd<- sixseven_spreadAV %>% 
+  dplyr::select(subj, month, a_total_min, a_tot_nosilsk, a_tot_nosil,v_total_min,
+                a_numtypes, v_numtypes, a_numtokens, v_numtokens, a_numspeakers, v_numspeakers,a_MOT, v_MOT, a_FAT, v_FAT, a_d, v_d, a_q, v_q, a_i, v_i, a_s, v_s, a_r, v_r, a_n, v_n, a_y_op, v_y_op) %>% 
+  mutate_if(is.numeric, funs(na_if(., 0)))  %>% 
+  group_by(month) %>% 
+  summarise(
+    aboost_min = sd(a_total_min/v_total_min),
+    aboost_awakemin = sd(a_tot_nosil/v_total_min),
+    aboost_types =sd(a_numtypes/v_numtypes, na.rm=T),
+    aboost_tokens = sd(a_numtokens/v_numtokens, na.rm=T),
+    aboost_speakers = sd(a_numspeakers/v_numspeakers, na.rm=T),
+    aboost_MOT = sd(a_MOT/v_MOT, na.rm=T),
+    aboost_FAT = sd(a_FAT/v_FAT, na.rm=T),
+    aboost_d = sd(a_d/v_d, na.rm=T),
+    aboost_q = sd(a_q/v_q, na.rm=T),
+    aboost_i = sd(a_i/v_i, na.rm=T),
+    aboost_s = sd(a_s/v_s, na.rm=T),
+    aboost_r = sd(a_r/v_r, na.rm=T),
+    aboost_n = sd(a_n/v_n, na.rm=T),
+    aboost_op = sd(a_y_op/v_y_op, na.rm=T),
+    comp = "sd_aboost") %>% 
+  mutate_if(is.numeric, funs(round(., 2)))
+
 # word tallies ------------------------------------------------------------
 
 tally_month_av<- sixseven_basiclevel_home_data %>%
   group_by(object,audio_video, month) %>%
+  tally() %>%
+  arrange(-n)
+
+tally_av<- sixseven_basiclevel_home_data %>%
+  group_by(object,audio_video) %>%
   tally() %>%
   arrange(-n)
 
@@ -255,6 +310,12 @@ overall_month_top10 <-sixseven_basiclevel_home_data%>%
   top_n(10,n) %>% 
   arrange(audio_video, month, -n)
 
+overall_top10 <-sixseven_basiclevel_home_data%>%
+  group_by(audio_video, object)%>%
+  summarise(n = n(),
+            nfams = n_distinct(subj)) %>% 
+  top_n(10,n) %>% 
+  arrange(audio_video, -n)
 
 #collapsing month
 top100av <- sixseven_basiclevel_home_data%>%
