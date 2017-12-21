@@ -187,8 +187,7 @@ csev_taus_pval <- ifelse(sum(cseven_taus_sig$pval_adj>0.05)==0, "all adjusted-p<
 
 ```
 
-To examine how the hour-long video data 'scale' to day-length data descriptively, we first divided the 12 count metrics from the videos by those from the audio-recordings for each child, to derive 'video-fraction' scores. This showed that the video-recordings were ~`r vboost_timemin_collapsed` of the length of audio-recordings, or `r vboost_timemin_nosil_collapsed` of the length if only 'non-silent' portions of the audio-recording are included. However, rather than a concomitant 10-fold decrease in our count metrics (as would be expected if the video captured a 'representative' hour of the day), the fractions are closer to `r round(mean_vboost_measures,1)` across measures; see Table \@ref(tab:vboost-table) **add SDs to table**. Thus, by and large, videos had a denser concentration of nouns across our measures than did the audio recordings. 
-
+To examine how the hour-long video data 'scale' to day-length data descriptively, we first divided the 12 count metrics from the videos by those from the audio-recordings for each child, to derive 'video-fraction' scores. This showed that the video-recordings were ~`r vboost_timemin_collapsed` of the length of audio-recordings, or `r vboost_timemin_nosil_collapsed` of the length if only 'non-silent' portions of the audio-recording are included. However, rather than a concomitant 10-fold decrease in our count metrics (as would be expected if the video captured a 'representative' hour of the day), the fractions are closer to `r round(mean_vboost_measures,1)` across measures; see Table XX **add M/SD table**. Thus, by and large, videos had a denser concentration of nouns across our measures than did the audio recordings. 
 
 We computed video-fractions (rather than the reciprocal, i.e. audio/video) because there were more zero values for videos than audio-recordings (e.g. instances when children did not hear any nouns sung), rendering more undefined values. Indeed, over a third of children did not hear nouns in reading or from fathers on videos in either month. See Table \@ref(tab:propna-missing-tables).
 
@@ -207,18 +206,30 @@ vars_with_NAs <- sixseven_spreadAV %>%
 apa_table(vars_with_NAs)
 ```
 
-We next normed our count values by the number of minutes in each. For example, if an infant heard 500 noun-tokens in 800 minutes of non-silent audio-recording, and 200 in 60 minutes of videos, this was normed to .62 and 3.3 noun-tokens per minute, respectively. Unlike for the audio-boost calculation, this allows us to retain zero values, rendering more readily interpretable results across our count and proportional measures.
+We next normed our count values by the number of minutes in each. For example, if an infant heard 500 noun-tokens in 800 minutes of non-silent audio-recording, and 200 in 60 minutes of videos, this was normed to .62 and 3.3 noun-tokens per minute, respectively. Unlike for the video-fractions, this allows us to retain zero values, rendering more readily interpretable results across our count and proportional measures.
+
 ```{r normtable, echo = F, warning = F, results = "asis"}
-countvals_normed_table <- countvals_long_norm %>% 
-  group_by(audio_video, month, norm_meas) %>% 
+countvals_normed_table <- countvals_long_norm_collapsed %>% 
+  group_by(audio_video, norm_meas) %>% 
   summarise(mnv = mean(normval)) %>% 
   spread(audio_video, mnv) %>% 
   mutate(norm_inflation = video/audio) %>% 
-  dplyr::select(month, norm_meas, norm_inflation) %>% 
-  spread(month, norm_inflation) %>% 
+  dplyr::select(norm_meas, norm_inflation) %>% 
   mutate_if(is.numeric, funs(round(.,1)))
+
 apa_table(countvals_normed_table)
+#the table below should be identical to vboost_mean but isn't, probably because of NAs?
+# much simpler code though--need to consolidate with code for vboost
+# countvals_table <- countvals_long_collapsed %>% 
+#   group_by(audio_video, count_meas) %>% 
+#   summarise(mnv = mean(countval)) %>% 
+#   spread(audio_video, mnv) %>% 
+#   mutate(count_inflation = video/audio) %>% 
+#   dplyr::select(count_meas, count_inflation) %>% 
+#   mutate_if(is.numeric, funs(round(.,2)))
+
 ```
+
 
 
 With the normed data, we found identical patterns when looking within month six and seven: `r wsix_wsev_sigps`/12 of our count-based metrics (in each month) occurred at significantly lower rates in audio recordings than video recordings (adjusted-p<.05). The three that were statistically indistinguishable were nouns/minute produced (1) by fathers, (2) in reading, and (3) in singing (all adjusted-p>.05). These same three measures had a large number of zero values; see table XX. We return to the topic of unattested low-frequency events in corpora in the discussion.
