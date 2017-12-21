@@ -272,6 +272,54 @@ aboost_sd<- sixseven_spreadAV %>%
     comp = "sd_aboost") %>% 
   mutate_if(is.numeric, funs(round(., 2)))
 
+#now we'll do the analagous v_boost, which doesn't require making video 0s into NAs, but does require making audio 0s into NAs
+#avg v-boost
+vboost_mean <- sixseven_spreadAV %>% 
+  dplyr::select(subj, month, v_total_min, a_tot_nosilsk, a_tot_nosil,a_total_min,
+                v_numtypes, a_numtypes, v_numtokens, a_numtokens, v_numspeakers, a_numspeakers,v_MOT, a_MOT, v_FAT, a_FAT, v_d, a_d, v_q, a_q, v_i, a_i, v_s, a_s, v_r, a_r, v_n, a_n, v_y_op, a_y_op) %>% 
+  mutate_at(vars(a_FAT, a_s, a_r), funs(na_if(., 0)))  %>% 
+  group_by(month) %>% 
+  summarise(
+    vboost_min = mean(v_total_min/a_total_min),
+    vboost_awakemin = mean(v_total_min/a_tot_nosil),
+    vboost_types =mean(v_numtypes/a_numtypes, na.rm=T),
+    vboost_tokens = mean(v_numtokens/a_numtokens, na.rm=T),
+    vboost_speakers = mean(v_numspeakers/a_numspeakers, na.rm=T),
+    vboost_MOT = mean(v_MOT/a_MOT, na.rm=T),
+    vboost_FAT = mean(v_FAT/a_FAT, na.rm=T),
+    vboost_d = mean(v_d/a_d, na.rm=T),
+    vboost_q = mean(v_q/a_q, na.rm=T),
+    vboost_i = mean(v_i/a_i, na.rm=T),
+    vboost_s = mean(v_s/a_s, na.rm=T),
+    vboost_r = mean(v_r/a_r, na.rm=T),
+    vboost_n = mean(v_n/a_n, na.rm=T),
+    vboost_op = mean(v_y_op/a_y_op, na.rm=T),
+    comp = "mean_vboost") %>% 
+  mutate_if(is.numeric, funs(round(., 2)))
+# sd of v_boost, removing NAs from just the a_ categories with them
+vboost_sd<- sixseven_spreadAV %>% 
+  dplyr::select(subj, month, v_total_min, a_tot_nosilsk, a_tot_nosil,a_total_min,
+                v_numtypes, a_numtypes, v_numtokens, a_numtokens, v_numspeakers, a_numspeakers,v_MOT, a_MOT, v_FAT, a_FAT, v_d, a_d, v_q, a_q, v_i, a_i, v_s, a_s, v_r, a_r, v_n, a_n, v_y_op, a_y_op) %>% 
+  mutate_at(vars(a_FAT, a_s, a_r), funs(na_if(., 0)))  %>% 
+  group_by(month) %>% 
+  summarise(
+    vboost_min = sd(v_total_min/a_total_min),
+    vboost_awakemin = sd(v_total_min/a_tot_nosil),
+    vboost_types =sd(v_numtypes/a_numtypes, na.rm=T),
+    vboost_tokens = sd(v_numtokens/a_numtokens, na.rm=T),
+    vboost_speakers = sd(v_numspeakers/a_numspeakers, na.rm=T),
+    vboost_MOT = sd(v_MOT/a_MOT, na.rm=T),
+    vboost_FAT = sd(v_FAT/a_FAT, na.rm=T),
+    vboost_d = sd(v_d/a_d, na.rm=T),
+    vboost_q = sd(v_q/a_q, na.rm=T),
+    vboost_i = sd(v_i/a_i, na.rm=T),
+    vboost_s = sd(v_s/a_s, na.rm=T),
+    vboost_r = sd(v_r/a_r, na.rm=T),
+    vboost_n = sd(v_n/a_n, na.rm=T),
+    vboost_op = sd(v_y_op/a_y_op, na.rm=T),
+    comp = "sd_vboost") %>% 
+  mutate_if(is.numeric, funs(round(., 2)))
+
 # word tallies ------------------------------------------------------------
 
 tally_month_av<- sixseven_basiclevel_home_data %>%
