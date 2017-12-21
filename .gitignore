@@ -28,6 +28,7 @@ sixseven.html
 .DS_Store
 sixseven_papaja.fff
 sixseven_papaja_files
+sixseven_simplepapaja_files
 *.fff
 *.aux
 *.log
