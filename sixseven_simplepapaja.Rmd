@@ -152,7 +152,7 @@ audnosilM_SD_R <- paste(aud_nosilM*60, "min, SD=",aud_nosilSD*60,", R=",aud_nosi
 ```
 
 ##Count Measures, Audio- vs. Video-recordings
-We first assessed our 12 count measures across recording-types, examing how noun input scaled between hour-long video-recordings and daylong audio-recordings. Modally, videos were an hour (`r vidmode` min, *M*=`r vidM_SD_R`), and audio-recordings were 16 hours (`r audmode` min, *M*=`r audM_SD_Rmin`), the maximum capacity of the LENA device. While audio-recordings began when children woke up, determining the exact onsets and offsets of daytime naps from audio alone is not possible, by removing the 'silent' portions of the recordings (see Methods), we estimated an upper-limit on infants' awake (i.e. non-silent) time (Mode = `r audmode_nosil_hr*60` min., *M* = `r audnosilM_SD_R` ). This comports with established norms for 6–8-month-olds in the US (**ADD REF:** Mandel et al, 2010), which are 180 minutes of daytime sleep, and 600 minutes of nighttime sleep. Infants were always awake during video recordings (save one infant, who fell asleep before the recording-hour ended; that video was stopped at sleep onset).
+Before assessing how our 12 measures of noun input scaled between hour-long video-recordings and daylong audio-recordings, we analyzed recording lengths. Modally, videos were an hour (`r vidmode` min, *M*=`r vidM_SD_R`), and audio-recordings were 16 hours (`r audmode` min, *M*=`r audM_SD_Rmin`), the maximum capacity of the LENA device. While audio-recordings began when children awoke, we further estimated the onsets and offsets of daytime naps by removing the 'silent' portions of the recordings (see Methods). This provides an estimated upper-limit on infants' awake (i.e. non-silent) time (Mode = `r audmode_nosil_hr*60` min., *M* = `r audnosilM_SD_R` ). This comports with established norms for 6–8-month-olds in the US (**ADD REF:** Mandel et al, 2010), which are 180 minutes of daytime sleep, and 600 minutes of nighttime sleep. Infants were always awake during video recordings (save one infant, who fell asleep before the recording-hour ended; that video was stopped at sleep onset).
 
 ```{r gr-derived-counts-67-diff, fig.cap = "Counts A vs. V", echo = F, fig.height = 8, warning = F}
 gr_countvals_long_collapsed
@@ -173,18 +173,6 @@ vboost_timemin_collapsed<- mean(vboost_mean_collapsed$vboost_min)
 vboost_timemin_nosil_collapsed<- mean(vboost_mean_collapsed$vboost_awakemin)
 mean_vboost_measures <- vboost_mean_collapsed %>% 
   summarise(mean_measureboost = mean(vboost_types:vboost_op))
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-wsix_wsev_sigps <- ifelse(count(wsixs %>% filter(pval_adj<.05))==count(wsevens %>% filter(pval_adj<.05)), 
-                          count(wsixs %>% filter(pval_adj<.05)), "FIXTHIS")
-tau_six_d <- round(subset(csix_taus_sig,comp=="c6_d")$estimate,2)
-tau_six_q <- round(subset(csix_taus_sig,comp=="c6_q")$estimate,2)
-tau_six_i <- round(subset(csix_taus_sig,comp=="c6_i")$estimate,2)
-tau_sev_min <- round(min(cseven_taus_sig$estimate),2)
-tau_sev_max <- round(max(cseven_taus_sig$estimate),2)
-csix_taus_pval <- ifelse(sum(csix_taus_sig$pval_adj>0.05)==0, "all 3 adjusted-p<.05", "FIXTHIS")
-csev_taus_pval <- ifelse(sum(cseven_taus_sig$pval_adj>0.05)==0, "all adjusted-p<.05", "FIXTHIS")
-
 ```
 
 To examine how the hour-long video data 'scale' to day-length data descriptively, we first divided the 12 count metrics from the videos by those from the audio-recordings for each child, to derive 'video-fraction' scores. This showed that the video-recordings were ~`r vboost_timemin_collapsed` of the length of audio-recordings, or `r vboost_timemin_nosil_collapsed` of the length if only 'non-silent' portions of the audio-recording are included. However, rather than a concomitant 10-fold decrease in our count metrics (as would be expected if the video captured a 'representative' hour of the day), the fractions are closer to `r round(mean_vboost_measures,1)` across measures; see Table XX **add M/SD table**. Thus, by and large, videos had a denser concentration of nouns across our measures than did the audio recordings. 
@@ -230,20 +218,23 @@ apa_table(countvals_normed_table)
 
 ```
 
+```{r wilcoxon-corr-stats, warning = F, echo = F, message = F}
+w_sigps <- count(ws %>% filter(pval_adj<.05))
+c_sigps <- count(cs %>% filter(pval_adj<.05))
+tau_min <- round(min(c_taus_sig$estimate),2)
+tau_max <- round(max(c_taus_sig$estimate),2)
+tau_mean <- round(mean(c_taus_sig$estimate),2)
+```
 
+With the normed data, `r w_sigps`/12 of our metrics occured at significantly lower rates in audio recordings than video recordings (adjusted-p<.05). The remaining metric, number of nouns from fathers, was statistically indistinguishable across recording types (adjusted-p>.05). Thus, overall, per unit time, infants heard less noun input across our metrics of quantity, talker, utterance-type and object presence in audio recordings than in videos (per unit time).
 
-With the normed data, we found identical patterns when looking within month six and seven: `r wsix_wsev_sigps`/12 of our count-based metrics (in each month) occurred at significantly lower rates in audio recordings than video recordings (adjusted-p<.05). The three that were statistically indistinguishable were nouns/minute produced (1) by fathers, (2) in reading, and (3) in singing (all adjusted-p>.05). These same three measures had a large number of zero values; see table XX. We return to the topic of unattested low-frequency events in corpora in the discussion.
-
-The pattern of correlations across recording-types was mixed: in month six, audio vs. video normed count data only correlated significanly for 3/12 metrics, which were all utterance-type measures: declaratives (tau = `r tau_six_d`), questions (tau = `r tau_six_q`), and imperatives (tau = `r tau_six_i`; `r csix_taus_pval`). For month seven, 11/12 metrics correlated in audio vs. video data; number of nouns per minute heard in singing did not (excluding singing, `r tau_sev_min` - `r tau_sev_max`, `r csev_taus_pval`). See Table \@ref(tab:normtable) and Figures \@ref(fig:gr-derived-counts-diff) and \@ref(fig:gr-derived-counts-corr). 
+Looking next at correlations, we find that `r c_sigps`/12 metrics correlated in audio vs. video data; number of nouns per minute heard in singing did not. The size of the correlations was significant, but relatively moderate (excluding singing, *M* = `r tau_mean`, `r tau_min` - `r tau_max`, all adjusted-p<.05). See Table \@ref(tab:normtable) and Figures \@ref(fig:gr-derived-counts-diff) and \@ref(fig:gr-derived-counts-corr). 
 
 ```{r gr-derived-counts-diff, fig.cap = "Normalized variable counts by month", echo = F, warning = F}
-#this is being added to references but not knitted into this section
 gr_countvals_long_norm_collapsed
 ```
 
 ```{r gr-derived-counts-corr, fig.cap = "Normalized count correlations", echo = F, fig.width=12,  fig.height= 3, warning = F}
-#this is being added to references but not knitted into this section
-
 gr_count_cor_VA_facetmonth_norm_collapsed
 
 ```
@@ -260,13 +251,13 @@ pcv_FAT <- round(subset(pcvs, comp=="pcv_FAT")$estimate,2)
 
 
 #Noun Frequency and Prevalence 
-We conclude with a set of highly exploratory analyses at the word level, which aim to provide a first-pass characterization of whether audio and video recordings captured the same nouns and the same relative frequencies by examining word frequency across each month, recording type, and infant. The distribution of nouns in our recordings was zipfian: of the `r totaln_objectwords`unique object words (`r totaln_bl` lemmas) heard across months and recording types, only `r totaln_once_objectwords` (`r totaln_once_bl` lemmas) were heard more than once (see Figures \@ref(fig:zipfian) and \@ref(fig:top-100-logspace)).
+We conclude with a set of highly exploratory analyses at the word level, which aim to provide a first-pass characterization of whether audio and video recordings captured the same nouns and the same relative frequencies across words and families. The distribution of nouns in our recordings was zipfian: of the `r totaln_objectwords`unique object words (`r totaln_bl` lemmas) heard across months and recording types, only `r totaln_once_objectwords` (`r totaln_once_bl` lemmas) were heard more than once (see Figures \@ref(fig:zipfian) and \@ref(fig:top-100-logspace)).
 
 ```{r zipfian, fig.cap = "Zipfian word frequency distributions", echo = F, fig.height = 5, warning = F, message= F}
 zipf_av
 ```
 
-```{r top-100-logspace, fig.cap = "Top 100 words in log space", echo = F, fig.height = 5, warning = F, message= F}
+```{r top-100-logspace, fig.cap = "Top 100 words in log space", echo = F, fig.height = 7, warning = F, message= F}
 top100_logspace_av_graph
 ```  
 
@@ -284,15 +275,14 @@ avtop100corr_pvalnozeros<- ifelse(cor_AVtopnozeroes$p.value<.0001, "p<.0001", "f
 Collapsing month, we examined the top 100 most frequent nouns from audio- and video-recordings (n=`r avtop100_numwords` due to ties, n=`r avtop100_numwordsnozeros` without words that occurred zero times in one recording-type). Frequency across recording-types correlated significantly (Kendall's tau: `r avtop100corr_estnozeros`, `r avtop100corr_pvalnozeros`,) even with zero-frequency words included (Kendall's tau: `r avtop100corr_est`, `r avtop100corr_pval`; see Figure \@ref(fig:top100-corr-rectype)). Further, we found numerically stronger correlations month-to-month than across recording-types within month (month 6 audio vs. video: tau = `r round(cor_sixavtop$estimate,2)`, month 7 audio vs. video: tau = `r round(cor_sevavtop$estimate,2)`, month 6 vs. 7 audio: tau = `r round(cor_sixsevenAtop$estimate,2)`, month 6 vs. 7 video: tau = `r round(cor_sixsevenVtop$estimate,2)`, `r corAVtop67_combo_ps`; see Figure \@ref(fig:top100-corr-month)). Thus, at the word-level too, month-to-month measures appear more stable than cross-recording-type measures
 
 ```{r top100-corr-rectype, fig.cap = "Top 100 words correlations by recording type",echo = F, fig.height=5}
-gr_top100_avspread
-#need to make a table of the top 10 av/67 words, ask Shannon/Andrei
+gr_top100_avspread_collapsed
 ```
-
 
 Finally, looking at just the top ten words by month and recording-type, we again find greater consistency across months than recording-types (see Figure XX and Table XX). Indeed, top words within recording-type were largely overlapping, while only two words overlapped on all four lists (book and baby). Furthermore, characterizing how words were spread across infants and months, we find that the top audio words were far more common across families than the top video words were (see Figure \@ref(fig:top10noun-freq)). Thus, daylong audio-recordings appear to render more stable high-frequency words across families and across months than do video-recordings. 
 
 ```{r top10noun-freq, fig.cap = "Top 10 words by month and recording type", echo = F, fig.width=12, warning = F}
 top10_graph_collapsed
+#need to make a table of the top 10 av/67 words, ask Shannon/Andrei
 ```  
 
 # Discussion
