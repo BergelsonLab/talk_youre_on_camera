@@ -205,11 +205,11 @@ collect longer, denser, and higher-quality recordings of infants'
 day-to-day lives, which aim to provide better approximations of infants'
 input and early language abilities (Bergelson \& Aslin, 2017, B. C. Roy,
 Frank, DeCamp, Miller, and Roy (2015), Oller et al. (2010), Weisleder
-and Fernald (2013)) (\textbf{CHECK REF}: Bergelson \& Aslin, 2017b,, Roy
-et al., 2015, Oller et al., 2010, Weisleder \& Fernald, 2013, VanDam et
-al, 2016, inter alia.) Such naturalistic data seeks to reveal what
-infants actually learn from as they make use of their biological
-endowments and environmental resources.
+and Fernald (2013), VanDam et al. (2016)) (\textbf{CHECK REF}: Bergelson
+\& Aslin, 2017b,, Roy et al., 2015, Oller et al., 2010, Weisleder \&
+Fernald, 2013, VanDam et al, 2016, inter alia.) Such naturalistic data
+seeks to reveal what infants actually learn from as they make use of
+their biological endowments and environmental resources.
 
 While cutting edge technologies make collecting observational data ever
 easier, this growing toolbox increases researchers' decision load, with
@@ -247,8 +247,8 @@ professional-class children (n=13). While their results highlighting SES
 differences certainly merited (and received) follow-up (Fernald,
 Marchman, \& Weisleder, 2013) (\textbf{CHECK REF}: Noble et al, Fernald
 et al, 2013, inter alia), they have been criticized as an extreme
-over-extrapolation (Dudley-Marling \& Lucas, 2009) (Dudley-Marling and
-Lucas, 2009; Michaels, 2013).
+over-extrapolation (Dudley-Marling \& Lucas, 2009) (\textbf{CHECK REF}:
+Dudley-Marling and Lucas, 2009; \textbf{ADD REF}: Michaels, 2013).
 
 Still other research analyzes base rates of certain linguistic
 phenomena, to provide in-principle proof of what young children can
@@ -270,13 +270,15 @@ early noun learning. We annotated concrete nouns (generally, objects,
 foods, animals, or body-parts) said to infants, or said loudly and
 clearly in their presence. We further annotated three properties
 previously linked with early language learning: (1) utterance-type,
-which provides syntactic and situational information (cf.~Naigles \&
-Hoff, Debaryshe, Brent \& Siskind) (2) referential transparency, which
-clarifies whether the target of the spoken word is visually appreciable
-(Bergelson \& Aslin, 2017) (Yurovsky et al, Trueswell et al, Bergelson
-\& Aslin, 2017; Bergelson \& Swingley, 2013), and (3) talker, which lets
-us quantify the range of speakers infants hear (Rost \& McMurray,
-Bergmann et al, 2016, Cogsci).
+which provides syntactic and situational information (Hoff \& Naigles,
+2002, Brent and Siskind (2001), DeBaryshe (1993)) (2) referential
+transparency, which clarifies whether the target of the spoken word is
+visually appreciable (Bergelson \& Aslin, 2017,Bergelson and Swingley
+(2013), Yurovsky, Smith, and Yu (2013)) (\textbf{ADD REF:} Trueswell et
+al), and (3) talker, which lets us quantify the range of speakers
+infants hear (Rost \& McMurray, 2010, Bergmann, Cristia, and Dupoux
+(2016)) (\textbf{CHECK REF:} Rost \& McMurray, Bergmann et al, 2016,
+Cogsci).
 
 This design sets up two overarching questions. First, we examine
 extrapolative validity: how well do the data from one video-recorded
@@ -290,10 +292,11 @@ Indeed, certain linguistic metrics like type-token ratio (a
 lexical-diversity metric) scale poorly with sampling length (Covington
 \& McFall, 2010), but yet, along with their \enquote{absolute}
 counterparts (type and token counts), predict language development (e.g.
-Hoff \& Naigles, 2002) (e.g.~Pan et al, 2005; Huttenlocher et al,
-2001;2010; Rowe 2012, Hoff and Naigles, 2002). For others metrics, we
-simply do not know how they scale with recording-length, or whether
-relative or absolute quantities predict learning better (or even
+Hoff \& Naigles, 2002, Pan, Rowe, Singer, and Snow (2005),Rowe
+(2012),Hoff and Naigles (2002)) (\textbf{ADD REF:} Huttenlocher et al,
+2001;2010; \textbf{CHECK REF:}Hoff and Naigles, 2002). For others
+metrics, we simply do not know how they scale with recording-length, or
+whether relative or absolute quantities predict learning better (or even
 differentially). Here we chart some points within this underspecified
 space, probing how robust linguistically-relevant measures are across
 two sampling methods of infants' everyday experiences.
@@ -498,27 +501,51 @@ one infant, who fell asleep before the recording-hour ended; that video
 was stopped at sleep onset).
 
 \begin{verbatim}
-##   month aboost_min aboost_awakemin aboost_types aboost_tokens
-## 1    06      13.89            9.88         4.05          5.79
-## 2    07      14.82           10.45         4.65          6.03
-##   aboost_speakers aboost_MOT aboost_FAT aboost_d aboost_q aboost_i
-## 1            2.61       4.09       4.66     6.89     4.11     9.36
-## 2            3.49       4.33      48.53     8.72     5.06    10.98
-##   aboost_s aboost_r aboost_n aboost_op        comp
-## 1     8.17     2.18     5.53      5.68 mean_aboost
-## 2    10.31     8.64     8.44      6.07 mean_aboost
+## # A tibble: 2 x 16
+##    month aboost_min aboost_awakemin aboost_types aboost_tokens
+##   <fctr>      <dbl>           <dbl>        <dbl>         <dbl>
+## 1     06      13.89            9.88         4.05          5.79
+## 2     07      14.82           10.45         4.65          6.03
+## # ... with 11 more variables: aboost_speakers <dbl>, aboost_MOT <dbl>,
+## #   aboost_FAT <dbl>, aboost_d <dbl>, aboost_q <dbl>, aboost_i <dbl>,
+## #   aboost_s <dbl>, aboost_r <dbl>, aboost_n <dbl>, aboost_op <dbl>,
+## #   comp <chr>
 \end{verbatim}
 
 \begin{verbatim}
-##   month aboost_min aboost_awakemin aboost_types aboost_tokens
-## 1    06       2.19            1.75         2.46          4.06
-## 2    07       4.19            3.99         3.63          5.10
-##   aboost_speakers aboost_MOT aboost_FAT aboost_d aboost_q aboost_i
-## 1            1.74       3.13       3.77     4.77     3.15    12.52
-## 2            2.13       3.74     139.61     8.76     5.60    27.00
-##   aboost_s aboost_r aboost_n aboost_op      comp
-## 1    10.20     2.11     4.88      5.55 sd_aboost
-## 2    24.59    14.05    10.45      8.25 sd_aboost
+## # A tibble: 2 x 16
+##    month aboost_min aboost_awakemin aboost_types aboost_tokens
+##   <fctr>      <dbl>           <dbl>        <dbl>         <dbl>
+## 1     06       2.19            1.75         2.46          4.06
+## 2     07       4.19            3.99         3.63          5.10
+## # ... with 11 more variables: aboost_speakers <dbl>, aboost_MOT <dbl>,
+## #   aboost_FAT <dbl>, aboost_d <dbl>, aboost_q <dbl>, aboost_i <dbl>,
+## #   aboost_s <dbl>, aboost_r <dbl>, aboost_n <dbl>, aboost_op <dbl>,
+## #   comp <chr>
+\end{verbatim}
+
+\begin{verbatim}
+## # A tibble: 2 x 16
+##    month vboost_min vboost_awakemin vboost_types vboost_tokens
+##   <fctr>      <dbl>           <dbl>        <dbl>         <dbl>
+## 1     06       0.07             0.1         0.35          0.31
+## 2     07       0.07             0.1         0.30          0.25
+## # ... with 11 more variables: vboost_speakers <dbl>, vboost_MOT <dbl>,
+## #   vboost_FAT <dbl>, vboost_d <dbl>, vboost_q <dbl>, vboost_i <dbl>,
+## #   vboost_s <dbl>, vboost_r <dbl>, vboost_n <dbl>, vboost_op <dbl>,
+## #   comp <chr>
+\end{verbatim}
+
+\begin{verbatim}
+## # A tibble: 2 x 16
+##    month vboost_min vboost_awakemin vboost_types vboost_tokens
+##   <fctr>      <dbl>           <dbl>        <dbl>         <dbl>
+## 1     06       0.01            0.02         0.23          0.31
+## 2     07       0.01            0.02         0.14          0.15
+## # ... with 11 more variables: vboost_speakers <dbl>, vboost_MOT <dbl>,
+## #   vboost_FAT <dbl>, vboost_d <dbl>, vboost_q <dbl>, vboost_i <dbl>,
+## #   vboost_s <dbl>, vboost_r <dbl>, vboost_n <dbl>, vboost_op <dbl>,
+## #   comp <chr>
 \end{verbatim}
 
 To examine how the hour-long video data \enquote{scale} to day-length
@@ -822,12 +849,13 @@ most proportional measures did correlate across time-points (7/10), the
 three that did not (object presence, questions, short-phrases) did
 correlate when calculated as counts instead of proportions. Given that
 these measure reflect variables whose prevalence is argued to influence
-language development (Bergelson \& Aslin, 2017; Bergelson \& Swingley
-2013; Yurovsky et al, Brent \& Siskind, Swingley \& Humphrey, 2017;
-Hoff-Ginsburg, 1985; Newport et al, 1977), these results present a clear
-case where researchers would be led to different conclusions about
-cross-month stability based on whether count- or proportion-based
-analyses were used.
+language development (Bergelson \& Aslin, 2017, Bergelson and Swingley
+(2013), Yurovsky et al. (2013), Brent and Siskind (2001), Swingley and
+Humphrey (2017), Hoff-Ginsberg (1985),Newport, Gleitman, and Gleitman
+(1977)) (\textbf{CHECK REF:} Yurovsky et al, Brent \& Siskind; Newport
+et al, 1977), these results present a clear case where researchers would
+be led to different conclusions about cross-month stability based on
+whether count- or proportion-based analyses were used.
 
 \subsection{Extrapolative Validity}\label{extrapolative-validity}
 
@@ -881,10 +909,12 @@ would inflate estimates of auxiliary verbs in the early input. Indeed,
 previous work has noted that published studies vary in whether they find
 links between questions (yes/no and wh-) in the input, and children's
 early productions, with developmental level of the child invoked to
-explain differences across studies (Barnes et al, 1983; see discussion
-in Huttenlocher et al, 2002). Here we add the possibility that
-recording-type too may contribute to the base-rates of questions in the
-input, even with child-age kept relatively constant.
+explain differences across studies (Barnes, Gutfreund, Satterly, \&
+Wells, 1983,Furrow, Nelson, and Benedict (1979),Hoff-Ginsberg (1985))
+(\textbf{CHECK REF:}see discussion in Huttenlocher et al, 2002). Here we
+add the possibility that recording-type too may contribute to the
+base-rates of questions in the input, even with child-age kept
+relatively constant.
 
 Turning to the pattern of correlations across recording-types, as with
 time-point, results were difficult to interpret. There was no measure
@@ -953,7 +983,7 @@ infants' interactions. Relatedly, our convenience sample does not
 reflect the broader demographics of the US (let alone other cultures or
 populations), and as such this work merits extension to other
 populations before conclusive generalizations about sampling methodology
-can be made (cf Bergelson et al, under review).
+can be made (\textbf{ADD REF:} cf Bergelson et al, under review).
 
 \subsection{Conclusions}\label{conclusions}
 
@@ -977,10 +1007,25 @@ Discuss zeros/unattested datapoints
 \setlength{\parindent}{-0.5in} \setlength{\leftskip}{0.5in}
 
 \hypertarget{refs}{}
+\hypertarget{ref-barnes1983characteristics}{}
+Barnes, S., Gutfreund, M., Satterly, D., \& Wells, G. (1983).
+Characteristics of adult speech which predict children's language
+development. \emph{Journal of Child Language}, \emph{10}(1), 65--84.
+
 \hypertarget{ref-bergelson2017nature}{}
 Bergelson, E., \& Aslin, R. N. (2017). Nature and origins of the lexicon
 in 6-mo-olds. \emph{Proceedings of the National Academy of Sciences},
 \emph{114}(49), 12916--12921.
+
+\hypertarget{ref-bergelson2013acquisition}{}
+Bergelson, E., \& Swingley, D. (2013). The acquisition of abstract words
+by young infants. \emph{Cognition}, \emph{127}(3), 391--397.
+
+\hypertarget{ref-bergmann2016discriminability}{}
+Bergmann, C., Cristia, A., \& Dupoux, E. (2016). Discriminability of
+sound contrasts in the face of speaker variation quantified. In
+\emph{Proceedings of the 38th annual meeting of the cognitive science
+society} (Vol. 510).
 
 \hypertarget{ref-brent2001role}{}
 Brent, M. R., \& Siskind, J. M. (2001). The role of exposure to isolated
@@ -992,6 +1037,11 @@ Covington, M. A., \& McFall, J. D. (2010). Cutting the gordian knot: The
 moving-average type--token ratio (mattr). \emph{Journal of Quantitative
 Linguistics}, \emph{17}(2), 94--100.
 
+\hypertarget{ref-debaryshe1993joint}{}
+DeBaryshe, B. D. (1993). Joint picture-book reading correlates of early
+oral language skill. \emph{Journal of Child Language}, \emph{20}(2),
+455--461.
+
 \hypertarget{ref-dudley2009pathologizing}{}
 Dudley-Marling, C., \& Lucas, K. (2009). Pathologizing the language and
 culture of poor children. \emph{Language Arts}, \emph{86}(5), 362--370.
@@ -1000,6 +1050,11 @@ culture of poor children. \emph{Language Arts}, \emph{86}(5), 362--370.
 Fernald, A., Marchman, V. A., \& Weisleder, A. (2013). SES differences
 in language processing skill and vocabulary are evident at 18 months.
 \emph{Developmental Science}, \emph{16}(2), 234--248.
+
+\hypertarget{ref-furrow1979mothers}{}
+Furrow, D., Nelson, K., \& Benedict, H. (1979). Mothers' speech to
+children and syntactic development: Some simple relationships.
+\emph{Journal of Child Language}, \emph{6}(3), 423--442.
 
 \hypertarget{ref-hart1995meaningful}{}
 Hart, B., \& Risley, T. R. (1995). \emph{Meaningful differences in the
@@ -1010,6 +1065,19 @@ Publishing.
 Hoff, E., \& Naigles, L. (2002). How children use input to acquire a
 lexicon. \emph{Child Development}, \emph{73}(2), 418--433.
 
+\hypertarget{ref-hoff1985some}{}
+Hoff-Ginsberg, E. (1985). Some contributions of mothers' speech to their
+children's syntactic growth. \emph{Journal of Child Language},
+\emph{12}(2), 367--385.
+
+\hypertarget{ref-macwhinney2001emergentist}{}
+MacWhinney, B. (2001). Emergentist approaches to language.
+\emph{TYPOLOGICAL STUDIES IN LANGUAGE}, \emph{45}, 449--470.
+
+\hypertarget{ref-newport1977mother}{}
+Newport, E., Gleitman, H., \& Gleitman, L. (1977). Mother, id rather do
+it myself: Some effects and non-effects of maternal speech style.
+
 \hypertarget{ref-oller2010automated}{}
 Oller, D. K., Niyogi, P., Gray, S., Richards, J., Gilkerson, J., Xu, D.,
 \ldots{} Warren, S. (2010). Automated vocal analysis of naturalistic
@@ -1017,10 +1085,30 @@ recordings from children with autism, language delay, and typical
 development. \emph{Proceedings of the National Academy of Sciences},
 \emph{107}(30), 13354--13359.
 
+\hypertarget{ref-pan2005maternal}{}
+Pan, B. A., Rowe, M. L., Singer, J. D., \& Snow, C. E. (2005). Maternal
+correlates of growth in toddler vocabulary production in low-income
+families. \emph{Child Development}, \emph{76}(4), 763--782.
+
+\hypertarget{ref-rost2010finding}{}
+Rost, G. C., \& McMurray, B. (2010). Finding the signal by adding noise:
+The role of noncontrastive phonetic variability in early word learning.
+\emph{Infancy}, \emph{15}(6), 608--635.
+
+\hypertarget{ref-rowe2012longitudinal}{}
+Rowe, M. L. (2012). A longitudinal investigation of the role of quantity
+and quality of child-directed speech in vocabulary development.
+\emph{Child Development}, \emph{83}(5), 1762--1774.
+
 \hypertarget{ref-roy2015predicting}{}
 Roy, B. C., Frank, M. C., DeCamp, P., Miller, M., \& Roy, D. (2015).
 Predicting the birth of a spoken word. \emph{Proceedings of the National
 Academy of Sciences}, \emph{112}(41), 12663--12668.
+
+\hypertarget{ref-swingley2017quantitative}{}
+Swingley, D., \& Humphrey, C. (2017). Quantitative linguistic predictors
+of infants' learning of specific english words. \emph{Child
+Development}.
 
 \hypertarget{ref-taine1876note}{}
 Taine, H. (1876). Note sur l'acquisition du langage chez les enfants et
@@ -1032,10 +1120,22 @@ Tamis-LeMonda, C. S., Kuchirko, Y., Luo, R., Escobar, K., \& Bornstein,
 M. H. (2017). Power in methods: Language to infants in structured and
 naturalistic contexts. \emph{Developmental Science}.
 
+\hypertarget{ref-vandam2016homebank}{}
+VanDam, M., Warlaumont, A. S., Bergelson, E., Cristia, A., Soderstrom,
+M., De Palma, P., \& MacWhinney, B. (2016). HomeBank: An online
+repository of daylong child-centered audio recordings. In \emph{Seminars
+in speech and language} (Vol. 37, pp. 128--142). Thieme Medical
+Publishers.
+
 \hypertarget{ref-weisleder2013talking}{}
 Weisleder, A., \& Fernald, A. (2013). Talking to children matters: Early
 language experience strengthens processing and builds vocabulary.
 \emph{Psychological Science}, \emph{24}(11), 2143--2152.
+
+\hypertarget{ref-yurovsky2013statistical}{}
+Yurovsky, D., Smith, L. B., \& Yu, C. (2013). Statistical word learning
+at scale: The baby's view is better. \emph{Developmental Science},
+\emph{16}(6), 959--966.
 
 
 
