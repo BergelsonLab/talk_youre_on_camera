@@ -185,12 +185,17 @@ We next assessed our count measures across recording-types, examing how noun inp
 
 ```{r scaling examination, echo = F, warning = F, message = F}
 #need to combine mean and sd into a nice single table; ask Shannon/Andrei
-aboost_mean %>% as.data.frame()
-aboost_sd %>% as.data.frame()
-
+aboost_mean
+aboost_sd
 
 aboost_timemin<- round(mean(aboost_mean$aboost_min))
 aboost_timemin_nosil<- round(mean(aboost_mean$aboost_awakemin))
+vboost_mean
+vboost_sd
+
+vboost_timemin<- mean(vboost_mean$vboost_min)
+vboost_timemin_nosil<- mean(vboost_mean$vboost_awakemin)
+
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 wsix_wsev_sigps <- ifelse(count(wsixs %>% filter(pval_adj<.05))==count(wsevens %>% filter(pval_adj<.05)), 
                           count(wsixs %>% filter(pval_adj<.05)), "FIXTHIS")

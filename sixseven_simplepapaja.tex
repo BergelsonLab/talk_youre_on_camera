@@ -411,15 +411,16 @@ recordings' annotations for each child (n=44), recording-type (audio,
 video), and month (six, seven). See Table XX. We then averaged the data
 from month six and seven to increase the precision of our input
 estimates, and since we have no theoretically-motivated reason to
-predict input differences across this 4 week span, i.e.~there are no
-developmental or linguistic milestones infants typically achieve at 6-7
-months. We also normalized the count measures by recording length;
-further details are below. While multi-level models with fixed effects
-of recording-type and random subject-level effects were our initial
-plan, nearly all such models revealed non-normal (generally
-funnel-shaped) residuals, limiting interpretation across measures. This
-was true even when we log-transformed the count data. We instead report
-a simple set of nonparametric analyses below.
+predict input differences across this 4 week span (i.e.~there are no
+developmental or linguistic milestones typically achieved at 6-7
+months.) We also normalized the count measures by recording length;
+further details are below. While the initial analysis plan was to
+conduct multi-level models with fixed effects of recording-type and
+random subject-level effects, nearly all such models revealed highly
+non-normal residuals (by visual inspection and Shapiro Test), limiting
+interpretation across measures. This was true even when data were
+log-transformed. We instead report a simple set of nonparametric
+analyses below.
 
 For all recording-type comparisons, we look at whether our measures
 \emph{differed} significantly (by two-tailed, paired Wilcoxon Test), and
@@ -431,120 +432,77 @@ recording-types. We applied Holm's p-value adjustment for multiple
 comparisons (Holm, 1979), for the set of 12 Wilcoxon tests, and the set
 of 12 Kendall Correlations.
 
-\section{eb got this far in the simpler
-rewrite}\label{eb-got-this-far-in-the-simpler-rewrite}
+\subsection{Count Measures, Audio-
+vs.~Video-recordings}\label{count-measures-audio--vs.video-recordings}
 
-\subsection{Count Measures, Month 6
-vs.~7}\label{count-measures-month-6-vs.7}
-
-We first analyzed the 12 count measures in month six versus seven, by
-recording-type. Across children, none of the 12 differed by month within
-audio recordings (all adjusted-p\textgreater{}.05), or within video
-recordings (all adjusted-p\textgreater{}.05.) Testing the correlations,
-all 12 count measures correlated significantly month-to-month for audio
-(Kendall's tau ranged from 0.29 - 0.52, all adjusted-p\textless{}.05),
-and 11/12 did so for video (Kendall's taus ranged from 0.29 - 0.60, all
-adjusted-p\textless{}.05), excluding number of nouns heard in reading
-(adjusted-p\textgreater{}.05). Thus, within recording type, the
-count-based metrics of the object words infants heard were statistically
-equivalent in month six and seven, and correlated significantly within
-children month-to-month (except 1/24 correlations); see Figure
-\ref{fig:gr-derived-counts-67-corr}. This suggests that parents are
-acting naturally, or at least consistently, during our home recordings
-each month.
+We first assessed our 12 count measures across recording-types, examing
+how noun input scaled between hour-long video-recordings and daylong
+audio-recordings. Modally, videos were an hour (62 min, \emph{M}=60.79
+min, SD=6.31, R=27.9-74.9 min), and audio-recordings were 16 hours (960
+min, \emph{M}=858.41 min, SD=119.41, R=635-960 min), the maximum
+capacity of the LENA device. While audio-recordings began when children
+woke up, determining the exact onsets and offsets of daytime naps from
+audio alone is not possible, by removing the \enquote{silent} portions
+of the recordings (see Methods), we estimated an upper-limit on infants'
+awake (i.e.~non-silent) time (Mode = 654 min., \emph{M} = 603min,
+SD=106.8, R=385.2-951 min ). This comports with established norms for
+6--8-month-olds in the US (\textbf{ADD REF:} Mandel et al, 2010), which
+are 180 minutes of daytime sleep, and 600 minutes of nighttime sleep.
+Infants were always awake during video recordings (save one infant, who
+fell asleep before the recording-hour ended; that video was stopped at
+sleep onset).
 
 \begin{figure}
 \centering
 \includegraphics{sixseven_simplepapaja_files/figure-latex/gr-derived-counts-67-diff-1.pdf}
-\caption{}
+\caption{\label{fig:gr-derived-counts-67-diff}Counts A vs.~V}
 \end{figure}
 
 \begin{figure}
 \centering
 \includegraphics{sixseven_simplepapaja_files/figure-latex/gr-derived-counts-67-corr-1.pdf}
-\caption{\label{fig:gr-derived-counts-67-corr}Count correlations}
+\caption{\label{fig:gr-derived-counts-67-corr}Count Correlations, A vs.~V}
 \end{figure}
 
-\subsection{Count Measures, Audio-
-vs.~Video-recordings}\label{count-measures-audio--vs.video-recordings}
-
-We next assessed our count measures across recording-types, examing how
-noun input scaled between hour-long video-recordings and daylong
-audio-recordings. Modally, videos were an hour (62 min, \emph{M}=60.79,
-SD=6.31, R=27.9-74.9 min), and audio-recordings were 16 hours (960 min,
-\emph{M}=858.41, SD=119.41, R=635-960 min), the maximum capacity of the
-LENA device. While determining the exact onsets and offsets of naps from
-audio alone is not possible, by removing the \enquote{silent} portions
-of the recordings (see Methods), we estimated an upper-limit on infants'
-awake (i.e.~non-silent) time (Mode = 10.90, \emph{M} = 603, SD=106.8,
-R=385.2-951 min ). This comports with established norms for
-6--8-month-olds in the US (\textbf{ADD REF:} Mandel et al, 2010), which
-are 3 hours of daytime sleep, and 10 hours of nighttime sleep. Thus, 16
-hours of recording beginning when the child wakes up should capture
-\textasciitilde{}11 daytime waking hours, in line with our silence
-demarcations. Infants were always awake during video recordings (save
-one infant, who fell asleep before the recording-hour ended; that video
-was stopped at sleep onset).
-
 \begin{verbatim}
-##   month aboost_min aboost_awakemin aboost_types aboost_tokens
-## 1    06      13.89            9.88         4.05          5.79
-## 2    07      14.82           10.45         4.65          6.03
-##   aboost_speakers aboost_MOT aboost_FAT aboost_d aboost_q aboost_i
-## 1            2.61       4.09       4.66     6.89     4.11     9.36
-## 2            3.49       4.33      48.53     8.72     5.06    10.98
-##   aboost_s aboost_r aboost_n aboost_op        comp
-## 1     8.17     2.18     5.53      5.68 mean_aboost
-## 2    10.31     8.64     8.44      6.07 mean_aboost
+## # A tibble: 1 x 15
+##   vboost_min vboost_awakemin vboost_types vboost_tokens vboost_speakers
+##        <dbl>           <dbl>        <dbl>         <dbl>           <dbl>
+## 1       0.07             0.1         0.31          0.25            0.43
+## # ... with 10 more variables: vboost_MOT <dbl>, vboost_FAT <dbl>,
+## #   vboost_d <dbl>, vboost_q <dbl>, vboost_i <dbl>, vboost_s <dbl>,
+## #   vboost_r <dbl>, vboost_n <dbl>, vboost_op <dbl>, comp <chr>
 \end{verbatim}
 
 \begin{verbatim}
-##   month aboost_min aboost_awakemin aboost_types aboost_tokens
-## 1    06       2.19            1.75         2.46          4.06
-## 2    07       4.19            3.99         3.63          5.10
-##   aboost_speakers aboost_MOT aboost_FAT aboost_d aboost_q aboost_i
-## 1            1.74       3.13       3.77     4.77     3.15    12.52
-## 2            2.13       3.74     139.61     8.76     5.60    27.00
-##   aboost_s aboost_r aboost_n aboost_op      comp
-## 1    10.20     2.11     4.88      5.55 sd_aboost
-## 2    24.59    14.05    10.45      8.25 sd_aboost
+## # A tibble: 1 x 15
+##   vboost_min vboost_awakemin vboost_types vboost_tokens vboost_speakers
+##        <dbl>           <dbl>        <dbl>         <dbl>           <dbl>
+## 1       0.01            0.02         0.13          0.15             0.2
+## # ... with 10 more variables: vboost_MOT <dbl>, vboost_FAT <dbl>,
+## #   vboost_d <dbl>, vboost_q <dbl>, vboost_i <dbl>, vboost_s <dbl>,
+## #   vboost_r <dbl>, vboost_n <dbl>, vboost_op <dbl>, comp <chr>
 \end{verbatim}
 
 To examine how the hour-long video data \enquote{scale} to day-length
-data descriptively, we divided the 12 audio count metrics by the 12
-video count metrics for each child, to derive \enquote{audio-boost}
-scores. This showed that the audio-recordings were \textasciitilde{}14x
-longer than the videos, or 10x longer if only \enquote{non-silent}
-portions of the audio-recording are included. However, rather than a
-concomitant 10-fold increase in our count metrics (as would be expected
-if the video captured a \enquote{representative} hour of the day), the
-boost was closer to fivefold across measures; see Table XX. This
-suggests that the videos, by and large, had a denser concentration of
-nouns across our measures than did the audio recordings.
+data descriptively, we first divided the 12 count metrics from the
+videos by those from the audio-recordings for each child, to derive
+\enquote{video-fraction} scores. This showed that the video-recordings
+were \textasciitilde{}0.07 of the length of audio-recordings, or 0.10 of
+the length if only \enquote{non-silent} portions of the audio-recording
+are included. However, rather than a concomitant 10-fold decrease in our
+count metrics (as would be expected if the video captured a
+\enquote{representative} hour of the day), the fractions are closer to
+across measures; see Table \ref{tab:vboost-table} \textbf{add SDs to
+table}. Thus, by and large, videos had a denser concentration of nouns
+across our measures than did the audio recordings.
 
-Notably, \enquote{zero} values (e.g.~recordings in which there were no
-nouns heard in singing) were omitted from the audio-boost computations
-given that they result in undefined values for a given child in a given
-month. The majority of variables had at least one such value, with over
-1/3 of video recordings lacking instances of nouns heard in singing,
-reading, or by fathers each month; see Table
-\ref{tab:propna-missing-tables}.
-
-\begin{table}[tbp]
-\begin{center}
-\begin{threeparttable}
-\caption{\label{tab:propna-missing-tables}}
-\begin{tabular}{lllllllllll}
-\toprule
-month & \multicolumn{1}{c}{v\_MOT} & \multicolumn{1}{c}{a\_FAT} & \multicolumn{1}{c}{v\_FAT} & \multicolumn{1}{c}{v\_q} & \multicolumn{1}{c}{v\_i} & \multicolumn{1}{c}{a\_s} & \multicolumn{1}{c}{v\_s} & \multicolumn{1}{c}{a\_r} & \multicolumn{1}{c}{v\_r} & \multicolumn{1}{c}{v\_n}\\
-\midrule
-06 & 0.16 & 0.05 & 0.52 & 0.00 & 0.07 & 0.07 & 0.32 & 0.25 & 0.55 & 0.02\\
-07 & 0.09 & 0.09 & 0.75 & 0.02 & 0.07 & 0.07 & 0.34 & 0.25 & 0.50 & 0.07\\
-\bottomrule
-\end{tabular}
-\end{threeparttable}
-\end{center}
-\end{table}
+We computed video-fractions (rather than the reciprocal,
+i.e.~audio/video) because there were more zero values for videos than
+audio-recordings (e.g.~instances when children did not hear any nouns
+sung), rendering more undefined values. Indeed, over a third of children
+did not hear nouns in reading or from fathers on videos in either month.
+See Table \ref{tab:propna-missing-tables}.
 
 \begin{table}[tbp]
 \begin{center}
