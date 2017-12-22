@@ -125,8 +125,12 @@ Recordings were next annotated by trained researchers. The 'sparse annotation' e
 We assessed intercoder reliability on a random contiguous 10% of the annotations in each file. 
 **add reliability analysis**
 
+```{r measures-table, echo = F, warning = F, message = F}
+measures_table
+```
+
 # Results
-##Analysis Plan
+## Analysis Plan
 Based on the coding scheme above, we derived 12 count measures from each recordings' annotations for each child (n=44), recording-type (audio, video), and month (six, seven). See Table XX. We then averaged the data from month six and seven to increase the precision of our input estimates, and since we have no theoretically-motivated reason to predict input differences across this 4 week span (i.e. there are no developmental or linguistic milestones typically achieved at 6-7 months.) We also normalized the count measures by recording length; further details are below. While the initial analysis plan was to conduct multi-level models with fixed effects of recording-type and random subject-level effects, nearly all such models revealed highly non-normal residuals (by visual inspection and Shapiro Test), limiting interpretation across measures. This was true even when data were log-transformed. We instead report a simple set of nonparametric analyses below.
 
 For all recording-type comparisons, we look at whether our measures *differed* significantly (by two-tailed, paired Wilcoxon Test), and *correlated* significantly (by Kendall Rank Correlation) across the given groups. This approach lets us compare, e.g., whether the proportion of declaratives is indistinguishable in our audio and video recordings independently of whether these values are correlated across recording-types. We applied Holm's p-value adjustment for multiple comparisons (Holm, 1979), for the set of 12 Wilcoxon tests, and the set of 12 Kendall Correlations.
@@ -164,10 +168,8 @@ gr_count_cor_VA_facetmonth_collapsed
 
 ```{r scaling examination, echo = F, warning = F, message = F}
 
-#need to combine mean and sd into a nice single table; ask Shannon/Andrei
-vboost_mean_collapsed
-vboost_sd_collapsed
-
+vboost_table
+# TO DO: Singing and reading show up as "Inf"?
 
 vboost_timemin_collapsed<- mean(vboost_mean_collapsed$vboost_min)
 vboost_timemin_nosil_collapsed<- mean(vboost_mean_collapsed$vboost_awakemin)
@@ -205,16 +207,13 @@ countvals_normed_table <- countvals_long_norm_collapsed %>%
   dplyr::select(norm_meas, norm_inflation) %>% 
   mutate_if(is.numeric, funs(round(.,1)))
 
+countvals_normed_table$norm_meas <- c("Object presence","Mother","Father","Declaratives","Questions","Short phrases","Singing","Reading","Imperatives","Type count","Token count","Speaker count")
+
+countvals_normed_table <- countvals_normed_table %>%
+  rename("Measure"=norm_meas,
+         "Inflation (normed)"=norm_inflation)
+  
 apa_table(countvals_normed_table)
-#the table below should be identical to vboost_mean but isn't, probably because of NAs?
-# much simpler code though--need to consolidate with code for vboost
-# countvals_table <- countvals_long_collapsed %>% 
-#   group_by(audio_video, count_meas) %>% 
-#   summarise(mnv = mean(countval)) %>% 
-#   spread(audio_video, mnv) %>% 
-#   mutate(count_inflation = video/audio) %>% 
-#   dplyr::select(count_meas, count_inflation) %>% 
-#   mutate_if(is.numeric, funs(round(.,2)))
 
 ```
 
