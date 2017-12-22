@@ -56,6 +56,8 @@ source("sixseven_figure_code.R")
 source("sixseven_simplestats.R")
 source("sixseven_simplegraphs.R")
 source("sixseven_visit_ages_table.R")
+source("sixseven_measures_table.R")
+source("sixseven_vboost_table.R")
 getmode <- function(v) {
    uniqv <- unique(v)
    uniqv[which.max(tabulate(match(v, uniqv)))]
@@ -102,9 +104,9 @@ Thus, our main goal was to compare language input young infants receive across f
 Participants were recruited from an existing database of families from local hospitals, or who heard about the BabyLab from friends, family, and outreach. Forty-six participants enrolled; two dropped out in the early stages of the project leaving 44 infants in the final sample. All infants were full-term (40 ± 3 weeks), had no known vision or hearing problems, and heard >75% spoken English in the home. Participants were 95% white; 75% of mothers had a B.A. or higher. The families were enrolled in a yearlong study that included monthly audio- and video-recordings, as well as in-lab visits every other month. Here we report on the home recording data from the first two timepoints (6 and 7 months) of this study, for which participants were compensated $10; see table XX.\footnote{We include only these timepoints because at this stage of development no infants had begun producing words themselves (which may change the input for reasons orthogonal to those we examine here), and given the broader project aims, these timepoints alone had the entire daylong audiorecording annotated.} 
 
 ## Procedures
-Participants gave consent at an initial lab visit for the larger study through a process approved by the University of Rochester IRB. Questionnaires about various aspects of the family's and infant's background conducted during lab visits, not germane to the present analysis, are reported elsewhere (Bergelson & Aslin, 2017b; Laing and Bergelson, under review).  Four recordings were collected for each infant: an audio- and video-recording at six and at seven months. Each recording was on a different day. See table XX.
+Participants gave consent at an initial lab visit for the larger study through a process approved by the University of Rochester IRB. Questionnaires about various aspects of the family's and infant's background conducted during lab visits, not germane to the present analysis, are reported elsewhere (Bergelson & Aslin, 2017b; Laing and Bergelson, under review).  Four recordings were collected for each infant: an audio- and video-recording at six and at seven months. Each recording was on a different day. See Table \@ref(tab:recording-ages-table).
 
-```{r recording-ages-table, comment=F, message=F, hide = T, warning = F, echo = F}
+```{r recording-ages-table, comment=F, message=F, hide = T, warning = F, echo = F, fig.cap="Infant ages at recordings and lab visits"}
 sixseven_visit_ages_table
 ```
 
@@ -125,7 +127,7 @@ Recordings were next annotated by trained researchers. The 'sparse annotation' e
 We assessed intercoder reliability on a random contiguous 10% of the annotations in each file. 
 **add reliability analysis**
 
-```{r measures-table, echo = F, warning = F, message = F}
+```{r measures-table, echo = F, warning = F, message = F, fig.cap="Derived count and proportion measures"}
 measures_table
 ```
 
@@ -134,7 +136,6 @@ measures_table
 Based on the coding scheme above, we derived 12 count measures from each recordings' annotations for each child (n=44), recording-type (audio, video), and month (six, seven). See Table XX. We then averaged the data from month six and seven to increase the precision of our input estimates, and since we have no theoretically-motivated reason to predict input differences across this 4 week span (i.e. there are no developmental or linguistic milestones typically achieved at 6-7 months.) We also normalized the count measures by recording length; further details are below. While the initial analysis plan was to conduct multi-level models with fixed effects of recording-type and random subject-level effects, nearly all such models revealed highly non-normal residuals (by visual inspection and Shapiro Test), limiting interpretation across measures. This was true even when data were log-transformed. We instead report a simple set of nonparametric analyses below.
 
 For all recording-type comparisons, we look at whether our measures *differed* significantly (by two-tailed, paired Wilcoxon Test), and *correlated* significantly (by Kendall Rank Correlation) across the given groups. This approach lets us compare, e.g., whether the proportion of declaratives is indistinguishable in our audio and video recordings independently of whether these values are correlated across recording-types. We applied Holm's p-value adjustment for multiple comparisons (Holm, 1979), for the set of 12 Wilcoxon tests, and the set of 12 Kendall Correlations.
-
 
 ```{r lengths, echo = F, warning = F, message = F}
 vidmode <- getmode(round(vidtime$total_min)) #rounding to the minute 1st
@@ -155,7 +156,7 @@ audM_SD_Rmin <- paste(round(mean(audtime$total_min),2), " min, SD=",round(sd(aud
 audnosilM_SD_R <- paste(aud_nosilM*60, "min, SD=",aud_nosilSD*60,", R=",aud_nosilmin*60, "-", aud_nosilmax*60, " min", sep = "")
 ```
 
-##Count Measures, Audio- vs. Video-recordings
+## Count Measures, Audio- vs. Video-recordings
 Before assessing how our 12 measures of noun input scaled between hour-long video-recordings and daylong audio-recordings, we analyzed recording lengths. Modally, videos were an hour (`r vidmode` min, *M*=`r vidM_SD_R`), and audio-recordings were 16 hours (`r audmode` min, *M*=`r audM_SD_Rmin`), the maximum capacity of the LENA device. While audio-recordings began when children awoke, we further estimated the onsets and offsets of daytime naps by removing the 'silent' portions of the recordings (see Methods). This provides an estimated upper-limit on infants' awake (i.e. non-silent) time (Mode = `r audmode_nosil_hr*60` min., *M* = `r audnosilM_SD_R` ). This comports with established norms for 6–8-month-olds in the US (**ADD REF:** Mandel et al, 2010), which are 180 minutes of daytime sleep, and 600 minutes of nighttime sleep. Infants were always awake during video recordings (save one infant, who fell asleep before the recording-hour ended; that video was stopped at sleep onset).
 
 ```{r gr-derived-counts-67-diff, fig.cap = "Counts A vs. V", echo = F, fig.height = 8, warning = F}
@@ -166,11 +167,13 @@ gr_countvals_long_collapsed
 gr_count_cor_VA_facetmonth_collapsed
 ```
 
-```{r scaling examination, echo = F, warning = F, message = F}
+```{r vboost-table, echo = F, warning = F, message = F, fig.cap = "Video Boost",}
 
 vboost_table
 # TO DO: Singing and reading show up as "Inf"?
+```
 
+```{r scaling examination, echo = F, warning = F, message = F}
 vboost_timemin_collapsed<- mean(vboost_mean_collapsed$vboost_min)
 vboost_timemin_nosil_collapsed<- mean(vboost_mean_collapsed$vboost_awakemin)
 mean_vboost_measures <- vboost_mean_collapsed %>% 
@@ -181,7 +184,7 @@ To examine how the hour-long video data 'scale' to day-length data descriptively
 
 We computed video-fractions (rather than the reciprocal, i.e. audio/video) because there were more zero values for videos than audio-recordings (e.g. instances when children did not hear any nouns sung), rendering more undefined values. Indeed, over a third of children did not hear nouns in reading or from fathers on videos in either month. See Table \@ref(tab:propna-missing-tables).
 
-```{r propna-missing-tables, echo = F, warning = F, message = F, results = "asis"}
+```{r propna-missing-tables, echo = F, warning = F, message = F, results = "asis",fig.cap="Proportion of zero values"}
 
 # prop of kids with NAs for each cat, across both months
 vars_with_NAs <- sixseven_spreadAV %>% 
@@ -191,14 +194,22 @@ vars_with_NAs <- sixseven_spreadAV %>%
   summarise_if(is.numeric, funs(sum)) %>% 
   mutate_if(is.numeric, funs(na_if(., 0))) %>%
   summarise_if(is.numeric, funs(round(sum(is.na(.))/44,2)))%>% 
-  dplyr::select_if(any_vars(.>0))
+  dplyr::select_if(any_vars(.>0)) %>%
+  rename("Video: Mothers" = v_MOT,
+         "Audio: Fathers"=a_FAT,
+         "Video: Fathers"=v_FAT,
+         "Video: Imperatives"=v_i,
+         "Audio: Singing"=a_s,
+         "Video: Singing"=v_s,
+         "Audio: Reading"=a_r,
+         "Video: Reading"=v_r)
 
 apa_table(vars_with_NAs)
 ```
 
 We next normed our count values by the number of minutes in each. For example, if an infant heard 500 noun-tokens in 800 minutes of non-silent audio-recording, and 200 in 60 minutes of videos, this was normed to .62 and 3.3 noun-tokens per minute, respectively. Unlike for the video-fractions, this allows us to retain zero values, rendering more readily interpretable results across our count and proportional measures.
 
-```{r normtable, echo = F, warning = F, results = "asis"}
+```{r normtable, echo = F, warning = F, results = "asis",fig.cap="Count values, normed by number of minutes in recording"}
 countvals_normed_table <- countvals_long_norm_collapsed %>% 
   group_by(audio_video, norm_meas) %>% 
   summarise(mnv = mean(normval)) %>% 
