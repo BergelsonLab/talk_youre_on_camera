@@ -50,6 +50,7 @@ output            : papaja::apa6_pdf
 ```{r load_packages, include = FALSE}
 library("papaja")
 library("knitr")
+library("kableExtra")
 ```
 
 ```{r analysis_preferences}
@@ -102,10 +103,7 @@ Details of our entire data processing pipeline are on our lab wiki (https://osf.
 ## Language Annotation
 Recordings were next annotated by trained researchers. The 'sparse annotation' entailed marking each concrete noun heard by the child. This includes words directed to or easily overheard by the child (e.g. words directed at a sibling next to the infant), but not distant or background language (e.g. background television). We operationalized 'object words' as concrete, imageable nouns (e.g. shoe, arm). For each object word, we included the word (as said by the speaker, e.g. 'teethies'), and lemmatized to it's 'basic level' or dictionary form (e.g. tooth), along with three properties: utterance-type, object presence, and talker. Utterance-type classified each object word utterance as declarative, question, imperative, reading, singing, short-phrase, or unclear. Short-phrase utterances include words in isolation and short, simple noun phrases (e.g. 'the red ball' or 'kitty's paw'). Object-presence was a binary measure of whether the object was present and attended to. Lastly, the word's talker was recorded, including live interlocutors and electronics: mother, brother, toy, etc. 
 
-We assessed intercoder reliability on a random contiguous 10% of the annotations in each file. 
-
-
-# Results
+We assessed intercoder reliability on a random contiguous 10% of the annotations in each file. **add reliability stats**
 
 
 ```{r read in data, comment=F, message=F, hide = T, warning = F, echo = F}
@@ -113,6 +111,7 @@ We assessed intercoder reliability on a random contiguous 10% of the annotations
 source("sixseven_data_aggregation.R")
 source("wilcoxon_corrs_sixseven.R")
 source("sixseven_figure_code.R")
+source("sixseven_measures_table.R")
 getmode <- function(v) {
    uniqv <- unique(v)
    uniqv[which.max(tabulate(match(v, uniqv)))]
@@ -126,7 +125,15 @@ getmode <- function(v) {
 # fix all refs
 # make APA format
 # cut down to 4k words total if possible
+# take 27 out of father stats
 ```
+
+```{r measures-tab, comment = F, message = F, warning = F, echo = F}
+measures_table
+```
+
+# Results
+
 ##Analysis Plan
 Based on the coding scheme above, we derived count (n=12) and proportional (n=10) measures from each recordings' annotations for each child (n=44), recording-type (audio, video), and month (six, seven). See Table XX. We also normalized the count measures by recording length; further details are below. We initially created multi-level models, with each of the 22 measures as the dependent variable,  recording-type and month as fixed effects, and participant as a random effect (i.e. dv ~ recording_type + month + (1|subj)). Month was not a significant predictor in any of the 22 models; recording-type was in 17/22 models (see S.I.). However, since many of the models showed structured (generally funnel-shaped) residuals that limited interpretation across measures, we instead report a simple set of nonparametric analyses.
 
@@ -214,7 +221,7 @@ To examine how the hour-long video data 'scale' to day-length data descriptively
 Notably, 'zero' values (e.g. recordings in which there were no nouns heard in singing) were omitted from the audio-boost computations given that they result in undefined values for a given child in a given month. The majority of variables had at least one such value, with over 1/3 of video recordings lacking instances of nouns heard in singing, reading, or by fathers each month; see Table \@ref(tab:propna-missing-tables).
 
 ```{r propna-missing-tables, echo = F, warning = F, message = F, results = "asis"}
-#need to ask Shannon/Andrei to draft supplementals
+#this first table needs to be fixed to account for S27 having no FAT (vars_with_NAs has already been fixed)
 # prop of kids with NAs for each cat, each month
 propkids_with_NAs <- sixseven_spreadAV %>% 
   dplyr::select(subj, month,
@@ -224,16 +231,6 @@ propkids_with_NAs <- sixseven_spreadAV %>%
   #dplyr::select(a_numtypes: v_y_op) %>% 
   summarise_if(is.numeric, funs(round(sum(is.na(.))/44,2))) %>% 
   dplyr::select(month, v_MOT, a_FAT, v_FAT, v_q, v_i, a_s, v_s, a_r, v_r, v_n)
-
-# prop of kids with NAs for each cat, across both months
-vars_with_NAs <- sixseven_spreadAV %>% 
-  dplyr::select(subj,
-                a_numtypes, v_numtypes, a_numtokens, v_numtokens, a_numspeakers, v_numspeakers,a_MOT, v_MOT, a_FAT, v_FAT, a_d, v_d, a_q, v_q, a_i, v_i, a_s, v_s, a_r, v_r, a_n, v_n, a_y_op, v_y_op) %>% 
-  group_by(subj) %>% 
-  summarise_if(is.numeric, funs(sum)) %>% 
-  mutate_if(is.numeric, funs(na_if(., 0))) %>%
-  summarise_if(is.numeric, funs(round(sum(is.na(.))/44,2)))%>% 
-  dplyr::select_if(any_vars(.>0))
 
 # these two tables should be split up into 2 separate R chunks, and 2 cross refs
 apa_table(propkids_with_NAs)
