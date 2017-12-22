@@ -57,10 +57,8 @@ source("sixseven_simplestats.R")
 source("sixseven_simplegraphs.R")
 source("sixseven_visit_ages_table.R")
 source("sixseven_measures_table.R")
-<<<<<<< HEAD
-=======
 source("sixseven_vboost_table.R")
->>>>>>> 2d8a82ad5f70b24d2ed2af33c3e0b32a8aadc24c
+
 getmode <- function(v) {
    uniqv <- unique(v)
    uniqv[which.max(tabulate(match(v, uniqv)))]
@@ -130,13 +128,9 @@ Recordings were next annotated by trained researchers. The 'sparse annotation' e
 We assessed intercoder reliability on a random contiguous 10% of the annotations in each file. 
 **add reliability analysis**
 
-<<<<<<< HEAD
-```{r measures-tab, comment = F, message = F, warning = F, echo = F}
+
+```{r measures-tab, echo = F, warning = F, message = F, fig.cap="Derived count measures"}
 measures_table2
-=======
-```{r measures-table, echo = F, warning = F, message = F, fig.cap="Derived count and proportion measures"}
-measures_table
->>>>>>> 2d8a82ad5f70b24d2ed2af33c3e0b32a8aadc24c
 ```
 
 # Results
@@ -190,10 +184,8 @@ mean_vboost_measures <- vboost_mean_collapsed %>%
 
 To examine how the hour-long video data 'scale' to day-length data descriptively, we first divided the 12 count metrics from the videos by those from the audio-recordings for each child, to derive 'video-fraction' scores. This showed that the video-recordings were ~`r vboost_timemin_collapsed` of the length of audio-recordings, or `r vboost_timemin_nosil_collapsed` of the length if only 'non-silent' portions of the audio-recording are included. However, rather than a concomitant 10-fold decrease in our count metrics (as would be expected if the video captured a 'representative' hour of the day), the fractions averaged to `r round(mean_vboost_measures,1)` across measures; see Table XX **add M/SD table**. Thus, by and large, videos had a denser concentration of nouns across our measures than did the audio recordings. 
 
-<<<<<<< HEAD
 We computed video-fractions (rather than the reciprocal, i.e. audio/video) because there were more zero values for videos than audio-recordings (e.g. instances when children did not hear any nouns sung), rendering more undefined values. Indeed, >1/3 of children did not hear nouns in reading or from fathers on videos in either month. See Table \@ref(tab:propna-missing-tables).
-```{r propna-missing-tables, echo = F, warning = F, message = F, results = "asis"}
-=======
+
 ```{r propna-missing-tables, echo = F, warning = F, message = F, results = "asis",fig.cap="Proportion of zero values"}
 
 # prop of kids with NAs for each cat, across both months
@@ -214,7 +206,6 @@ vars_with_NAs <- sixseven_spreadAV %>%
          "Audio: Reading"=a_r,
          "Video: Reading"=v_r)
 
->>>>>>> 2d8a82ad5f70b24d2ed2af33c3e0b32a8aadc24c
 apa_table(vars_with_NAs)
 ```
 
