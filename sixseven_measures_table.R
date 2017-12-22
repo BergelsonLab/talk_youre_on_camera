@@ -4,7 +4,7 @@ library(kableExtra)
 
 measures_col_names <- c("Measure","Derived Count", "Derived Proportion")
 
-measures <- c("Quantity","Speaker","Utterance Type", "Object Co-presence")
+measures <- c("Quantity","Speaker","Utterance Type", "Object Presence")
 
 derived_count <- c("Noun tokens, Noun types","Nouns from Mother, Nouns from Father, Unique Speakers",
                    "Nouns in Declarative, Imperative, Question, Short-Phrase, Reading, and Singing Utterances",
@@ -18,4 +18,13 @@ measures_table_data <- data.frame(measures,derived_count,derived_prop)
 
 measures_table <- kable(measures_table_data, col.names = measures_col_names,
       format = "markdown", padding = 2) %>%
+  kable_styling()
+
+#version without prop stuff
+measures_col_names2 <- c("Measure","Derived Count")
+
+measures_table_data2 <- data.frame(measures,derived_count)
+
+measures_table2 <- kable(measures_table_data2, col.names = measures_col_names2,
+                        format = "markdown", padding = 2) %>%
   kable_styling()

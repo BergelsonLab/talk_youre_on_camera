@@ -19,9 +19,9 @@ sixseven_basiclevel_home_data_agg <- read_feather("data/all_basiclevel_home_data
   dplyr::filter(month %in% c("06","07"))%>%
 #sixseven_basiclevel_home_data_agg <- read_feather("data/sixsevmonth_basiclevel_home_data_agg_feather")%>%
   droplevels() %>% 
-  dplyr::select(-contains("exp"), -TOY, -CHI, -CHItypes, -prop_tech, -tech, -prop_parent, -sum_prop_ut, -noun_chi_onset, -posttalk, -ent_subj_av)
-  #dplyr::select(subj:num_exp_types, d, q, n, s, r,i, TOY:tech, propd, propq, propn, props, propr, propi, everything())
-
+  dplyr::select(-contains("exp"), -TOY, -CHI, -CHItypes, -prop_tech, -tech, -prop_parent, -sum_prop_ut, -noun_chi_onset, -posttalk, -ent_subj_av) %>% 
+#subj27 has no dad, NA not 0.
+  mutate(FAT = ifelse(subj=="27", NA, FAT))
 
 summary(sixseven_basiclevel_home_data_agg$subj, maxsum = 50)
 
@@ -319,6 +319,20 @@ vboost_sd<- sixseven_spreadAV %>%
     vboost_op = sd(v_y_op/a_y_op, na.rm=T),
     comp = "sd_vboost") %>% 
   mutate_if(is.numeric, funs(round(., 2)))
+
+# prop of kids with NAs for each cat, across both months
+vars_with_NAs <- sixseven_spreadAV %>% 
+  dplyr::select(subj,
+                a_numtypes, v_numtypes, a_numtokens, v_numtokens, a_numspeakers, v_numspeakers,a_MOT, v_MOT, a_FAT, v_FAT, a_d, v_d, a_q, v_q, a_i, v_i, a_s, v_s, a_r, v_r, a_n, v_n, a_y_op, v_y_op) %>% 
+  group_by(subj) %>% 
+  summarise_if(is.numeric, funs(sum)) %>% 
+  mutate_if(is.numeric, funs(na_if(., 0))) %>%
+  mutate(v_FAT = ifelse(subj=="27", 0, v_FAT), # this is a hack so that 27 isn't counted bc that subj had no FAT
+         a_FAT = ifelse(subj=="27", 0, a_FAT)) %>%  # this is a hack so that 27 isn't counted bc that subj had no FAT 
+  summarise_if(is.numeric, funs(round(sum(is.na(.))/length(.),2)))%>%
+  mutate(v_FAT = round(v_FAT *44/43,2)) %>%  # this is a hack so that 27 isn't counted bc that subj had no FAT
+  dplyr::select_if(any_vars(.>0))
+
 
 # word tallies ------------------------------------------------------------
 

@@ -25,6 +25,7 @@ sixseven_spreadAV_collapsed <- sixseven_spreadAV %>%
 # Count Vars normed: a vs. v, wilcoxon ------------------------------------------------------
 ##only FAT doesn't differ
 #nb there's no subj 17 for 06 audio, so that line is missing in orig df deliberately
+#there's also no dad for S27 so he's taken out of test
 
 w1 <- wilcox.test(sixseven_spreadAV_normmin_collapsed$v_numtokens, sixseven_spreadAV_normmin_collapsed$a_numtokens,conf.int=T, paired = T)%>% tidy() %>% mutate(comp = "w_numtok")
 w2 <- wilcox.test(sixseven_spreadAV_normmin_collapsed$v_numtypes, sixseven_spreadAV_normmin_collapsed$a_numtypes,conf.int=T, paired = T)%>% tidy() %>% mutate(comp = "w_numtyp")
@@ -47,6 +48,7 @@ ws %>% filter(pval_adj<.05)
 # Count Vars normed: a vs. v, kendall's corr ------------------------------------------------------
 ## only singing doesn't correlate
 #nb there's no subj 17 for 06 audio, so that line is missing in orig df deliberately
+#there's also no dad for S27 so he's taken out of cor test
 
 c1 <- cor.test(data=sixseven_spreadAV_normmin_collapsed, ~v_numtokens+a_numtokens,conf.int=T, method = "kendall")%>% tidy() %>% mutate(comp = "c_numtok")
 c2 <- cor.test(data=sixseven_spreadAV_normmin_collapsed, ~v_numtypes+a_numtypes,conf.int=T, method = "kendall")%>% tidy() %>% mutate(comp = "c_numtyp")
