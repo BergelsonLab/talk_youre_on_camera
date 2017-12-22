@@ -56,6 +56,7 @@ source("sixseven_figure_code.R")
 source("sixseven_simplestats.R")
 source("sixseven_simplegraphs.R")
 source("sixseven_visit_ages_table.R")
+source("sixseven_measures_table.R")
 getmode <- function(v) {
    uniqv <- unique(v)
    uniqv[which.max(tabulate(match(v, uniqv)))]
@@ -125,6 +126,10 @@ Recordings were next annotated by trained researchers. The 'sparse annotation' e
 We assessed intercoder reliability on a random contiguous 10% of the annotations in each file. 
 **add reliability analysis**
 
+```{r measures-tab, comment = F, message = F, warning = F, echo = F}
+measures_table2
+```
+
 # Results
 ##Analysis Plan
 Based on the coding scheme above, we derived 12 count measures from each recordings' annotations for each child (n=44), recording-type (audio, video), and month (six, seven). See Table XX. We then averaged the data from month six and seven to increase the precision of our input estimates, and since we have no theoretically-motivated reason to predict input differences across this 4 week span (i.e. there are no developmental or linguistic milestones typically achieved at 6-7 months.) We also normalized the count measures by recording length; further details are below. While the initial analysis plan was to conduct multi-level models with fixed effects of recording-type and random subject-level effects, nearly all such models revealed highly non-normal residuals (by visual inspection and Shapiro Test), limiting interpretation across measures. This was true even when data were log-transformed. We instead report a simple set of nonparametric analyses below.
@@ -175,26 +180,15 @@ mean_vboost_measures <- vboost_mean_collapsed %>%
   summarise(mean_measureboost = mean(vboost_types:vboost_op))
 ```
 
-To examine how the hour-long video data 'scale' to day-length data descriptively, we first divided the 12 count metrics from the videos by those from the audio-recordings for each child, to derive 'video-fraction' scores. This showed that the video-recordings were ~`r vboost_timemin_collapsed` of the length of audio-recordings, or `r vboost_timemin_nosil_collapsed` of the length if only 'non-silent' portions of the audio-recording are included. However, rather than a concomitant 10-fold decrease in our count metrics (as would be expected if the video captured a 'representative' hour of the day), the fractions are closer to `r round(mean_vboost_measures,1)` across measures; see Table XX **add M/SD table**. Thus, by and large, videos had a denser concentration of nouns across our measures than did the audio recordings. 
+To examine how the hour-long video data 'scale' to day-length data descriptively, we first divided the 12 count metrics from the videos by those from the audio-recordings for each child, to derive 'video-fraction' scores. This showed that the video-recordings were ~`r vboost_timemin_collapsed` of the length of audio-recordings, or `r vboost_timemin_nosil_collapsed` of the length if only 'non-silent' portions of the audio-recording are included. However, rather than a concomitant 10-fold decrease in our count metrics (as would be expected if the video captured a 'representative' hour of the day), the fractions averaged to `r round(mean_vboost_measures,1)` across measures; see Table XX **add M/SD table**. Thus, by and large, videos had a denser concentration of nouns across our measures than did the audio recordings. 
 
-We computed video-fractions (rather than the reciprocal, i.e. audio/video) because there were more zero values for videos than audio-recordings (e.g. instances when children did not hear any nouns sung), rendering more undefined values. Indeed, over a third of children did not hear nouns in reading or from fathers on videos in either month. See Table \@ref(tab:propna-missing-tables).
-
+We computed video-fractions (rather than the reciprocal, i.e. audio/video) because there were more zero values for videos than audio-recordings (e.g. instances when children did not hear any nouns sung), rendering more undefined values. Indeed, >1/3 of children did not hear nouns in reading or from fathers on videos in either month. See Table \@ref(tab:propna-missing-tables).
 ```{r propna-missing-tables, echo = F, warning = F, message = F, results = "asis"}
-
-# prop of kids with NAs for each cat, across both months
-vars_with_NAs <- sixseven_spreadAV %>% 
-  dplyr::select(subj,
-                a_numtypes, v_numtypes, a_numtokens, v_numtokens, a_numspeakers, v_numspeakers,a_MOT, v_MOT, a_FAT, v_FAT, a_d, v_d, a_q, v_q, a_i, v_i, a_s, v_s, a_r, v_r, a_n, v_n, a_y_op, v_y_op) %>% 
-  group_by(subj) %>% 
-  summarise_if(is.numeric, funs(sum)) %>% 
-  mutate_if(is.numeric, funs(na_if(., 0))) %>%
-  summarise_if(is.numeric, funs(round(sum(is.na(.))/44,2)))%>% 
-  dplyr::select_if(any_vars(.>0))
-
 apa_table(vars_with_NAs)
 ```
 
-We next normed our count values by the number of minutes in each. For example, if an infant heard 500 noun-tokens in 800 minutes of non-silent audio-recording, and 200 in 60 minutes of videos, this was normed to .62 and 3.3 noun-tokens per minute, respectively. Unlike for the video-fractions, this allows us to retain zero values, rendering more readily interpretable results across our count and proportional measures.
+We next normed our count values by the number of minutes in each. For example, if an infant heard 500 noun-tokens in 800 minutes of non-silent audio-recording, and 200 in 60 minutes of videos, this was normed to .62 and 3.3 noun-tokens per minute, respectively. Zero values are retained within the normed count data.\footnotes{We made one exception for an infant with no father. This infant's data was excluded from 'father' values in \@ref(tab:propna-missing-tables) and elsewhere}
+
 
 ```{r normtable, echo = F, warning = F, results = "asis"}
 countvals_normed_table <- countvals_long_norm_collapsed %>% 
@@ -226,9 +220,9 @@ tau_max <- round(max(c_taus_sig$estimate),2)
 tau_mean <- round(mean(c_taus_sig$estimate),2)
 ```
 
-With the normed data, `r w_sigps`/12 of our metrics occured at significantly lower rates in audio recordings than video recordings (adjusted-p<.05). The remaining metric, number of nouns from fathers, was statistically indistinguishable across recording types (adjusted-p>.05). Thus, overall, per unit time, infants heard less noun input across our metrics of quantity, talker, utterance-type and object presence in audio recordings than in videos (per unit time).
+With the normed data, `r w_sigps`/12 of our metrics occured at significantly lower rates in audio recordings than video recordings (adjusted-p<.05). The remaining metric, number of nouns from fathers, was statistically indistinguishable across recording types (adjusted-p>.05). Thus, overall, per unit time, infants heard less noun input across our metrics of quantity, talker, utterance-type and object presence in audio recordings than in videos.
 
-Looking next at correlations, we find that `r c_sigps`/12 metrics correlated in audio vs. video data; number of nouns per minute heard in singing did not. The size of the correlations was significant, but relatively moderate (excluding singing, *M* = `r tau_mean`, `r tau_min` - `r tau_max`, all adjusted-p<.05). See Table \@ref(tab:normtable) and Figures \@ref(fig:gr-derived-counts-diff) and \@ref(fig:gr-derived-counts-corr). 
+Looking next at correlations, we find that `r c_sigps`/12 metrics correlated in audio vs. video data; nouns per minute heard from fathers and in singing did not. The size of the correlations was significant, but relatively moderate (excluding the two non-significant metrics, *M* = `r tau_mean`, `r tau_min` - `r tau_max`, all adjusted-p<.05). See Table \@ref(tab:normtable) and Figures \@ref(fig:gr-derived-counts-diff) and \@ref(fig:gr-derived-counts-corr). 
 
 ```{r gr-derived-counts-diff, fig.cap = "Normalized variable counts by month", echo = F, warning = F}
 gr_countvals_long_norm_collapsed
