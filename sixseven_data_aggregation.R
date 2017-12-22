@@ -331,7 +331,14 @@ vars_with_NAs <- sixseven_spreadAV %>%
          a_FAT = ifelse(subj=="27", 0, a_FAT)) %>%  # this is a hack so that 27 isn't counted bc that subj had no FAT 
   summarise_if(is.numeric, funs(round(sum(is.na(.))/length(.),2)))%>%
   mutate(v_FAT = round(v_FAT *44/43,2)) %>%  # this is a hack so that 27 isn't counted bc that subj had no FAT
-  dplyr::select_if(any_vars(.>0))
+  dplyr::select_if(any_vars(.>0)) %>% 
+  rename("Video: Mothers" = v_MOT,
+         "Video: Fathers"=v_FAT,
+         "Video: Imperatives"=v_i,
+         "Audio: Singing"=a_s,
+         "Video: Singing"=v_s,
+         "Audio: Reading"=a_r,
+         "Video: Reading"=v_r)
 
 
 # word tallies ------------------------------------------------------------

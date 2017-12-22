@@ -184,32 +184,13 @@ mean_vboost_measures <- vboost_mean_collapsed %>%
 
 To examine how the hour-long video data 'scale' to day-length data descriptively, we first divided the 12 count metrics from the videos by those from the audio-recordings for each child, to derive 'video-fraction' scores. This showed that the video-recordings were ~`r vboost_timemin_collapsed` of the length of audio-recordings, or `r vboost_timemin_nosil_collapsed` of the length if only 'non-silent' portions of the audio-recording are included. However, rather than a concomitant 10-fold decrease in our count metrics (as would be expected if the video captured a 'representative' hour of the day), the fractions averaged to `r round(mean_vboost_measures,1)` across measures; see Table XX **add M/SD table**. Thus, by and large, videos had a denser concentration of nouns across our measures than did the audio recordings. 
 
-We computed video-fractions (rather than the reciprocal, i.e. audio/video) because there were more zero values for videos than audio-recordings (e.g. instances when children did not hear any nouns sung), rendering more undefined values. Indeed, >1/3 of children did not hear nouns in reading or from fathers on videos in either month. See Table \@ref(tab:propna-missing-tables).
-
 ```{r propna-missing-tables, echo = F, warning = F, message = F, results = "asis",fig.cap="Proportion of zero values"}
-
-# prop of kids with NAs for each cat, across both months
-vars_with_NAs <- sixseven_spreadAV %>% 
-  dplyr::select(subj,
-                a_numtypes, v_numtypes, a_numtokens, v_numtokens, a_numspeakers, v_numspeakers,a_MOT, v_MOT, a_FAT, v_FAT, a_d, v_d, a_q, v_q, a_i, v_i, a_s, v_s, a_r, v_r, a_n, v_n, a_y_op, v_y_op) %>% 
-  group_by(subj) %>% 
-  summarise_if(is.numeric, funs(sum)) %>% 
-  mutate_if(is.numeric, funs(na_if(., 0))) %>%
-  summarise_if(is.numeric, funs(round(sum(is.na(.))/44,2)))%>% 
-  dplyr::select_if(any_vars(.>0)) %>%
-  rename("Video: Mothers" = v_MOT,
-         "Audio: Fathers"=a_FAT,
-         "Video: Fathers"=v_FAT,
-         "Video: Imperatives"=v_i,
-         "Audio: Singing"=a_s,
-         "Video: Singing"=v_s,
-         "Audio: Reading"=a_r,
-         "Video: Reading"=v_r)
-
 apa_table(vars_with_NAs)
 ```
 
-We next normed our count values by the number of minutes in each. For example, if an infant heard 500 noun-tokens in 800 minutes of non-silent audio-recording, and 200 in 60 minutes of videos, this was normed to .62 and 3.3 noun-tokens per minute, respectively. Zero values are retained within the normed count data.\footnotes{We made one exception for an infant with no father. This infant's data was excluded from 'father' values in \@ref(tab:propna-missing-tables) and elsewhere}
+We computed video-fractions (rather than the reciprocal, i.e. audio/video) because there were more zero values for videos than audio-recordings (e.g. instances when children did not hear any nouns sung), rendering more undefined values. Indeed, >1/3 of children did not hear nouns in reading or from fathers on videos in either month. See Table \@ref(tab:propna-missing-tables).
+
+We next normed our count values by the number of minutes in each. For example, if an infant heard 500 noun-tokens in 800 minutes of non-silent audio-recording, and 200 in 60 minutes of videos, this was normed to .62 and 3.3 noun-tokens per minute, respectively. Zero values are retained within the normed count data.\footnote{We made one exception for an infant with no father. This infant's data was excluded from 'father' values in \@ref(tab:propna-missing-tables) and elsewhere}
 
 
 ```{r normtable, echo = F, warning = F, results = "asis",fig.cap="Count values, normed by number of minutes in recording"}

@@ -323,7 +323,8 @@ background conducted during lab visits, not germane to the present
 analysis, are reported elsewhere (Bergelson \& Aslin, 2017b; Laing and
 Bergelson, under review). Four recordings were collected for each
 infant: an audio- and video-recording at six and at seven months. Each
-recording was on a different day. See table XX.
+recording was on a different day. See Table
+\ref{tab:recording-ages-table}.
 
 \begin{longtable}[]{@{}llll@{}}
 \toprule
@@ -497,25 +498,39 @@ sleep onset).
 \caption{\label{fig:gr-derived-counts-67-corr}Count Correlations, A vs.~V}
 \end{figure}
 
-\begin{verbatim}
-## # A tibble: 1 x 15
-##   vboost_min vboost_awakemin vboost_types vboost_tokens vboost_speakers
-##        <dbl>           <dbl>        <dbl>         <dbl>           <dbl>
-## 1       0.07             0.1         0.31          0.25            0.43
-## # ... with 10 more variables: vboost_MOT <dbl>, vboost_FAT <dbl>,
-## #   vboost_d <dbl>, vboost_q <dbl>, vboost_i <dbl>, vboost_s <dbl>,
-## #   vboost_r <dbl>, vboost_n <dbl>, vboost_op <dbl>, comp <chr>
-\end{verbatim}
-
-\begin{verbatim}
-## # A tibble: 1 x 15
-##   vboost_min vboost_awakemin vboost_types vboost_tokens vboost_speakers
-##        <dbl>           <dbl>        <dbl>         <dbl>           <dbl>
-## 1       0.01            0.02         0.13          0.15             0.2
-## # ... with 10 more variables: vboost_MOT <dbl>, vboost_FAT <dbl>,
-## #   vboost_d <dbl>, vboost_q <dbl>, vboost_i <dbl>, vboost_s <dbl>,
-## #   vboost_r <dbl>, vboost_n <dbl>, vboost_op <dbl>, comp <chr>
-\end{verbatim}
+\begin{tabular}{l|l}
+\hline
+Measure & Mean (SD)\\
+\hline
+Minutes & 0.07 (0.01)\\
+\hline
+Awake minutes & 0.1 (0.02)\\
+\hline
+Types & 0.31 (0.13)\\
+\hline
+Tokens & 0.25 (0.15)\\
+\hline
+Speakers & 0.43 (0.2)\\
+\hline
+Mother & 0.32 (0.22)\\
+\hline
+Father & 0.13 (0.26)\\
+\hline
+Declaratives & 0.19 (0.09)\\
+\hline
+Questions & 0.33 (0.16)\\
+\hline
+Imperatives & 0.27 (0.23)\\
+\hline
+Singing & Inf (1.46)\\
+\hline
+Reading & Inf (2.76)\\
+\hline
+Short phrases & 0.3 (0.25)\\
+\hline
+Object co-presence & 0.34 (0.28)\\
+\hline
+\end{tabular}
 
 To examine how the hour-long video data \enquote{scale} to day-length
 data descriptively, we first divided the 12 count metrics from the
@@ -525,40 +540,39 @@ were \textasciitilde{}0.07 of the length of audio-recordings, or 0.10 of
 the length if only \enquote{non-silent} portions of the audio-recording
 are included. However, rather than a concomitant 10-fold decrease in our
 count metrics (as would be expected if the video captured a
-\enquote{representative} hour of the day), the fractions are closer to
+\enquote{representative} hour of the day), the fractions averaged to
 across measures; see Table XX \textbf{add M/SD table}. Thus, by and
 large, videos had a denser concentration of nouns across our measures
 than did the audio recordings.
-
-We computed video-fractions (rather than the reciprocal,
-i.e.~audio/video) because there were more zero values for videos than
-audio-recordings (e.g.~instances when children did not hear any nouns
-sung), rendering more undefined values. Indeed, over a third of children
-did not hear nouns in reading or from fathers on videos in either month.
-See Table \ref{tab:propna-missing-tables}.
 
 \begin{table}[tbp]
 \begin{center}
 \begin{threeparttable}
 \caption{\label{tab:propna-missing-tables}}
-\begin{tabular}{llllllll}
+\begin{tabular}{lllllll}
 \toprule
-v\_MOT & \multicolumn{1}{c}{a\_FAT} & \multicolumn{1}{c}{v\_FAT} & \multicolumn{1}{c}{v\_i} & \multicolumn{1}{c}{a\_s} & \multicolumn{1}{c}{v\_s} & \multicolumn{1}{c}{a\_r} & \multicolumn{1}{c}{v\_r}\\
+Video: Mothers & \multicolumn{1}{c}{Video: Fathers} & \multicolumn{1}{c}{Video: Imperatives} & \multicolumn{1}{c}{Audio: Singing} & \multicolumn{1}{c}{Video: Singing} & \multicolumn{1}{c}{Audio: Reading} & \multicolumn{1}{c}{Video: Reading}\\
 \midrule
-0.09 & 0.02 & 0.52 & 0.02 & 0.02 & 0.11 & 0.16 & 0.34\\
+0.09 & 0.51 & 0.02 & 0.02 & 0.11 & 0.16 & 0.34\\
 \bottomrule
 \end{tabular}
 \end{threeparttable}
 \end{center}
 \end{table}
 
+We computed video-fractions (rather than the reciprocal,
+i.e.~audio/video) because there were more zero values for videos than
+audio-recordings (e.g.~instances when children did not hear any nouns
+sung), rendering more undefined values. Indeed, \textgreater{}1/3 of
+children did not hear nouns in reading or from fathers on videos in
+either month. See Table \ref{tab:propna-missing-tables}.
+
 We next normed our count values by the number of minutes in each. For
 example, if an infant heard 500 noun-tokens in 800 minutes of non-silent
 audio-recording, and 200 in 60 minutes of videos, this was normed to .62
-and 3.3 noun-tokens per minute, respectively. Unlike for the
-video-fractions, this allows us to retain zero values, rendering more
-readily interpretable results across our count and proportional
-measures.
+and 3.3 noun-tokens per minute, respectively. Zero values are retained
+within the normed count
+data.\footnote{We made one exception for an infant with no father. This infant's data was excluded from 'father' values in \\ref{tab:propna-missing-tables} and elsewhere}
 
 \begin{table}[tbp]
 \begin{center}
@@ -566,20 +580,20 @@ measures.
 \caption{\label{tab:normtable}}
 \begin{tabular}{ll}
 \toprule
-norm\_meas & \multicolumn{1}{c}{norm\_inflation}\\
+Measure & \multicolumn{1}{c}{Inflation (normed)}\\
 \midrule
-y\_op & 2.90\\
-MOT & 3.00\\
-FAT & 1.10\\
-d & 1.90\\
-q & 3.10\\
-n & 2.50\\
-s & 2.30\\
-r & 2.90\\
-i & 2.60\\
-numtypes & 3.00\\
-numtokens & 2.30\\
-numspeakers & 3.90\\
+Object presence & 2.90\\
+Mother & 3.00\\
+Father & NA\\
+Declaratives & 1.90\\
+Questions & 3.10\\
+Short phrases & 2.50\\
+Singing & 2.30\\
+Reading & 2.90\\
+Imperatives & 2.60\\
+Type count & 3.00\\
+Token count & 2.30\\
+Speaker count & 3.90\\
 \bottomrule
 \end{tabular}
 \end{threeparttable}
@@ -592,15 +606,15 @@ rates in audio recordings than video recordings
 fathers, was statistically indistinguishable across recording types
 (adjusted-p\textgreater{}.05). Thus, overall, per unit time, infants
 heard less noun input across our metrics of quantity, talker,
-utterance-type and object presence in audio recordings than in videos
-(per unit time).
+utterance-type and object presence in audio recordings than in videos.
 
 Looking next at correlations, we find that /12 metrics correlated in
-audio vs.~video data; number of nouns per minute heard in singing did
-not. The size of the correlations was significant, but relatively
-moderate (excluding singing, \emph{M} = 0.42, 0.27 - 0.57, all
-adjusted-p\textless{}.05). See Table \ref{tab:normtable} and Figures
-\ref{fig:gr-derived-counts-diff} and \ref{fig:gr-derived-counts-corr}.
+audio vs.~video data; nouns per minute heard from fathers and in singing
+did not. The size of the correlations was significant, but relatively
+moderate (excluding the two non-significant metrics, \emph{M} = 0.44,
+0.27 - 0.57, all adjusted-p\textless{}.05). See Table
+\ref{tab:normtable} and Figures \ref{fig:gr-derived-counts-diff} and
+\ref{fig:gr-derived-counts-corr}.
 
 \begin{figure}
 \centering
