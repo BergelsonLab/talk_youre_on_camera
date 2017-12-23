@@ -39,9 +39,6 @@ vboost_table <- vboost %>%
   mutate(mean_sd = meansd(Mean,SD)) %>%
   dplyr::select(Measure,mean_sd)
 
-vboost_table_data <- vboost_table[-nrow(vboost_table),]
-vboost_col_names = c("Measure", "Mean (SD)")
+vboost_table_data <- vboost_table[-nrow(vboost_table),] %>% 
+  rename(`Mean (SD)`=mean_sd)
 
-# Table
-
-vboost_table <- kable(vboost_table_data, col.names = vboost_col_names)

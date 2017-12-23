@@ -47,7 +47,10 @@ Lab_visits = c(sixmo_lab,"NA")
 
 col_names = c("","Video recordings","Audio recordings","In-lab visits")
 
-ages_table_data <- data.frame(Month, Video_recordings, Audio_recordings, Lab_visits)
+ages_table_data <- data.frame(Month, Video_recordings, Audio_recordings, Lab_visits) %>% 
+  rename(`Video Recordings` = Video_recordings,
+         `Audio Recordings` = Audio_recordings,
+         `In-lab visits` = Lab_visits)
 
 
 # Table

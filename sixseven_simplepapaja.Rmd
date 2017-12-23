@@ -102,10 +102,11 @@ Thus, our main goal was to compare language input young infants receive across f
 # Methods
 
 ## Participants
-Participants were recruited from an existing database of families from local hospitals, or who heard about the BabyLab from friends, family, and outreach. Forty-six participants enrolled; two dropped out in the early stages of the project leaving 44 infants in the final sample. All infants were full-term (40 ± 3 weeks), had no known vision or hearing problems, and heard >75% spoken English in the home. Participants were 95% white; 75% of mothers had a B.A. or higher. The families were enrolled in a yearlong study that included monthly audio- and video-recordings, as well as in-lab visits every other month. Here we report on the home recording data from the first two timepoints (6 and 7 months) of this study, for which participants were compensated $10; see table XX.\footnote{We include only these timepoints because at this stage of development no infants had begun producing words themselves (which may change the input for reasons orthogonal to those we examine here), and given the broader project aims, these timepoints alone had the entire daylong audiorecording annotated.} 
+Participants were recruited from an existing database of families from local hospitals, or who heard about the BabyLab from friends, family, and outreach. Forty-six participants enrolled; two dropped out in the early stages of the project leaving 44 infants in the final sample. All infants were full-term (40 ± 3 weeks), had no known vision or hearing problems, and heard >75% spoken English in the home. Participants were 95% white; 75% of mothers had a B.A. or higher. The families were enrolled in a yearlong study that included monthly audio- and video-recordings, as well as in-lab visits every other month. Here we report on the home recording data from the first two timepoints (6 and 7 months) of this study, for which participants were compensated $10; see table \@ref(tab:recording-ages-table).\footnote{We include only these timepoints because at this stage of development no infants had begun producing words themselves (which may change the input for reasons orthogonal to those we examine here), and given the broader project aims, these timepoints alone had the entire daylong audiorecording annotated.} 
 
-```{r recording-ages-table, comment=F, message=F, hide = T, warning = F, echo = F, fig.cap="Infant ages at recordings and lab visits"}
-sixseven_visit_ages_table
+```{r recording-ages-table, comment=F, message=F, hide = T, warning = F, echo = F, fig.cap="Infant ages at recordings and lab visits", results = "asis"}
+
+apa_table(ages_table_data)
 ```
 
 ## Procedures
@@ -129,8 +130,8 @@ We assessed intercoder reliability on a random contiguous 10% of the annotations
 **add reliability analysis**
 
 
-```{r measures-tab, echo = F, warning = F, message = F, fig.cap="Derived count measures"}
-measures_table2
+```{r measures-tab, echo = F, warning = F, message = F, fig.cap="Derived count measures", results = "asis"}
+apa_table(measures_table_data2)
 ```
 
 # Results
@@ -170,12 +171,6 @@ gr_countvals_long_collapsed
 gr_count_cor_VA_facetmonth_collapsed
 ```
 
-```{r vboost-table, echo = F, warning = F, message = F, fig.cap = "Video Boost",}
-
-vboost_table
-# TO DO: Singing and reading show up as "Inf"?
-```
-
 ```{r scaling examination, echo = F, warning = F, message = F}
 vboost_timemin_collapsed<- mean(vboost_mean_collapsed$vboost_min)
 vboost_timemin_nosil_collapsed<- mean(vboost_mean_collapsed$vboost_awakemin)
@@ -183,10 +178,10 @@ mean_vboost_measures <- vboost_mean_collapsed %>%
   summarise(mean_measureboost = mean(vboost_types:vboost_op))
 ```
 
-To examine how the hour-long video data 'scale' to day-length data descriptively, we first divided the 12 count metrics from the videos by those from the audio-recordings for each child, to derive 'video-fraction' scores. This showed that the video-recordings were ~`r vboost_timemin_collapsed` of the length of audio-recordings, or `r vboost_timemin_nosil_collapsed` of the length if only 'non-silent' portions of the audio-recording are included. However, rather than a concomitant 10-fold decrease in our count metrics (as would be expected if the video captured a 'representative' hour of the day), the fractions averaged to `r round(mean_vboost_measures,1)` across measures; see Table \@ref(vboost_table) **FIX INF VALUES**. Thus, by and large, videos had a denser concentration of nouns across our measures than did the audio recordings. 
+To examine how the hour-long video data 'scale' to day-length data descriptively, we first divided the 12 count metrics from the videos by those from the audio-recordings for each child, to derive 'video-fraction' scores. This showed that the video-recordings were ~`r vboost_timemin_collapsed` of the length of audio-recordings, or `r vboost_timemin_nosil_collapsed` of the length if only 'non-silent' portions of the audio-recording are included. However, rather than a concomitant 10-fold decrease in our count metrics (as would be expected if the video captured a 'representative' hour of the day), the fractions averaged to `r round(mean_vboost_measures,1)` across measures; see Table \@ref(tab:vboost_table) **FIX INF VALUES**. Thus, by and large, videos had a denser concentration of nouns across our measures than did the audio recordings. 
 
 ```{r vboost-table, echo = F, warning = F, message = F, results = "asis",fig.cap="Video Fractions"}
-vboost_table
+apa_table(vboost_table_data)
 ```
 
 ```{r propna-missing-tables, echo = F, warning = F, message = F, results = "asis",fig.cap="Proportion of zero values"}
@@ -207,18 +202,18 @@ countvals_normed_table <- countvals_long_norm_collapsed %>%
   dplyr::select(norm_meas, norm_inflation) %>% 
   mutate_if(is.numeric, funs(round(.,1))) %>% 
   mutate(norm_meas = fct_recode(norm_meas,
-        "y_op" = "Object presence",
-        "MOT" = "Mother",
-        "FAT" = "Father",
-        "d"="Declaratives",
-        "q"="Questions",
-        "n" = "Short phrases",
-        "s" = "Singing",
-        "r" = "Reading",
-        "i" = "Imperatives",
-        "numtypes" = "Type count",
-        "numtokens" = "Token count",
-        "numspeakers" = "Speaker count")) %>%
+        "Object presence" = "y_op",
+        "Mother" = "MOT",
+        "Father" = "FAT",
+        "Declaratives" = "d",
+        "Questions" = "q",
+        "Short phrases" = "n",
+        "Singing" = "s",
+        "Reading" = "r",
+        "Imperatives" = "i",
+        "Type count" = "numtypes",
+        "Token count" = "numtokens",
+        "Speaker count" = "numspeakers")) %>%
   rename("Measure"=norm_meas,
          "Inflation (normed)"=norm_inflation)
   

@@ -23,8 +23,10 @@ measures_table <- kable(measures_table_data, col.names = measures_col_names,
 #version without prop stuff
 measures_col_names2 <- c("Measure","Derived Count")
 
-measures_table_data2 <- data.frame(measures,derived_count)
+measures_table_data2 <- data.frame(measures,derived_count) %>% 
+  rename(Measure = measures,
+         `Derived Count` = derived_count)
 
-measures_table2 <- kable(measures_table_data2, col.names = measures_col_names2,
+measures_table2_kable <- kable(measures_table_data2, col.names = measures_col_names2,
                         format = "markdown", padding = 2) %>%
   kable_styling()
