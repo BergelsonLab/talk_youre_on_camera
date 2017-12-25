@@ -13,25 +13,36 @@ author:
   - name          : "Shannon Dailey"
     affiliation   : "1"
   - name          : "Sharath Koorathota"
-    affiliation   : "2"
+    affiliation   : "3"
   - name          : "Shaelise Tor"
-    affiliation   : "2"
+    affiliation   : "4"
     
 affiliation:
   - id            : "1"
     institution   : "Duke University"
   - id            : "2"
     institution   : "University of Rochester"
+  - id            : "3"
+    institution   : "Columbia University Medical Center"
+  - id            : "4"
+    institution   : "Syracuse University"
 
 author_note: |
-  Add complete departmental affiliations for each author here. Each new line herein must be indented, like this line.
+  Elika Bergelson, Psychology & Neuroscience, Center for Cognitive Neuroscience, Center for Developmental Science, Duke University
+  
+  Andrei Amatuni, Psychology & Neuroscience, Duke University
+  
+  Shannon Dailey, Psychology & Neuroscience, Duke University
+  
+  Sharath Koorathota, Columbia University Medical Center
+  
+  Shaelise Tor, Marriage and Family Therapy, Syracuse University
 
-  Enter author note here.
 
 abstract: |
-  Measurements of infants' quotidian experiences provide critical information about early development. However, the role of sampling methods in providing this information is rarely examined. Here we directly compare language input from hourlong videos and daylong audio-recordings within the same group of 44 infants, at 6 and 7 months. We find far denser noun input in video- than in audio-recordings, across 12 measures of language quantity and lexical diversity, talker variability, utterance-type, and referential transparency. Although audio-recordings captured ~10x more awake-time than videos, the noun input in them was only 2-5x greater. Most notably, per unit time, videos featured more word-types and tokens, more questions but fewer declaratives, and more talkers. In contrast, videos often lacked certain input altogether, e.g. reading, singing, and fathers' speech. While we find moderate correlations across recording-types, the most common audio-recording nouns were far more consistant across families than top video-recording nouns. Thus, even when standardized per unit time, hourlong video and daylong audio-recordings provided fairly divergent pictures of the input infants hear learn from in their daily lives. We suggest short video-recordings may inflate various language input estimates, and should be used cautiously for extrapolation about common words, talkers, situations, and contexts at larger timescales. If theories of language development are to be held accountable to 'facts on the ground' from observational data, we advocate for greater care in unpacking the ramifications of sampling methods of early language input.
+  Measurements of infants' quotidian experiences provide critical information about early development. However, the role of sampling methods in providing this information is rarely examined. Here we directly compare language input from hourlong videos and daylong audio-recordings within the same group of 44 infants, at 6 and 7 months. We find far denser noun input in video- than in audio-recordings, across 12 measures of language quantity and lexical diversity, talker variability, utterance-type, and referential transparency. Although audio-recordings captured ~10x more awake-time than videos, the noun input in them was only 2-5x greater. Most notably, per unit time, videos featured more word-types and tokens, more questions but fewer declaratives, and more talkers. In contrast, >33% of videoslacked certain noun input altogether, e.g. reading and fathers' speech. While we find moderate correlations across recording-types, the most common audio-recording nouns were far more consistant across families than top video-recording nouns. Thus, even when standardized per unit time, hourlong video and daylong audio-recordings provided fairly divergent pictures of the input infants hear learn from in their daily lives. We suggest short video-recordings may inflate various language input estimates, and should be used cautiously for extrapolation about common words, talkers, situations, and contexts at larger timescales. If theories of language development are to be held accountable to 'facts on the ground' from observational data, we advocate for greater care in unpacking the ramifications of sampling methods of early language input.
   
-keywords          : "keywords"
+#keywords          : "language development, naturalistic observational data, infants, early home environment"
 # wordcount         : "X"
 
 bibliography      : ["sixseven.bib", "r-references.bib"]
@@ -63,12 +74,15 @@ getmode <- function(v) {
    uniqv <- unique(v)
    uniqv[which.max(tabulate(match(v, uniqv)))]
 }
-#to do's: add and format tables wherever they're indicated; 
-# create figure legends, and tinker to make sure figures render at reasonable size/ratios
-# make crossref's for figures and tables with \@ref(fig:chunk-name) for figures * \@ref(tab:chunk-name) for tables, bookdown style
+#to do's: 
+# format & caption tables (some are too wide)
+# create figure legends
+# fix figure/table rendering to be in situ and at the end
+# check crossref's for figures and tables with \@ref(fig:chunk-name) for figures * \@ref(tab:chunk-name) for tables, bookdown style
 # reliability stats
 # change code to read in from blabr in sixseven_data_aggregation.R for both basic_level and basic_level_agg files
-# fix all refs
+# check/fix/add refs (n.b.: multiple refs should be separated by ; not ,)
+#http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html
 # cut down to 4k words total 
 ```
 
@@ -78,25 +92,30 @@ getmode <- function(v) {
 set.seed(42)
 ```
 
-# Introduction 
+#Highlights
+*      We measured 44 infants’ early noun input during free-form, infant-caregiver interactions, in hour-long videos and daylong audio-recordings, at 6 and 7 months
+*      Across measures of quantity, utterance-type, referential transparency, and talker, nouns-per-minute were 2-5 times more frequent in videos than in audio-recordings 
+*      Videos had relatively more questions and fewer declaratives. The most frequent nouns across audio-recordings also occured in most families; this was not true for videos.
+*      Methodological differences in naturalistic observations techniques have great influence on researchers’ potential conclusions about infants’ language input
 
-Researchers have studied development by observing infants experiencing their natural habitats for over a century [@taine1876note, @williams1937analytical]. Over the past 20-30 years, written records have been increasingly supplemented with annotated audio and video recordings, which have described the linguistic, social, and physical landscape in which infants learn. Such data --often shared through repositories like CHILDES and Databrary--in turn provide a proxy for various 'input' measures in theories of psycho-social, motor, and in particular, linguistic development [@macwhinney2001emergentist]. 
 
-Furthermore, recent technological advances have made it feasible to collect longer, denser, and higher-quality recordings of infants' day-to-day lives, which aim to provide better approximations of infants' input and early language abilities [@bergelson2017nature, @roy2015predicting, @oller2010automated, @weisleder2013talking, @vandam2016homebank], inter alia. Such naturalistic data seeks to reveal what infants actually learn from as they make use of their biological endowments and environmental resources.
+Researchers have studied development by observing infants experiencing their natural habitats for over a century [@taine1876note; @williams1937analytical]. Over the past 20-30 years, written records have been increasingly supplemented with annotated audio and video recordings, which have described the linguistic, social, and physical landscape in which infants learn. Such data --often shared through repositories like CHILDES and Databrary-- in turn provide a proxy for various 'input' measures in theories of psycho-social, motor, and in particular, linguistic development [@macwhinney2001emergentist]. 
+
+Furthermore, recent technological advances have made it feasible to collect longer, denser, and higher-quality recordings of infants' day-to-day lives, which aim to provide better approximations of infants' input and early language abilities [@bergelson2017nature; @roy2015predicting; @oller2010automated; @weisleder2013talking, *inter alia*; @vandam2016homebank]. Such naturalistic data seeks to reveal what infants actually learn from as they make use of their biological endowments and environmental resources.
  
 While cutting edge technologies make collecting observational data ever easier, this growing toolbox increases researchers' decision load, with serious but underexplored side-effects. For instance, researchers must decide on recording modalities (e.g. audio, video, both), where, whom, and how long to record, and whether to capture structured or free-ranging interactions, with or without experimenters present. While any path through such decision-trees may lead to equivalent results, this is rarely tested directly. Problematically, this leads to research with theoretical conclusions built on equivalency assumptions that go unmeasured.
  
-In recent work directly comparing observational sampling methods, @tamis2017power analyzed mother-infant behavior in 5-minute structured interactions, and 45 minutes of free play. Home sessions were video-recorded by an experimenter and transcribed. The results showed that relative to free play, in structured interactions infants generally experienced more language both in word-quantity (i.e. tokens) and word-variability (i.e. types) per minute. They also found that language quantity across contexts correlated, and that the peak five-minutes of the naturalistic interaction was similar to the 5-minute structured interaction. They conclude that sampling must be matched with research-question, cautioning that while brief samples may be appropriate for studying individual differences, extrapolations about overall language input from short samples must be made with care. 
+In recent work directly comparing observational sampling methods; @tamis2017power analyzed mother-infant behavior in 5-minute structured interactions, and 45 minutes of free play. Home sessions were video-recorded by an experimenter and transcribed. The results showed that relative to free play, in structured interactions infants generally experienced more language both in word-quantity (i.e. tokens) and word-variability (i.e. types) per minute. They also found that language quantity across contexts correlated, and that the peak five-minutes of the naturalistic interaction was similar to the 5-minute structured interaction. They conclude that sampling must be matched with research-question, cautioning that while brief samples may be appropriate for studying individual differences, extrapolations about overall language input from short samples must be made with care. 
 
-In contrast, work by @hart1995meaningful extrapolated extensively. Based on 30 hours of data per family (collected one hour per month for 2.5 years), these researchers estimated that by age four, children receiving public assistance (n=6) heard >30-million fewer words than professional-class children (n=13). While their results highlighting SES differences certainly merited (and received) follow-up (e.g. [@fernald2013ses, @noble2005neurocognitive], *inter alia*), they have been criticized as an extreme over-extrapolation [@dudley2009pathologizing, @michaels2013commentary].
+In contrast, work by @hart1995meaningful extrapolated extensively. Based on 30 hours of data per family (collected one hour per month for 2.5 years), these researchers estimated that by age four, children receiving public assistance (n=6) heard >30-million fewer words than professional-class children (n=13). While their results highlighting SES differences certainly merited (and received) follow-up [e.g. @fernald2013ses; @noble2005neurocognitive, *inter alia*], they have also been criticized as an extreme over-extrapolation [@dudley2009pathologizing; @michaels2013commentary].
 
-Still other research analyzes base rates of certain linguistic phenomena, to provide in-principle proof of what young children can learn from their input [@brent2001role, @tomasello2000young, @lidz2003infants]. Here, the research question dictated what was deemed appropriate sampling. Problematically, for most exploratory work, 'appropriate' sampling is hard to premeditate. For instance, practically any length of adult speech, across wide-ranging recording parameters will find function words (e.g. 'of') at much higher rates than content words (e.g. 'fork'). But for questions concerning infants' language input, it is largely unknown how methodological choices may bias our answers. 
+Still other research analyzes base rates of certain linguistic phenomena, to provide in-principle proof of what young children can learn from their input [@brent2001role; @tomasello2000young; @lidz2003infants]. Here, the research question generally dictated what was deemed appropriate sampling. Problematically, for most exploratory work, 'appropriate' sampling is hard to premeditate. For instance, practically any length of adult speech, across wide-ranging recording parameters will find function words (e.g. 'of') at much higher rates than content words (e.g. 'fork'). But for questions concerning many aspects of infants' language input, it is largely unknown how methodological choices may bias our answers. 
 
-In the present study, we explore these issues, directly comparing hour-long video-recordings and daylong audio-recordings in a single sample of 44 infants, at 6 and 7 months, as part of a larger study on early noun learning. We annotated concrete nouns (generally, objects, foods, animals, or body-parts) said to infants, or said loudly and clearly in their presence. We further annotated three properties previously linked with early language learning: (1) utterance-type, which provides syntactic and situational information (cf.[@hoff2002children, @brent2001role, @debaryshe1993joint]) (2) referential transparency, which clarifies whether the target of the spoken word is visually appreciable [@bergelson2017nature,@bergelson2013acquisition, @yurovsky2013statistical, @cartmill2013quality], and (3) talker, which lets us quantify the range of speakers infants hear [@rost2010finding, @bergmann2016discriminability].
+In the present work, we explore these issues, directly comparing hour-long video-recordings and daylong audio-recordings in a single sample of 44 infants, at 6 and 7 months, as part of a larger study on early noun learning. We annotated concrete nouns (generally, objects, foods, animals, or body-parts) said to infants, or said loudly and clearly in their presence. We further annotated three properties previously linked with early language learning: (1) utterance-type, which provides syntactic and situational information [cf. @hoff2002children; @brent2001role; @debaryshe1993joint] (2) object presence (i.e. referential transparency) which clarifies whether the referent of a spoken word is visually appreciable [@bergelson2017nature,@bergelson2013acquisition; @yurovsky2013statistical; @cartmill2013quality], and (3) talker, which lets us quantify the range of speakers infants hear [@rost2010finding; @bergmann2016discriminability].
 
-This design sets up two overarching questions. First, do features of the noun input in one video-recorded hour predict these same quantities in an entire audio-recorded day? Second, do input quantities differ once time is standardized? If the noun input is equivalent and predictive across recording-types, then researchers can freely vary their observational data collection approach with impunity. If it is not, understanding the biases of various methods is critical to ensuring our learning theories consider the data quantity and variability avilable to learners day-to-day.  
+This design sets up two overarching questions. First, do features of the noun input in one video-recorded hour predict these same quantities in an entire audio-recorded day? Second, do input quantities differ once time is standardized? If the noun input is equivalent and predictive across recording-types, then researchers can freely vary their observational data collection approach with impunity. If it is not, understanding the biases of various methods is critical to ensuring our learning theories consider the data quantity and variability available to learners day-to-day.  
 
-Thus, our main goal was to compare language input young infants receive across four key properties (word quantity/diversity,  utterance-type, referential transparency, and talker), as measured by hourlong videos and (separate) full-day audio-recordings. This seemingly methodological question has deep implications for developmental theory: we examine how sampling and aggregation approaches may alter conclusions about the linguistic input that in turn drives early development.
+Thus, our main goal was to compare language input young infants receive across four key properties (word quantity/diversity,  utterance-type, object presence, and talker), as measured by hourlong videos and (separate) full-day audio-recordings. This seemingly methodological question has deep implications for developmental theory: we examine how sampling approaches may alter conclusions about the linguistic input that in turn drives early development.
 
 
 # Methods
