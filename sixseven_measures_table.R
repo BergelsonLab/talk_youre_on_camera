@@ -7,11 +7,11 @@ measures_col_names <- c("Measure","Derived Count", "Derived Proportion")
 measures <- c("Quantity","Speaker","Utterance Type", "Object Presence")
 
 derived_count <- c("Noun tokens, Noun types","Nouns from Mother, Nouns from Father, Unique Speakers",
-                   "Nouns in Declarative, Imperative, Question, Short-Phrase, Reading, and Singing Utterances",
+                   "Nouns in Declarative, Imperative, Question, Short-Phrase, Reading, & Singing Utterances",
                    "Nouns said when the referent was present and attended to")
 
 derived_prop <- c("Type-token ratio","Prop. nouns by mother, Prop. nouns by father",
-                  "Prop. Nouns in Declarative, Imperative, Question, Short-Phrase, Reading, and Singing Utterances",
+                  "Prop. Nouns in Declarative, Imperative, Question, Short-Phrase, Reading, & Singing Utterances",
                   "Prop. nouns said when the referent was present and attended to")
 
 measures_table_data <- data.frame(measures,derived_count,derived_prop)
