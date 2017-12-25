@@ -247,15 +247,13 @@ gr_count_cor_VA_facetmonth_norm_collapsed
 dq_propmeans <- sixseven_spreadAV_collapsed %>% 
   dplyr::select(a_propd, v_propd, a_propq, v_propq) %>% 
   summarise_all(.funs = mean)
+#pvalues for d&q here:
+#propws
 
-dq_pvals <- ifelse(filter(propws, comp %in% c("propw_d","propw_q")) %>% 
-                     dplyr::select(pval_adj) <.05,
-                   "adjusted-p<.05","FIXTHIS")
-                     
 
 ```  
 
-We conclude the results section with two sets of highly exploratory analyses, at the utterance level, and at the word level. The utterance-type analysis is based on the unanticipated observation that while declaratives and questions made up >2/3 of the input for each recording-type, the videos appeared to contain relatively more questions and fewer declaratives (See Fig \@ref(fig:gr-derived-counts-67-diff) and Fig \@ref(fig:gr-derived-normcounts-diff)). To test this statistically, we converted the six utterance-type counts to proportions (i.e. number of nouns heard in declaratives over total noun tokens) for each recording-type. Wilcoxon tests of each utterance type in audio- vs. video-recording (corrected for multiple comparisons as before) revealed that indeed, declaratives and questions (but not the four other utterance-types) occured at different rates in video and audio recordings (`r `), with audio-recordings showing relatively fewer questions ($M_{video}$=`r dq_propmeans$v_propq`, $M_{audio}$=`r dq_propmeans$a_propq`) and more declaratives than videos ($M_{video}$=`r dq_propmeans$v_propd`, $M_{audio}$=`r dq_propmeans$a_propd`). See figure \@ref(fig:gr-ut-count-collapsed).
+We conclude the results section with two sets of highly exploratory analyses, at the utterance level, and at the word level. The utterance-type analysis is based on the unanticipated observation that while declaratives and questions made up >2/3 of the input for each recording-type, the videos appeared to contain relatively more questions and fewer declaratives (See Fig \@ref(fig:gr-derived-counts-67-diff) and Fig \@ref(fig:gr-derived-normcounts-diff)). To test this statistically, we converted the six utterance-type counts to proportions (i.e. number of nouns heard in declaratives over total noun tokens) for each recording-type. Wilcoxon tests of each utterance type in audio- vs. video-recording (corrected for multiple comparisons as before) revealed that indeed, declaratives and questions (but not the four other utterance-types) occured at different rates in video and audio recordings (adjusted-p<.05), with audio-recordings showing relatively fewer questions ($M_{video}$=`r dq_propmeans$v_propq`, $M_{audio}$=`r dq_propmeans$a_propq`) and more declaratives than videos ($M_{video}$=`r dq_propmeans$v_propd`, $M_{audio}$=`r dq_propmeans$a_propd`). See figure \@ref(fig:gr-ut-count-collapsed).
 
 ```{r gr-ut-count-collapsed, fig.cap = "Utterance Type Proportions", echo = F, warning = F}
 gr_ut_count_collapsed
