@@ -164,31 +164,32 @@ countvals_long_norm_collapsed %>%
 # propw3 <- wilcox.test(sixseven_spreadAV_collapsed$v_prop_dad,
 #                          sixseven_spreadAV_collapsed$a_prop_dad, conf.int=T, paired = T)%>% 
 #   tidy()%>% mutate(comp = "propw_FAT")
-# propw4 <- wilcox.test(sixseven_spreadAV_collapsed$v_propd,
-#                          sixseven_spreadAV_collapsed$a_propd, conf.int=T, paired = T)%>% 
-#   tidy()%>% mutate(comp = "propw_d")
-# propw5 <- wilcox.test(sixseven_spreadAV_collapsed$v_propi,
-#                          sixseven_spreadAV_collapsed$a_propi, conf.int=T, paired = T)%>% 
-#   tidy()%>% mutate(comp = "propw_i")
-# propw6 <- wilcox.test(sixseven_spreadAV_collapsed$v_propr,
-#                          sixseven_spreadAV_collapsed$a_propr, conf.int=T, paired = T)%>% 
-#   tidy()%>% mutate(comp = "propw_r")
-# propw7 <- wilcox.test(sixseven_spreadAV_collapsed$v_propq,
-#                          sixseven_spreadAV_collapsed$a_propq, conf.int=T, paired = T)%>% 
-#   tidy()%>% mutate(comp = "propw_q")
-# propw8 <- wilcox.test(sixseven_spreadAV_collapsed$v_props,
-#                          sixseven_spreadAV_collapsed$a_props, conf.int=T, paired = T)%>% 
-#   tidy()%>% mutate(comp = "propw_s")
-# propw9 <- wilcox.test(sixseven_spreadAV_collapsed$v_propn,
-#                          sixseven_spreadAV_collapsed$a_propn, conf.int=T, paired = T)%>% 
-#   tidy()%>% mutate(comp = "propw_n")
+propw4 <- wilcox.test(sixseven_spreadAV_collapsed$v_propd,
+                         sixseven_spreadAV_collapsed$a_propd, conf.int=T, paired = T)%>%
+  tidy()%>% mutate(comp = "propw_d")
+propw5 <- wilcox.test(sixseven_spreadAV_collapsed$v_propi,
+                         sixseven_spreadAV_collapsed$a_propi, conf.int=T, paired = T)%>%
+  tidy()%>% mutate(comp = "propw_i")
+propw6 <- wilcox.test(sixseven_spreadAV_collapsed$v_propr,
+                         sixseven_spreadAV_collapsed$a_propr, conf.int=T, paired = T)%>%
+  tidy()%>% mutate(comp = "propw_r")
+propw7 <- wilcox.test(sixseven_spreadAV_collapsed$v_propq,
+                         sixseven_spreadAV_collapsed$a_propq, conf.int=T, paired = T)%>%
+  tidy()%>% mutate(comp = "propw_q")
+propw8 <- wilcox.test(sixseven_spreadAV_collapsed$v_props,
+                         sixseven_spreadAV_collapsed$a_props, conf.int=T, paired = T)%>%
+  tidy()%>% mutate(comp = "propw_s")
+propw9 <- wilcox.test(sixseven_spreadAV_collapsed$v_propn,
+                         sixseven_spreadAV_collapsed$a_propn, conf.int=T, paired = T)%>%
+  tidy()%>% mutate(comp = "propw_n")
 # propw10 <- wilcox.test(sixseven_spreadAV_collapsed$v_type_token_ratio,
 #                           sixseven_spreadAV_collapsed$a_type_token_ratio, conf.int=T, paired = T)%>% 
 #   tidy()%>% mutate(comp = "propw_ttr")
 # 
-# propws <- bind_rows(propw1, propw2, propw3, propw4, propw5, propw6, propw7, propw8, propw9, propw10) %>% 
-#   mutate(pval_adj = p.adjust(p.value, method = "holm"))
-# propws %>% filter(pval_adj<.05)
+#propws <- bind_rows(propw1, propw2, propw3, propw4, propw5, propw6, propw7, propw8, propw9, propw10) %>%
+propws <- bind_rows(propw4, propw5, propw6, propw7, propw8, propw9) %>%  
+  mutate(pval_adj = p.adjust(p.value, method = "holm"))
+propws %>% filter(pval_adj<.05)
 # 
 # 
 # # Prop Vars: a vs. v, kendall's corr ------------------------------------------------------
@@ -211,10 +212,11 @@ countvals_long_norm_collapsed %>%
 #   tidy() %>% mutate(comp = "propc_s")
 # propc9 <- cor.test(data=sixseven_spreadAV_collapsed, ~v_propn+a_propn,conf.int=T, method = "kendall")%>%
 #   tidy() %>% mutate(comp = "propc_n")
-# propc10 <- cor.test(data=sixseven_spreadAV_collapsed, ~v_type_token_ratio+a_type_token_ratio,conf.int=T, method = "kendall")%>%
-#   tidy() %>% mutate(comp = "propc_ttr")
-# 
-# propcs <- bind_rows(propc1, propc2, propc3, propc4, propc5, propc6, propc7, propc8, propc9, propc10) %>% 
+# # propc10 <- cor.test(data=sixseven_spreadAV_collapsed, ~v_type_token_ratio+a_type_token_ratio,conf.int=T, method = "kendall")%>%
+# #   tidy() %>% mutate(comp = "propc_ttr")
+# # 
+# #propcs <- bind_rows(propc1, propc2, propc3, propc4, propc5, propc6, propc7, propc8, propc9, propc10) %>%
+# propcs <- bind_rows(propc4, propc5, propc6, propc7, propc8, propc9) %>%
 #   mutate(pval_adj = p.adjust(p.value, method = "holm"))
 # propcs %>% filter(pval_adj<.05)
 # propc_taus_sig <- filter(propcs, pval_adj<.05)

@@ -231,30 +231,37 @@ tau_mean <- round(mean(c_taus_sig$estimate),2)
 
 With the normed data, `r w_sigps`/12 of our metrics occured at significantly lower rates in audio recordings than video recordings (adjusted-p<.05). The remaining metric, number of nouns from fathers, was statistically indistinguishable across recording types (adjusted-p>.05). Thus, overall, per unit time, infants heard less noun input across our metrics of quantity, talker, utterance-type and object presence in audio recordings than in videos.
 
-Looking next at correlations, we find that `r c_sigps`/12 metrics correlated in audio vs. video data; nouns per minute heard from fathers and in singing did not. The size of the correlations was moderate (excluding the two non-significant metrics, *M* = `r tau_mean`, `r tau_min` - `r tau_max`, all adjusted-p<.05). See Table \@ref(tab:normtable) and Figures \@ref(fig:gr-derived-counts-diff) and \@ref(fig:gr-derived-counts-corr). 
+Looking next at correlations, we find that `r c_sigps`/12 metrics correlated in audio vs. video data; nouns per minute heard from fathers and in singing did not. The size of the correlations was moderate (excluding the two non-significant metrics, *M* = `r tau_mean`, `r tau_min` - `r tau_max`, all adjusted-p<.05). See Table \@ref(tab:normtable) and Figures \@ref(fig:gr-derived-normcounts-diff) and \@ref(fig:gr-derived-normcounts-corr). 
 
-```{r gr-derived-counts-diff, fig.cap = "Normalized variable counts by month", echo = F, warning = F}
+```{r gr-derived-normcounts-diff, fig.cap = "Normalized variable counts", echo = F, warning = F}
 gr_countvals_long_norm_collapsed
 ```
 
-```{r gr-derived-counts-corr, fig.cap = "Normalized count correlations", echo = F, fig.width=12,  fig.height= 3, warning = F}
+```{r gr-derived-normcounts-corr, fig.cap = "Normalized count correlations", echo = F, fig.width=12,  fig.height= 3, warning = F}
 gr_count_cor_VA_facetmonth_norm_collapsed
 
 ```
 
+#Exploratory Analyses over Utterance-Types and Nouns
+```{r prop-ut, echo = F, warning = F, message = F}
+dq_propmeans <- sixseven_spreadAV_collapsed %>% 
+  dplyr::select(a_propd, v_propd, a_propq, v_propq) %>% 
+  summarise_all(.funs = mean)
 
-```{r derived_props, echo = F, warning = F, message = F}
-props_sixsev_ps <- ifelse(sum(pwas$pval_adj<0.05)+sum(pwvs$pval_adj<.05)==0, "all adjusted-p>.05","FIXTHIS")
-sig_pcas <- sum(pcas$pval_adj<.05)
-pcas_min <- round(min(pca_taus_sig$estimate),2)
-pcas_max <- round(max(pca_taus_sig$estimate),2)
-pcv_MOT <- round(subset(pcvs, comp=="pcv_MOT")$estimate,2)
-pcv_FAT <- round(subset(pcvs, comp=="pcv_FAT")$estimate,2)
+dq_pvals <- ifelse(filter(propws, comp %in% c("propw_d","propw_q")) %>% 
+                     dplyr::select(pval_adj) <.05,
+                   "adjusted-p<.05","FIXTHIS")
+                     
+
+```  
+
+We conclude the results section with two sets of highly exploratory analyses, at the utterance level, and at the word level. The utterance-type analysis is based on the unanticipated observation that while declaratives and questions made up >2/3 of the input for each recording-type, the videos appeared to contain relatively more questions and fewer declaratives (See Fig \@ref(fig:gr-derived-counts-67-diff) and Fig \@ref(fig:gr-derived-normcounts-diff)). To test this statistically, we converted the six utterance-type counts to proportions (i.e. number of nouns heard in declaratives over total noun tokens) for each recording-type. Wilcoxon tests of each utterance type in audio- vs. video-recording (corrected for multiple comparisons as before) revealed that indeed, declaratives and questions (but not the four other utterance-types) occured at different rates in video and audio recordings (`r `), with audio-recordings showing relatively fewer questions ($M_{video}$=`r dq_propmeans$v_propq`, $M_{audio}$=`r dq_propmeans$a_propq`) and more declaratives than videos ($M_{video}$=`r dq_propmeans$v_propd`, $M_{audio}$=`r dq_propmeans$a_propd`). See figure \@ref(fig:gr-ut-count-collapsed).
+
+```{r gr-ut-count-collapsed, fig.cap = "Utterance Type Proportions", echo = F, warning = F}
+gr_ut_count_collapsed
 ```
 
-
-#Noun Frequency and Prevalence 
-We conclude with a set of highly exploratory analyses at the word level, which aim to provide a first-pass characterization of whether audio and video recordings captured the same nouns and the same relative frequencies across words and families. The distribution of nouns in our recordings was zipfian: of the `r totaln_objectwords`unique object words (`r totaln_bl` lemmas) heard across months and recording types, only `r totaln_once_objectwords` (`r totaln_once_bl` lemmas) were heard more than once (see Figures \@ref(fig:zipfian) and \@ref(fig:top-100-logspace)).
+The word level analysis aims to provide a first-pass characterization of whether audio and video recordings captured the same nouns and the same relative frequencies across words and families. The distribution of nouns in our recordings was zipfian: of the `r totaln_objectwords`unique object words (`r totaln_bl` lemmas) heard across months and recording types, only `r totaln_once_objectwords` (`r totaln_once_bl` lemmas) were heard more than once (see Figures \@ref(fig:zipfian) and \@ref(fig:top-100-logspace)).
 
 ```{r zipfian, fig.cap = "Zipfian word frequency distributions", echo = F, fig.height = 5, warning = F, message= F}
 zipf_av

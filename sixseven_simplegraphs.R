@@ -65,3 +65,13 @@ top10_graph_collapsed <- ggplot(overall_top10, aes(n, nfams, label = object, sha
   scale_shape_discrete(solid=F)+
   guides(color=F)#+#theme(legend.background = element_rect(fill="gray90", size=.5, linetype="dotted"))
 #theme(legend.key=element_rect(fill='springgreen'))
+
+
+gr_ut_count_norm_collapsed <- ggplot(countvals_long_norm_collapsed %>% filter(meas_type=="utt"), 
+                                     aes(fill = fct_reorder(norm_meas, normval), linetype =audio_video, audio_video, normval))+
+  stat_summary(fun.y=mean, geom="bar", position = "stack", aes(linetype=audio_video),color = "black")
+
+
+gr_ut_count_collapsed <- ggplot( countvals_long_collapsed %>% filter(meas_type=="utt"),
+       aes(audio_video, countval, fill = fct_reorder(count_meas, countval), linetype =audio_video))+
+  stat_summary(fun.y=mean, geom="bar", position = "fill", aes(linetype=audio_video),color = "black")
