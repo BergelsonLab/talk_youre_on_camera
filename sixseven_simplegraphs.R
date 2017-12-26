@@ -77,3 +77,4 @@ gr_ut_count_collapsed <- ggplot( countvals_long_collapsed %>% filter(meas_type==
        aes(audio_video, countval, fill = fct_reorder(count_meas, countval), linetype =audio_video))+
   stat_summary(fun.y=mean, geom="bar", position = "fill", aes(linetype=audio_video),color = "black")+
   guides(fill=(guide_legend(title = NULL)))
+
