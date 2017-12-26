@@ -149,7 +149,7 @@ We find far denser noun input in video- than in audio-recordings, across
 12 measures of language quantity and lexical diversity, talker
 variability, utterance-type, and referential transparency. Although
 audio-recordings captured \textasciitilde{}10x more awake-time than
-videos, the noun input in them was only 2-5x greater. Most notably, per
+videos, the noun input in them was only 2-4x greater. Most notably, per
 unit time, videos featured more word-types and tokens, more questions
 but fewer declaratives, and more talkers. In contrast,
 \textgreater{}33\% of videos lacked certain noun input altogether,
@@ -201,7 +201,7 @@ the ramifications of sampling methods of early language input.}
   audio-recordings, at 6 and 7 months
 \item
   Across measures of quantity, utterance-type, object presence, and
-  talker, nouns-per-minute were 2-5 times more frequent in videos than
+  talker, nouns-per-minute were 2-4 times more frequent in videos than
   in audio-recordings
 \item
   Videos had relatively more questions and fewer declaratives. The most
@@ -333,7 +333,7 @@ we report on the home recording data from the first two timepoints (6
 and 7 months) of this study, for which participants were compensated
 \$10.\footnote{We include only these timepoints because no infants had begun producing words themselves (which changes the input for reasons orthogonal to those examined here); given the broader project aims, these timepoints alone had the entire daylong audio-recording annotated.}
 
-\begin{table}[b]
+\begin{table}[tbp]
 \begin{center}
 \begin{threeparttable}
 \caption{\label{tab:recording-ages-table}Infant ages at recordings and lab visits}
@@ -465,7 +465,9 @@ recording-type and random subject-level effects, nearly all such models
 revealed highly non-normal residuals (by visual inspection and Shapiro
 Test), even when log-transformed; this limited interpretation across
 measures. Thus, we instead report a simple set of nonparametric analyses
-below.
+below. We used R for all data aggregation and analyses; the code that
+rendered this manuscript and all its contents is available on github
+here: \url{https://github.com/BergelsonLab/talk_youre_on_camera}.
 
 For all recording-type comparisons, we look at whether our measures
 \emph{differed} significantly (by two-tailed, paired Wilcoxon Test), and
@@ -489,13 +491,13 @@ capacity of the LENA device. While audio-recordings began when children
 awoke, we further estimated the onsets and offsets of daytime naps by
 removing the \enquote{silent} portions of the recordings (see Methods).
 This provided an estimated upper-limit on infants' awake
-(i.e.~non-silent) time (Mode = 654 min., \emph{M} = 603.147727272727min,
-SD=106.692224643472, R=385-951 min ). Our estimates comported with
-established norms for 6--8-month-olds in the US (\textbf{ADD REF:}
-Mandel et al, 2010), which are 180 minutes of daytime sleep, and 600
-minutes of nighttime sleep. Infants were always awake during video
-recordings (save one infant, who fell asleep before the recording-hour
-ended; that video was stopped at sleep onset).
+(i.e.~non-silent) time (Mode = 654 min., \emph{M} = 603 min, SD=106.8,
+R=385.2-951 min ). Our estimates comported with established norms for
+6--8-month-olds in the US (\textbf{ADD REF:} Mandel et al, 2010), which
+are 180 minutes of daytime sleep, and 600 minutes of nighttime sleep.
+Infants were always awake during video recordings (save one infant, who
+fell asleep before the recording-hour ended; that video was stopped at
+sleep onset).
 
 \begin{figure}
 \centering
@@ -513,14 +515,14 @@ To examine how the hour-long video data \enquote{scale} to day-length
 data descriptively, we first divided the 12 count metrics from the
 videos by those from the audio-recordings for each child, to derive
 \enquote{video-fraction} scores. This showed that the video-recordings
-were \textasciitilde{}0.07 of the length of audio-recordings, or 0.10 of
-the length if only \enquote{non-silent} portions of the audio-recording
-are included. However, rather than a concomitant 10-fold decrease in our
-count metrics (as would be expected if the video captured a
-\enquote{representative} hour of the day), the fractions averaged to
-across measures; see Table @ref(tab:vboost\_table) \textbf{FIX INF
-VALUES}. Thus, by and large, videos had a denser concentration of nouns
-across our measures than did the audio recordings.
+were 0.07 of the length of audio-recordings, or 0.10 of the length if
+only \enquote{non-silent} portions of the audio-recording are included.
+However, rather than a concomitant 10-fold decrease in our count metrics
+(as would be expected if the video captured a \enquote{representative}
+hour of the day), the fractions averaged to across measures; see Table
+\ref{tab:vboost-table} \textbf{FIX INF VALUES}. Thus, by and large,
+videos had a denser concentration of nouns across our measures than did
+the audio recordings.
 
 \begin{table}[tbp]
 \begin{center}
@@ -550,6 +552,13 @@ Object co-presence & 0.34 (0.28)\\
 \end{center}
 \end{table}
 
+We computed video-fractions (rather than the reciprocal,
+i.e.~audio/video) because there were more zero values for videos than
+audio-recordings (e.g.~instances when children did not hear any nouns
+sung), rendering more undefined values. Indeed, \textgreater{}1/3 of
+children did not hear nouns in reading or from fathers on videos in
+either month. See Table \ref{tab:propna-missing-tables}.
+
 \begin{table}[tbp]
 \begin{center}
 \begin{threeparttable}
@@ -567,19 +576,12 @@ Video: Mothers & \multicolumn{1}{c}{Video: Fathers} & \multicolumn{1}{c}{Video: 
 \end{center}
 \end{table}
 
-We computed video-fractions (rather than the reciprocal,
-i.e.~audio/video) because there were more zero values for videos than
-audio-recordings (e.g.~instances when children did not hear any nouns
-sung), rendering more undefined values. Indeed, \textgreater{}1/3 of
-children did not hear nouns in reading or from fathers on videos in
-either month. See Table \ref{tab:propna-missing-tables}.
-
 We next normed our count values by the number of minutes in each. For
 example, if an infant heard 500 noun-tokens in 800 minutes of non-silent
 audio-recording, and 200 in 60 minutes of videos, this was normed to .62
 and 3.3 noun-tokens per minute, respectively. Zero values are retained
 within the normed count
-data.\footnote{One infant's zero value was excluded from 'father' measures (as in \\ref{tab:propna-missing-tables}); this infant had no father.}
+data.\footnote{One infant's zero value was excluded from 'father' measures because this infant had no father.}
 
 \begin{table}[tbp]
 \begin{center}
@@ -610,8 +612,8 @@ Speaker count & 3.90\\
 \end{table}
 
 With the normed data, 11/12 of our metrics occured at significantly
-lower rates in audio recordings than video recordings
-(adjusted-p\textless{}.05). The remaining metric, number of nouns from
+lower rates in audio recordings than video recordings (all
+adjusted-p\textless{}.05). The remaining metric, number of nouns from
 fathers, was statistically indistinguishable across recording types
 (adjusted-p\textgreater{}.05). Thus, overall, per unit time, infants
 heard less noun input across our metrics of quantity, talker,
@@ -641,24 +643,25 @@ correlations}
 \section{Exploratory Analyses over Utterance-Types and
 Nouns}\label{exploratory-analyses-over-utterance-types-and-nouns}
 
-We conclude the results section with two sets of highly exploratory
-analyses, at the utterance level, and at the word level. The
-utterance-type analysis is based on the unanticipated observation that
-while declaratives and questions made up \textgreater{}2/3 of the input
-for each recording-type, the videos appeared to contain relatively more
-questions and fewer declaratives (See Fig
-\ref{fig:gr-derived-counts-67-diff} and Fig
-\ref{fig:gr-derived-normcounts-diff}). To test this statistically, we
-converted the six utterance-type counts to proportions (i.e.~number of
-nouns heard in declaratives over total noun tokens) for each
+Finally, we undertook two sets of highly exploratory analyses, at the
+utterance level, and at the word level. The utterance-type analysis is
+based on the unanticipated observation that while declaratives and
+questions made up \textgreater{}2/3 of the input for each
+recording-type, the videos appeared to contain relatively more questions
+and fewer declaratives (See Fig \ref{fig:gr-derived-counts-67-diff} and
+Fig \ref{fig:gr-derived-normcounts-diff}). To test this statistically,
+we converted the six utterance-type counts to proportions (e.g.~number
+of nouns heard in declaratives over total noun tokens) for each
 recording-type. Wilcoxon tests of each utterance type in audio-
 vs.~video-recording (corrected for multiple comparisons as before)
-revealed that indeed, declaratives and questions (but not the four other
-utterance-types) occured at different rates in video and audio
-recordings (adjusted-p\textless{}.05), with audio-recordings showing
-relatively fewer questions (\(M_{video}\)=0.26, \(M_{audio}\)=0.19) and
-more declaratives than videos (\(M_{video}\)=0.40, \(M_{audio}\)=0.50).
-See figure \ref{fig:gr-ut-count-collapsed}.
+revealed that indeed, declaratives and questions occured at different
+rates in video and audio recordings (both adjusted-p\textless{}.05),
+with audio-recordings containing relatively fewer questions
+(\(M_{video}\)=0.26, \(M_{audio}\)=0.19) and more declaratives than
+videos (\(M_{video}\)=0.40, \(M_{audio}\)=0.50). No other proportional
+utterance-type differences reached significance across recording-types
+(all adjusted-p\textgreater{}.05). See Figure
+\ref{fig:gr-ut-count-collapsed}.
 
 \begin{figure}
 \centering
@@ -666,13 +669,13 @@ See figure \ref{fig:gr-ut-count-collapsed}.
 \caption{\label{fig:gr-ut-count-collapsed}Utterance Type Proportions}
 \end{figure}
 
-The word level analysis aims to provide a first-pass characterization of
-whether audio and video recordings captured the same nouns and the same
-relative frequencies across words and families. The distribution of
-nouns in our recordings was zipfian: of the 5801unique object words
-(3137 lemmas) heard across months and recording types, only 2482 (960
-lemmas) were heard more than once (see Figures \ref{fig:zipfian} and
-\ref{fig:top-100-logspace}).
+Our final analysis is at the word level; we aim to provide a first-pass
+characterization of whether audio and video recordings captured the same
+nouns and the same relative frequencies across words and families. The
+distribution of nouns in our recordings was zipfian: of the 5801 unique
+object words (3137 lemmas) heard across months and recording types, only
+2482 (960 lemmas) were heard more than once (see Figures
+\ref{fig:zipfian} and \ref{fig:top-100-logspace}).
 
 \begin{figure}
 \centering
@@ -689,7 +692,7 @@ lemmas) were heard more than once (see Figures \ref{fig:zipfian} and
 We examined the top 100 most frequent nouns from audio- and
 video-recordings (n=136 due to ties, n=68 without words that occurred
 zero times in one recording-type). Frequency across recording-types
-correlated significantly (Kendall's tau: 0.39, p\textless{}.0001,) even
+correlated significantly (Kendall's tau: 0.39, p\textless{}.0001) even
 with zero-frequency words included (Kendall's tau: 0.25,
 p\textless{}.0001; see Figure \ref{fig:top100-corr-rectype}).
 
@@ -701,15 +704,18 @@ recording type}
 \end{figure}
 
 Finally, looking at just the top ten words by recording-type, we find
-that the top audio words were far more common across families than the
-top video words were (see Figure \ref{fig:top10noun-freq}). While four
-of the top 10 words overlapped (baby, book, mouth, toes), the frequency
-of the top audio words was roughly 3-fold that of the top video words,
-again reflecting the higher density of video-recordings (which were 1/10
-the length of audio recordings on average). Taken together, this
-exploratory analysis suggests that daylong audio-recordings appear to
-render more stable high-frequency words across families and than do
-video-recordings.
+three notable results. First, four of the top ten words in each
+recording-type overlapped (baby, book, mouth, toes). Second, the top
+audio words were \textasciitilde{}3x as common as the top video words
+(\(M_{audio}\)=761.80(114.75), \(M_{video}\)=232.80(91.38)), again
+underscoring the higher density of video recordings (which were 1/10 the
+lenth of audio recordings on average). Third, the top audio words were
+far more common across families (see Figure \ref{fig:top10noun-freq}).
+The ten most frequent nouns in audio-recordings were heard by 37-44 of
+the 44 families, while those in video-recordings were heard by 23-42.
+Taken together, this exploratory analysis suggests that daylong
+audio-recordings appear to render more stable high-frequency words
+across families and than do video-recordings.
 
 \begin{figure}
 \centering
@@ -721,7 +727,7 @@ video-recordings.
 
 Our results can be distilled to three key findings. First, infants heard
 relatively more nouns in the video recordings than in the audio
-recordings. Per minute, infants heard \textasciitilde{}2-5x more noun
+recordings. Per minute, infants heard \textasciitilde{}2-4x more noun
 input across our quantity, speaker, utterance-type, and object-presence
 metrics when they and their caretakers were video-recorded for an hour
 versus audio-recorded for a day. Second, while our metrics correlated

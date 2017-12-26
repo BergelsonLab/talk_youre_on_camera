@@ -386,6 +386,13 @@ overall_top10 <-sixseven_basiclevel_home_data%>%
   top_n(10,n) %>% 
   arrange(audio_video, -n)
 
+overall_top10_nfams <- overall_top10 %>% 
+  group_by(audio_video) %>% 
+  summarise(min_nfams = min(nfams),
+            max_nfams = max(nfams),
+            mean_freq = mean(n),
+            sd_freq = sd(n))
+
 #collapsing month
 top100av <- sixseven_basiclevel_home_data%>%
   group_by(audio_video, object)%>%
