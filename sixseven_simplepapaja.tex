@@ -147,7 +147,7 @@ directly compare language input from hourlong videos and daylong
 audio-recordings within the same group of 44 infants, at 6 and 7 months.
 We find far denser noun input in video- than in audio-recordings, across
 12 measures of language quantity and lexical diversity, talker
-variability, utterance-type, and referential transparency. Although
+variability, utterance-type, and object presence. Although
 audio-recordings captured \textasciitilde{}10x more awake-time than
 videos, the noun input in them was only 2-4x greater. Most notably, per
 unit time, videos featured more word-types and tokens, more questions
@@ -164,6 +164,10 @@ words, talkers, utterance-types, and contexts at larger timescales. If
 theories of language development are to be held accountable to `facts on
 the ground' from observational data, greater care is needed to unpack
 the ramifications of sampling methods of early language input.}
+      \keywords{\\
+
+      \indent  3844 as of 4:15pm, 12/26/17
+    }
   
 
 
@@ -355,10 +359,11 @@ Participants gave consent at an initial lab visit for the larger study
 through a process approved by the University of Rochester IRB.
 Questionnaires about various aspects of the family's and infant's
 background conducted during lab visits, not germane to the present
-analysis, are reported elsewhere (Bergelson \& Aslin, 2017) \textbf{ADD
-REF Laing and Bergelson, under review)}. Four recordings were collected
-for each infant: an audio- and video-recording at six and seven months,
-each on a different day. See Table \ref{tab:recording-ages-table}.
+analysis, are reported elsewhere (Bergelson \& Aslin, 2017)
+\textbf{FIX/ADD LAING\&BERGELSON REF; see last code-chunk}. Four
+recordings were collected for each infant: an audio- and video-recording
+at six and seven months, each on a different day. See Table
+\ref{tab:recording-ages-table}.
 
 Audio-video release forms were given to parents and collected after the
 audio and video recordings for the month were complete. Parents could
@@ -460,7 +465,7 @@ theoretically-motivated reason to predict input differences across this
 4 week span (i.e.~there are no developmental or linguistic milestones
 typically achieved at 6-7 months.) We also normalized the count measures
 by recording length; further details are below. While we initial
-anticipated conducting multi-level models with fixed effects of
+anticipated analyzing multi-level models with fixed effects of
 recording-type and random subject-level effects, nearly all such models
 revealed highly non-normal residuals (by visual inspection and Shapiro
 Test), even when log-transformed; this limited interpretation across
@@ -505,24 +510,19 @@ sleep onset).
 \caption{\label{fig:gr-derived-counts-67-diff}Counts A vs.~V}
 \end{figure}
 
-\begin{figure}
-\centering
-\includegraphics{sixseven_simplepapaja_files/figure-latex/gr-derived-counts-67-corr-1.pdf}
-\caption{\label{fig:gr-derived-counts-67-corr}Count Correlations, A vs.~V}
-\end{figure}
-
 To examine how the hour-long video data \enquote{scale} to day-length
 data descriptively, we first divided the 12 count metrics from the
 videos by those from the audio-recordings for each child, to derive
-\enquote{video-fraction} scores. This showed that the video-recordings
+\enquote{video-fraction} score. This showed that the video-recordings
 were 0.07 of the length of audio-recordings, or 0.10 of the length if
 only \enquote{non-silent} portions of the audio-recording are included.
 However, rather than a concomitant 10-fold decrease in our count metrics
 (as would be expected if the video captured a \enquote{representative}
-hour of the day), the fractions averaged to across measures; see Table
-\ref{tab:vboost-table} \textbf{FIX INF VALUES}. Thus, by and large,
-videos had a denser concentration of nouns across our measures than did
-the audio recordings.
+hour of the day), the fractions averaged to 0.31 across measures; see
+Table \ref{tab:vboost-table}. Thus, by and large, videos had a denser
+concentration of nouns across our measures than did the audio
+recordings. See Figure \ref{fig:gr-derived-counts-67-diff} for raw count
+data for each metric.
 
 \begin{table}[tbp]
 \begin{center}
@@ -542,8 +542,8 @@ Father & 0.13 (0.26)\\
 Declaratives & 0.19 (0.09)\\
 Questions & 0.33 (0.16)\\
 Imperatives & 0.27 (0.23)\\
-Singing & Inf (1.46)\\
-Reading & Inf (2.76)\\
+Singing & 0.65 (1.46)\\
+Reading & 1.02 (2.76)\\
 Short phrases & 0.3 (0.25)\\
 Object co-presence & 0.34 (0.28)\\
 \bottomrule
@@ -598,7 +598,7 @@ Measure & \multicolumn{1}{c}{Inflation (normed)}\\
 \midrule
 Object presence & 2.90\\
 Mother & 3.00\\
-Father & NA\\
+Father & 1.10\\
 Declaratives & 1.90\\
 Questions & 3.10\\
 Short phrases & 2.50\\
@@ -615,21 +615,23 @@ Speaker count & 3.90\\
 \end{center}
 \end{table}
 
-With the normed data, 11/12 of our metrics occured at significantly
-lower rates in audio recordings than video recordings (all
+With the normed data, 11/12 metrics occured at significantly lower rates
+in audio recordings than video recordings (all
 adjusted-p\textless{}.05). The remaining metric, number of nouns from
 fathers, was statistically indistinguishable across recording types
 (adjusted-p\textgreater{}.05). Thus, overall, per unit time, infants
 heard less noun input across our metrics of quantity, talker,
 utterance-type and object presence in audio recordings than in videos.
+We provide both raw and normed count data in Figure
+\ref{fig:gr-derived-counts-67-diff} and
+\ref{fig:gr-derived-normcounts-diff}.
 
 Looking next at correlations, we find that 10/12 metrics correlated in
 audio vs.~video data; nouns per minute heard from fathers and in singing
-did not. The size of the correlations was moderate (excluding the two
-non-significant metrics, \emph{M} = 0.44, 0.27 - 0.57, all
-adjusted-p\textless{}.05). See Table \ref{tab:normtable} and Figures
-\ref{fig:gr-derived-normcounts-diff} and
-\ref{fig:gr-derived-normcounts-corr}.
+did not. The size of the correlations (i.e.~Kendall's \(\tau\)) was
+moderate (excluding the two non-significant metrics, \emph{M} = 0.44,
+0.27 - 0.57, all adjusted-p\textless{}.05). See Table
+\ref{tab:normtable} and Figure \ref{fig:gr-derived-normcounts-corr}.
 
 \begin{figure}
 \centering
@@ -647,7 +649,7 @@ correlations}
 \section{Exploratory Analyses over Utterance-Types and
 Nouns}\label{exploratory-analyses-over-utterance-types-and-nouns}
 
-Finally, we undertook two sets of highly exploratory analyses, at the
+Lastly, we undertook two sets of highly exploratory analyses, at the
 utterance level, and at the word level. The utterance-type analysis is
 based on the unanticipated observation that while declaratives and
 questions made up \textgreater{}2/3 of the input for each
@@ -745,6 +747,9 @@ exhibited Zipfian frequency distributions), top words from the daylong
 audio-recording appear to better represent the noun input across
 families.
 
+\section{Noun Quantity and Lexical
+Diversity}\label{noun-quantity-and-lexical-diversity}
+
 The pattern across recording-types suggests to us that parents behaved
 naturally during recordings, but that \enquote{natural} behavior
 differed by recording context. This is consistent with a point made by
@@ -767,7 +772,7 @@ prominence matters, both \enquote{hat} and \enquote{camera} are in the
 top 10 words from video-recordings each month; no analogous nouns
 (e.g.~vest, recorder) topped the frequency rankings in our audio
 recordings (see Figures \ref{fig:top10noun-freq} and
-\ref{fig:top-words}).
+\ref{fig:top-100-logspace}).
 
 Our comparison across recording-types highlighted many differences
 across our noun input measures, even with family and age held constant.
@@ -781,42 +786,49 @@ recordings. While the difference they find is less extreme numerical
 recording compared to our 2-3-fold difference), this general pattern
 appears robust across our very different sampling methods. Taken
 together, these results converge in suggesting that shorter recordings
-elicit denser caregiver talk. For certain research questions, these
-differences in volubility and lexical diversity may not matter. For
-instance, for studies aiming to compare relative rates of word use and
-object interactions during a concentrated exposure and test phase in the
-lab, higher volubility and lexical diversity in shorter recordings may
-be less relevant. In contrast, research aiming to quantify language
-input across populations with varying demographic, social, and cultural
-properties may need to be particular sensitive to cross-sample
-camparison in word quantity, as a function of sampling parameters
-(\emph{cf} Bergelson et al, under review; Cristia et al, 2017 CHIDev,
-Schneidman \& Goldin-Meadow, 2012). \textbf{ADD REFS}
+elicit denser caregiver talk.
 
-We also found more object co-presence in video- than in
-audio-recordings. This may be because the video recordings truly had
-more object presence (i.e.~infants mostly stayed in 1-2 rooms,
-interacting with caregivers and objects at hand). Alternatively, or
-additionally, it may be the case that there are more ambiguous cases of
-\enquote{object co-presence} in audio recordings than video recordings,
-which were in turn annotated as \enquote{not present} at higher rates.
-Given the XX\textbf{add rel numbers} rates of agreement, we find it more
-likely that this reflects a true difference between situations that
-arise during daylong-audio vs.~hourlong-video recordings. Given that
-object presence and the related ideas of referential transparency and
-contingent talk have been linked with early word learning and language
-development \textbf{ADD REFS}(Bergelson \& Aslin, 2017; Yurovsky et al
-2012; McGillion et al, 2017; Cartmill..Trueswell, 2013), this property
-in particular merits followup. That is, a more thorough understanding of
+For certain research questions, these differences in volubility and
+lexical diversity may not matter. For instance, for studies aiming to
+compare relative rates of word use and object interactions during a
+concentrated exposure and test phase in the lab, higher volubility and
+lexical diversity in shorter recordings may be less relevant. In
+contrast, research aiming to quantify language input across populations
+with varying demographic, social, and cultural properties may need to be
+particular sensitive to cross-sample camparison in word quantity, as a
+function of sampling parameters (cf Bergelson et al, under review;
+Cristia et al, 2017 CHIDev, Schneidman \& Goldin-Meadow, 2012).
+\textbf{ADD REFS}
+
+\section{Object Presence}\label{object-presence}
+
+We also found more object presence in videos than in audio-recordings.
+This may be because the video recordings truly had more object presence
+(i.e.~infants mostly stayed in 1-2 rooms, interacting with caregivers
+and objects at hand). Alternatively, or additionally, it may be the case
+that there are more ambiguous cases of \enquote{object presence} in
+audio recordings than video recordings, which were in turn annotated as
+\enquote{not present} at higher rates. Since our reliability analyes
+revealed high rates of agreement for object presence for both
+recording-types \textbf{ADD REL \#s}, we find it more likely that this
+reflects a true difference between situations that arise during
+daylong-audio vs.~hourlong-video recordings. Given that object presence
+and the related ideas of referential transparency and contingent talk
+have been linked with early word learning and language development
+\textbf{ADD REFS}(Bergelson \& Aslin, 2017; Yurovsky et al 2012;
+McGillion et al, 2017; Cartmill..Trueswell, 2013), this property in
+particular merits followup. That is, a more thorough understanding of
 the situations and contexts that elicit and promote contingent,
 referentially-transparent caretaker talk (around objects or otherwise)
 may be a fruitful avenue for further work.
+
+\section{Talker Variability}\label{talker-variability}
 
 Our talker-based results also revealed that infants heard nouns from
 more talkers per minute in videos than in audio-recordings, though in
 raw numbers infants heard roughly double the speakers over the course of
 a day as they heard in one video-recorded hour (see Figure
-@ref:fig-gr-derived-count-67-diff). While we considered noun input from
+\ref{fig:gr-derived-count-67-diff}. While we considered noun input from
 all sources (human, electronic, etc.), the quantity of talkers was
 largely swamped by the preponderance of the input
 (\textasciitilde{}65\%) that came from infants' mothers; this quantity
@@ -824,13 +836,13 @@ too was greater in videos than audio-recordings. Input from fathers did
 not vary by recording-type, though over half of videos did not include
 noun input from fathers at all. This is largely due to the demographics
 of our sample: we video-recorded during regular business hours during
-weekdays, a time when the fathers in our sample were largely at work;
-audiorecordings could happen on any day of the week, at parents'
-leisure. Given that fathers and mothers make different contributions to
-early language development (Pancsofar \& Vernon-Feagans, 2006), this is
-a clear example of a consequence of methodological choices: to better
-understand the role of input from fathers, sampling specifically mindful
-of work-schedules is critical.
+weekdays, a time when the fathers in our sample were largely at work. In
+contrast, audiorecordings could happen on any day of the week, at
+parents' leisure. Given that fathers and mothers make different
+contributions to early language development (Pancsofar \&
+Vernon-Feagans, 2006), this is a clear example of a consequence of
+methodological choices: to better understand the role of input from
+fathers, it is critical to sample with work-schedules in mind.
 
 Questions concerning talker variability in the input are also relevant
 for recent in-lab studies: while infants at the same age tested here
@@ -843,10 +855,12 @@ affected when talker variability is considered (Bergmann et al., 2016).
 One general goal in such research is to test the proposed mechanisms by
 which infants generalize over or utilize talker variability during early
 learning. To this end, benchmarking how much talker variability is in
-infants' quotidian experience is desirable, even if only to say that
-model X is unaltered by deviations within a given range). The present
-results find that these estimates are inflated in hourlong
+infants' quotidian experience is desirable, even if only to say that a
+given model is unaltered by deviations within a given range). The
+present results find that these estimates are inflated in hourlong
 video-recordings relative to daylong audio-recordings.
+
+\section{Utterance-Types}\label{utterance-types}
 
 Turning to our utterance-type metrics, there too we found more nouns in
 every utterance-type in videos than in audio-recordings, per unit time.
@@ -873,27 +887,29 @@ contribute to the base-rates of questions in the input, even with age
 kept constant.
 
 The reading data too highlight interesting differences across
-recording-types. Twice as many infants weren't read to during videos as
-during audio-recordings (see Table \ref{tab:propna-missing-tables}).
-Yet, there were still significantly more nouns-per-minute heard in
-reading in videos than in audio recordings, and nouns in reading across
-recording-types also correlated significantly. This pattern highlights
-the differences in answers about \enquote{reading in the input} that can
-be garnered by even slightly different formulations in the question.
-Given the clear benefits in input richness and language abilities linked
-to reading in infancy found in previous research (DeBaryshe, 1993;
-Montag, Jones, \& Smith, 2015), and the likelihood that reading occurs
-at higher rates at certain parts of the day (a research question in its
-own right!), we suggest here too that considering reading input on the
-daylong scale may give a more accurate picture of its presence in
-infants' lives.
+recording-types. Twice as many infants were not read to in videos,
+compared to audio-recordings (see Table
+\ref{tab:propna-missing-tables}). Yet, there were still significantly
+more nouns-per-minute heard in reading in videos, and nouns in reading
+across recording-types also correlated significantly. This pattern
+highlights the differences in answers about \enquote{reading in the
+input} that can be garnered by even slightly different formulations of
+the relevant question. Given the clear benefits in input richness and
+language abilities linked to reading in infancy found in previous
+research (DeBaryshe, 1993; Montag, Jones, \& Smith, 2015), and the
+likelihood that reading occurs at higher rates at certain parts of the
+day (a research question in its own right!), we suggest here too that
+considering reading input on the daylong scale may give a more accurate
+picture of its presence in infants' lives.
+
+\section{Top Words}\label{top-words}
 
 Our interpretation of the present results is that findings based on
 relatively short video-recordings overestimate young infants' typical
 noun input, and that extrapolation based on daylong audio recordings
 likely better represents infants' daily lives. This underscores our
-third main result: that the conclusions one would draw about which words
-are most common in young infants' language input differed in their
+third main finding: that the conclusions one would draw about which
+words are most common in young infants' language input differed in their
 robustness across families by recording-type. That is, the top audio
 words were all heard by \(\geq 75\%\) of the families we recorded; only
 one of the top 10 video words (\enquote{hat}) was this common across
@@ -914,19 +930,20 @@ in understanding this dimension of naturalistic observational data.
 \subsection{Limitations and
 Conclusions}\label{limitations-and-conclusions}
 
-Given the technical limitation that available infant-friendly
-video-recorders have a shorter battery life than audio-recorders at
-present, we cannot conclusively separate the effects of modality and
-length. That is, had we only audio-recorded for an hour, or recorded
-video all day, we may have obtained equivalent results across recording
-modalities. Such a comparison awaits technological progress. A further
-limitation is the likely influence of self-selection into the study:
-many parents are unwilling to invite researchers to record their
-infants' interactions. Relatedly, our convenience sample does not
-reflect the broader demographics of the US (let alone other cultures or
-populations), and as such this work merits extension to other
-populations before conclusive generalizations about sampling methodology
-can be made (cf Bergelson et al, under review \textbf{add ref}).
+Given the technical limitation that currently-available infant-friendly
+video-recorders have a shorter battery life than audio-recorders, we
+cannot conclusively separate the effects of modality and length. That
+is, had we only audio-recorded for an hour, or recorded video all day,
+we may have obtained equivalent results across recording modalities.
+Such a comparison awaits technological progress. A further limitation is
+the likely influence of self-selection into the study: many parents are
+unwilling to invite researchers to record their infants' interactions.
+Relatedly, our convenience sample does not reflect the broader
+demographics of the US (let alone other cultures or populations), and as
+such this work merits extension to other populations before conclusive
+generalizations about sampling methodology can be made (cf
+{\textbf{???}}) \textbf{FIX/ADD BERGELSON\_ETAL REF; see last
+code-chunk}.
 
 Understanding what infants learn from is a key part in understanding
 what and how they learn at all. Here we have taken first steps in

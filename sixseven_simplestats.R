@@ -71,7 +71,7 @@ c_taus_sig <- filter(cs, pval_adj<.05)
 vboost_mean_collapsed <- sixseven_spreadAV_collapsed %>% 
   dplyr::select(subj, v_total_min, a_tot_nosilsk, a_tot_nosil,a_total_min,
                 v_numtypes, a_numtypes, v_numtokens, a_numtokens, v_numspeakers, a_numspeakers,v_MOT, a_MOT, v_FAT, a_FAT, v_d, a_d, v_q, a_q, v_i, a_i, v_s, a_s, v_r, a_r, v_n, a_n, v_y_op, a_y_op) %>% 
-  #mutate_at(vars(a_s, a_r), funs(na_if(., 0)))  %>% 
+  mutate_at(vars(a_s, a_r), funs(na_if(., 0)))  %>% 
   summarise(
     vboost_min = mean(v_total_min/a_total_min),
     vboost_awakemin = mean(v_total_min/a_tot_nosil),
