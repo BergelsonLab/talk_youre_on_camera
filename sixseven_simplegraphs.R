@@ -35,19 +35,20 @@ gr_count_cor_VA_facetmonth_norm_collapsed<-ggplot(countvals_long_norm_collapsed%
 gr_top100_avspread_collapsed <- ggplot(top100av_spread, aes(audio, video))+
   geom_point(shape=2)+
   stat_smooth(method = rlm, fill = "blue")+
-  theme_bw(base_size=14)+ggtitle("Freq. of Top 100 Words, Audio vs. Video Counts")
+  theme_bw(base_size=14)
 
 #zipf av plot in paper draft
 zipf_av <- ggplot(tally_av, aes(n, fill = audio_video))+geom_histogram()+
   facet_grid(~audio_video)+
-  scale_x_log10()+scale_y_log10()+ggtitle("Rank by Frequency, A, V, 6, 7")
+  scale_x_log10()+scale_y_log10()+
+  guides(fill=F)
 
 #top100 graph, log space
 #plot in draft# same as in full paper, can take out of other one when cleaning
 top100_logspace_av_graph <- ggplot(top100av_spread, aes(audio+.1, video+.1, color = (audio==0 |video==0)))+
   geom_label_repel(aes(label=object),label.size = .10,
                    label.padding = unit(0.1, "lines"),
-                   segment.color = "grey90")+
+                   segment.color = "grey90", segment.alpha = .75,force=2)+
   theme_bw(base_size=18)+
   guides(colour=F)+scale_x_log10()+scale_y_log10()+
   ggtitle("Top 100 words,log space")
@@ -61,7 +62,7 @@ top10_graph_collapsed <- ggplot(overall_top10, aes(n, nfams, label = object, sha
   geom_label_repel(point.padding = .5, box.padding = .4, label.size = .1)+
   theme_bw(base_size=18)+
   #scale_colour_manual(values = c("pink","black"))+
-  ggtitle("Top 10 words by recording type")+
+ # ggtitle("Top 10 words by recording type")+
   scale_shape_discrete(solid=F)+
   guides(color=F)#+#theme(legend.background = element_rect(fill="gray90", size=.5, linetype="dotted"))
 #theme(legend.key=element_rect(fill='springgreen'))
@@ -74,4 +75,5 @@ gr_ut_count_norm_collapsed <- ggplot(countvals_long_norm_collapsed %>% filter(me
 
 gr_ut_count_collapsed <- ggplot( countvals_long_collapsed %>% filter(meas_type=="utt"),
        aes(audio_video, countval, fill = fct_reorder(count_meas, countval), linetype =audio_video))+
-  stat_summary(fun.y=mean, geom="bar", position = "fill", aes(linetype=audio_video),color = "black")
+  stat_summary(fun.y=mean, geom="bar", position = "fill", aes(linetype=audio_video),color = "black")+
+  guides(fill=(guide_legend(title = NULL)))
