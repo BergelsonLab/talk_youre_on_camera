@@ -37,13 +37,13 @@ author_note: |
   Sharath Koorathota, Columbia University Medical Center
   
   Shaelise Tor, Marriage and Family Therapy, Syracuse University
-
+  
 
 abstract: |
   Measurements of infants' quotidian experiences provide critical information about early development. However, the role of sampling methods in providing this information is rarely examined. Here we directly compare language input from hourlong videos and daylong audio-recordings within the same group of 44 infants, at 6 and 7 months. We find far denser noun input in video- than in audio-recordings, across 12 measures of language quantity and lexical diversity, talker variability, utterance-type, and object presence. Although audio-recordings captured ~10x more awake-time than videos, the noun input in them was only 2-4x greater. Most notably, per unit time, videos featured more word-types and tokens, more questions but fewer declaratives, and more talkers. In contrast, >33% of videos lacked certain noun input altogether, e.g. reading and fathers' speech. While we find moderate correlations across recording-types, the most common audio-recording nouns were far more consistant across families than top video-recording nouns. Thus, hour-long videos and daylong audio-recordings provided fairly divergent pictures of the input infants hear and learn from in their daily lives. We suggest short video-recordings may inflate various language input estimates, and should be used cautiously for extrapolation about common words, talkers, utterance-types, and contexts at larger timescales. If theories of language development are to be held accountable to 'facts on the ground' from observational data, greater care is needed to unpack the ramifications of sampling methods of early language input.
    
 #keywords          : "language development, naturalistic observational data, infants, early home environment"
-wordcount         : "3844 as of 4:15pm, 12/26/17"
+wordcount         : "3896 as of 5:30pm, 12/29/17"
 
 bibliography      : ["sixseven.bib", "r-references.bib"]
 
@@ -76,14 +76,22 @@ getmode <- function(v) {
    uniqv <- unique(v)
    uniqv[which.max(tabulate(match(v, uniqv)))]
 }
-#to do's: 
-# caption tables (fix if too wide for page) and position in reasonable places for flow of text 
-# write clear and thorough figure captions
-# fix figure/table rendering positions (eb tried for awhile and gave up)
-# check crossref's for figures and tables with \@ref(fig:chunk-name) for figures * \@ref(tab:chunk-name) for tables, bookdown style
+
+#to do:
+#* add missing refs to bib file and format in rmd 
+#* figure out how to add under review refs without breaking rmd
+#* write clear and thorough figure captions
+#* format figures where needed (e.g. rename levels of factors in legend)
+#* fix figure/table rendering positions (eb tried for awhile and gave up)
+# check all crossref's for figures and tables with \@ref(fig:chunk-name) for figures * \@ref(tab:chunk-name) for tables
 # change code to read in from blabr in sixseven_data_aggregation.R for both basic_level and basic_level_agg files
-# check/fix/add refs (n.b.: multiple refs should be separated by ; not ,):
+# (n.b.: multiple refs should be separated by ; not ,), and other tips here:
 ###http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html
+# * add author contribution note? something like this?
+  #EB designed the research, analyzed the data, and drafted the paper. 
+  #SD, SK, ST: collected and annotated/oversaw annotation of the data. 
+  #AA wrote code-base for data annotation pipeline. AA, SD, and SK contributed to data aggregation, and manuscript code. 
+  #All authors contributed to writing. 
 
 ```
 
@@ -185,13 +193,14 @@ To examine how the hour-long video data 'scale' to day-length data descriptively
 We computed video-fractions (rather than the reciprocal, i.e. audio/video) because there were more zero values for videos than audio-recordings (e.g. instances when children did not hear any nouns sung), rendering more undefined values. Indeed, >1/3 of children did not hear nouns in reading or from fathers on videos in either month. See Table \@ref(tab:propna-missing-tables). 
 
 ```{r propna-missing-tables, echo = F, warning = F, message = F, results = "asis"}
-apa_table(vars_with_NAs, caption = "Proportion of zero values", small = T, note = "V indicates videos, A indicates audio-recordings")
+apa_table(vars_with_NAs, caption = "Proportion of infants with zero values", small = T, note = "V indicates videos, A indicates audio-recordings")
 ```
-We next normed our count values by the number of minutes in each. For example, if an infant heard 500 noun-tokens in 800 minutes of non-silent audio-recording, and 200 in 60 minutes of videos, this was normed to .62 and 3.3 noun-tokens per minute, respectively. Zero values are retained within the normed count data. \footnote{One infant's zero value was excluded from 'father' measures because this infant had no father.} 
+We next normed our count values by the number of minutes in each. For example, if an infant heard 500 noun-tokens in 800 minutes of non-silent audio-recording, and 200 in 60 minutes of videos, this was normed to .62 and 3.3 noun-tokens per minute, respectively. Zero values are retained within the normed count data. \footnote{One infant's zero value was excluded from 'father' measures because this infant had no father.}  
 
 ```{r normtable, echo = F, warning = F, results = "asis"}
 apa_table(countvals_normed_vboost_table,cap="Video/Audio Count Measures, normed by minutes in recording (column 2) and divided without norming (column 3)", small = T)
 ```
+
 ```{r wilcoxon-corr-stats, warning = F, echo = F, message = F}
 w_sigps <- nrow(ws %>% filter(pval_adj<.05))
 c_sigps <- nrow(cs %>% filter(pval_adj<.05))
@@ -199,6 +208,7 @@ tau_min <- round(min(c_taus_sig$estimate),2)
 tau_max <- round(max(c_taus_sig$estimate),2)
 tau_mean <- round(mean(c_taus_sig$estimate),2)
 ```
+
 With the normed data, `r w_sigps`/12 metrics occured at significantly lower rates in audio recordings than video recordings (all adjusted-p<.05). The remaining metric, number of nouns from fathers, was statistically indistinguishable across recording types (adjusted-p>.05). Thus, overall, per unit time, infants heard less noun input across our metrics of quantity, talker, utterance-type and object presence in audio recordings than in videos. We provide both raw and normed count data in Figure \@ref(fig:gr-derived-counts-67-diff) and \@ref(fig:gr-derived-normcounts-diff).
 
 Looking next at correlations, we find that `r c_sigps`/12 metrics correlated in audio vs. video data; nouns per minute heard from fathers and in singing did not. The size of the correlations (i.e. Kendall's $\tau$) was moderate (excluding the two non-significant metrics, *M* = `r tau_mean`, `r tau_min` - `r tau_max`, all adjusted-p<.05). See Table \@ref(tab:normtable) and Figure \@ref(fig:gr-derived-normcounts-corr). 
