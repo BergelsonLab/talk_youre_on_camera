@@ -180,11 +180,8 @@ mean_vboost_measures <- vboost_mean_collapsed %>%
   summarise(mean_measureboost = mean(vboost_types:vboost_op)) %>% as.double()
 ```
 
-To examine how the hour-long video data 'scale' to day-length data descriptively, we first divided the 12 count metrics from the videos by those from the audio-recordings for each child, to derive 'video-fraction' score. This showed that the video-recordings were `r vboost_mean_collapsed$vboost_min` of the length of audio-recordings, or `r vboost_mean_collapsed$vboost_awakemin` of the length if only 'non-silent' portions of the audio-recording are included. However, rather than a concomitant 10-fold decrease in our count metrics (as would be expected if the video captured a 'representative' hour of the day), the fractions averaged to `r mean_vboost_measures` across measures; see Table \@ref(tab:vboost-table). Thus, by and large, videos had a denser concentration of nouns across our measures than did the audio recordings. See Figure \@ref(fig:gr-derived-counts-67-diff) for raw count data for each metric. 
+To examine how the hour-long video data 'scale' to day-length data descriptively, we first divided the 12 count metrics from the videos by those from the audio-recordings for each child, to derive 'video-fraction' score. This showed that the video-recordings were `r vboost_mean_collapsed$vboost_min` of the length of audio-recordings, or `r vboost_mean_collapsed$vboost_awakemin` of the length if only 'non-silent' portions of the audio-recording are included. However, rather than a concomitant 10-fold decrease in our count metrics (as would be expected if the video captured a 'representative' hour of the day), the fractions averaged to `r mean_vboost_measures` across measures; see Table \@ref(tab:normtable). Thus, by and large, videos had a denser concentration of nouns across our measures than did the audio recordings. See Figure \@ref(fig:gr-derived-counts-67-diff) for raw count data for each metric. 
 
-```{r vboost-table, echo = F, warning = F, message = F, results = "asis"}
-apa_table(vboost_table_data, caption = "Video Fractions")
-```
 We computed video-fractions (rather than the reciprocal, i.e. audio/video) because there were more zero values for videos than audio-recordings (e.g. instances when children did not hear any nouns sung), rendering more undefined values. Indeed, >1/3 of children did not hear nouns in reading or from fathers on videos in either month. See Table \@ref(tab:propna-missing-tables). 
 
 ```{r propna-missing-tables, echo = F, warning = F, message = F, results = "asis"}
@@ -193,30 +190,7 @@ apa_table(vars_with_NAs, caption = "Proportion of zero values", small = T, note 
 We next normed our count values by the number of minutes in each. For example, if an infant heard 500 noun-tokens in 800 minutes of non-silent audio-recording, and 200 in 60 minutes of videos, this was normed to .62 and 3.3 noun-tokens per minute, respectively. Zero values are retained within the normed count data. \footnote{One infant's zero value was excluded from 'father' measures because this infant had no father.} 
 
 ```{r normtable, echo = F, warning = F, results = "asis"}
-countvals_normed_table <- countvals_long_norm_collapsed %>% 
-  group_by(audio_video, norm_meas) %>% 
-  summarise(mnv = mean(normval, na.rm=T)) %>% 
-  spread(audio_video, mnv) %>% 
-  mutate(norm_inflation = video/audio) %>% 
-  dplyr::select(norm_meas, norm_inflation) %>% 
-  mutate_if(is.numeric, funs(round(.,1))) %>% 
-  mutate(norm_meas = fct_recode(norm_meas,
-        "Object presence" = "y_op",
-        "Mother" = "MOT",
-        "Father" = "FAT",
-        "Declaratives" = "d",
-        "Questions" = "q",
-        "Short phrases" = "n",
-        "Singing" = "s",
-        "Reading" = "r",
-        "Imperatives" = "i",
-        "Type count" = "numtypes",
-        "Token count" = "numtokens",
-        "Speaker count" = "numspeakers")) %>%
-  rename("Measure"=norm_meas,
-         "Inflation (normed)"=norm_inflation)
-  
-apa_table(countvals_normed_table,cap="Count values, normed by number of minutes in recording", small = T)
+apa_table(countvals_normed_vboost_table,cap="Video/Audio Count Measures, normed by minutes in recording (column 2) and divided without norming (column 3)", small = T)
 ```
 ```{r wilcoxon-corr-stats, warning = F, echo = F, message = F}
 w_sigps <- nrow(ws %>% filter(pval_adj<.05))

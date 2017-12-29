@@ -21,7 +21,7 @@ vboost <- vboost %>%
          SD = as.numeric(as.character(SD)))
 
 vboost$Measure = c("Minutes","Awake minutes","Types","Tokens","Speakers","Mother","Father","Declaratives","Questions",
-                   "Imperatives","Singing","Reading","Short phrases","Object co-presence","comp_mean")
+                   "Imperatives","Singing","Reading","Short phrases","Object presence","comp_mean")
 
 # Formatting function
 meansd <- function(mean,sd) {
@@ -34,11 +34,37 @@ meansd <- function(mean,sd) {
 
 
 # Table data frame with proper formatting
-vboost_table <- vboost %>%
+vboost_table_data <- vboost %>%
   rowwise() %>% 
   mutate(mean_sd = meansd(Mean,SD)) %>%
-  dplyr::select(Measure,mean_sd)
+  dplyr::select(Measure,mean_sd) %>% 
+  filter(Measure !="comp_mean") %>% 
+  rename(`Video-fraction Mean(SD)`= mean_sd)
 
-vboost_table_data <- vboost_table[-nrow(vboost_table),] %>% 
-  rename(`Mean (SD)`=mean_sd)
+sixseven_spreadAV_normmin_collapsed %>% 
+  summarise(mean(vid_total_min/aud_tot_nosil))
+  
 
+countvals_normed_vboost_table <- countvals_long_norm_collapsed %>% 
+  group_by(audio_video, norm_meas) %>% 
+  summarise(mnv = mean(normval, na.rm=T)) %>% 
+  spread(audio_video, mnv) %>% 
+  mutate(norm_inflation = video/audio) %>% 
+  dplyr::select(norm_meas, norm_inflation) %>% 
+  mutate_if(is.numeric, funs(round(.,1))) %>% 
+  mutate(norm_meas = fct_recode(norm_meas,
+                                "Object presence" = "y_op",
+                                "Mother" = "MOT",
+                                "Father" = "FAT",
+                                "Declaratives" = "d",
+                                "Questions" = "q",
+                                "Short phrases" = "n",
+                                "Singing" = "s",
+                                "Reading" = "r",
+                                "Imperatives" = "i",
+                                "Types" = "numtypes",
+                                "Tokens" = "numtokens",
+                                "Speakers" = "numspeakers")) %>%
+  rename("Measure"=norm_meas,
+         "Inflation (normed)"=norm_inflation) %>% 
+  right_join(vboost_table_data)

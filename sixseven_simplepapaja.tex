@@ -523,38 +523,10 @@ only \enquote{non-silent} portions of the audio-recording are included.
 However, rather than a concomitant 10-fold decrease in our count metrics
 (as would be expected if the video captured a \enquote{representative}
 hour of the day), the fractions averaged to 0.31 across measures; see
-Table \ref{tab:vboost-table}. Thus, by and large, videos had a denser
+Table \ref{tab:normtable}. Thus, by and large, videos had a denser
 concentration of nouns across our measures than did the audio
 recordings. See Figure \ref{fig:gr-derived-counts-67-diff} for raw count
 data for each metric.
-
-\begin{table}[tbp]
-\begin{center}
-\begin{threeparttable}
-\caption{\label{tab:vboost-table}Video Fractions}
-\begin{tabular}{ll}
-\toprule
-Measure & \multicolumn{1}{c}{Mean (SD)}\\
-\midrule
-Minutes & 0.07 (0.01)\\
-Awake minutes & 0.1 (0.02)\\
-Types & 0.31 (0.13)\\
-Tokens & 0.25 (0.15)\\
-Speakers & 0.43 (0.2)\\
-Mother & 0.32 (0.22)\\
-Father & 0.13 (0.26)\\
-Declaratives & 0.19 (0.09)\\
-Questions & 0.33 (0.16)\\
-Imperatives & 0.27 (0.23)\\
-Singing & 0.65 (1.46)\\
-Reading & 1.02 (2.76)\\
-Short phrases & 0.3 (0.25)\\
-Object co-presence & 0.34 (0.28)\\
-\bottomrule
-\end{tabular}
-\end{threeparttable}
-\end{center}
-\end{table}
 
 We computed video-fractions (rather than the reciprocal,
 i.e.~audio/video) because there were more zero values for videos than
@@ -594,24 +566,26 @@ within the normed count data.
 \begin{table}[tbp]
 \begin{center}
 \begin{threeparttable}
-\caption{\label{tab:normtable}Count values, normed by number of minutes in recording}
+\caption{\label{tab:normtable}Video/Audio Count Measures, normed by minutes in recording (column 2) and divided without norming (column 3)}
 \small{
-\begin{tabular}{ll}
+\begin{tabular}{lll}
 \toprule
-Measure & \multicolumn{1}{c}{Inflation (normed)}\\
+Measure & \multicolumn{1}{c}{Inflation (normed)} & \multicolumn{1}{c}{Video-fraction Mean(SD)}\\
 \midrule
-Object presence & 2.90\\
-Mother & 3.00\\
-Father & 1.10\\
-Declaratives & 1.90\\
-Questions & 3.10\\
-Short phrases & 2.50\\
-Singing & 2.30\\
-Reading & 2.90\\
-Imperatives & 2.60\\
-Type count & 3.00\\
-Token count & 2.30\\
-Speaker count & 3.90\\
+Minutes & NA & 0.07 (0.01)\\
+Awake minutes & NA & 0.1 (0.02)\\
+Types & 3.00 & 0.31 (0.13)\\
+Tokens & 2.30 & 0.25 (0.15)\\
+Speakers & 3.90 & 0.43 (0.2)\\
+Mother & 3.00 & 0.32 (0.22)\\
+Father & 1.10 & 0.13 (0.26)\\
+Declaratives & 1.90 & 0.19 (0.09)\\
+Questions & 3.10 & 0.33 (0.16)\\
+Imperatives & 2.60 & 0.27 (0.23)\\
+Singing & 2.30 & 0.65 (1.46)\\
+Reading & 2.90 & 1.02 (2.76)\\
+Short phrases & 2.50 & 0.3 (0.25)\\
+Object presence & 2.90 & 0.34 (0.28)\\
 \bottomrule
 \end{tabular}
 }
