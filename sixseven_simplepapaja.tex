@@ -508,10 +508,14 @@ Infants were always awake during video recordings (save one infant, who
 fell asleep before the recording-hour ended; that video was stopped at
 sleep onset).
 
-\begin{figure}
+\begin{figure}[htbp]
 \centering
 \includegraphics{sixseven_simplepapaja_files/figure-latex/gr-derived-counts-67-diff-1.pdf}
-\caption{\label{fig:gr-derived-counts-67-diff}Counts A vs.~V}
+\caption{\label{fig:gr-derived-counts-67-diff}Raw count of variables across
+audio (indicated by solid borders) and video (dashed borders)
+recordings. Variables, in order: object presence, nouns from mother and
+father, utterance type, noun-types and tokens, and count of unique
+speakers.}
 \end{figure}
 
 To examine how the hour-long video data \enquote{scale} to day-length
@@ -611,17 +615,26 @@ moderate (excluding the two non-significant metrics, \emph{M} = 0.44,
 0.27 - 0.57, all adjusted-p\textless{}.05). See Table
 \ref{tab:normtable} and Figure \ref{fig:gr-derived-normcounts-corr}.
 
-\begin{figure}
+\begin{figure}[htbp]
 \centering
 \includegraphics{sixseven_simplepapaja_files/figure-latex/gr-derived-normcounts-diff-1.pdf}
-\caption{\label{fig:gr-derived-normcounts-diff}Normalized variable counts}
+\caption{\label{fig:gr-derived-normcounts-diff}Normalized variable counts
+across audio (indicated by solid borders) and video (dashed borders)
+recordings. Normed counts are calculated as the proportion of raw counts
+over total non-silent recording time (in minutes). Variables, in order:
+object presence, nouns from mother and father, utterance type,
+noun-types and tokens, and count of unique speakers.}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[htbp]
 \centering
 \includegraphics{sixseven_simplepapaja_files/figure-latex/gr-derived-normcounts-corr-1.pdf}
-\caption{\label{fig:gr-derived-normcounts-corr}Normalized count
-correlations}
+\caption{\label{fig:gr-derived-normcounts-corr}Normalized count correlations
+between audio vs.~video recordings. Each point indicates the correlation
+coefficient after calculating nouns per minute of recording for each
+child, averaged across months 6 \& 7. Variables in order: object
+presence, nouns from mother and father, utterance type, noun-types and
+tokens, and unique speakers.}
 \end{figure}
 
 \subsection{Exploratory Analyses over Utterance-Types and
@@ -647,10 +660,13 @@ utterance-type differences reached significance across recording-types
 (all adjusted-p\textgreater{}.05). See Figure
 \ref{fig:gr-ut-count-collapsed}.
 
-\begin{figure}
+\begin{figure}[htbp]
 \centering
 \includegraphics{sixseven_simplepapaja_files/figure-latex/gr-ut-count-collapsed-1.pdf}
-\caption{\label{fig:gr-ut-count-collapsed}Utterance Type Proportions}
+\caption{\label{fig:gr-ut-count-collapsed}Utterance type proportions across
+audio (indicated by solid borders) and video (dashed borders)
+recordings. Proportions were calculated as the number of each noun types
+over total noun tokens.}
 \end{figure}
 
 Our final analysis is at the word level; we aim to provide a first-pass
@@ -660,10 +676,13 @@ distribution of nouns in our recordings was zipfian: of the 5801 unique
 object words (3137 lemmas) heard across months and recording types, only
 2482 (960 lemmas) were heard more than once.
 
-\begin{figure}
+\begin{figure}[htbp]
 \centering
 \includegraphics{sixseven_simplepapaja_files/figure-latex/top-100-logspace-1.pdf}
-\caption{\label{fig:top-100-logspace}Top 100 words in log space}
+\caption{\label{fig:top-100-logspace}Log-scaled counts of the top 100 words
+in audio and video recordings. Each node represents the averaged count,
+across all participants in both months, of an unique noun-token. Words
+that occured zero times in one recording-type are not shown.}
 \end{figure}
 
 We examined the top 100 most frequent nouns from audio- and
@@ -674,11 +693,13 @@ with zero-frequency words included (Kendall's tau: 0.25,
 p\textless{}.0001; see Figure \ref{fig:top100-corr-rectype} and
 \ref{fig:top-100-logspace}).
 
-\begin{figure}
+\begin{figure}[htbp]
 \centering
 \includegraphics{sixseven_simplepapaja_files/figure-latex/top100-corr-rectype-1.pdf}
-\caption{\label{fig:top100-corr-rectype}Top 100 words correlations by
-recording type}
+\caption{\label{fig:top100-corr-rectype}Correlations of the top 100 words in
+audio vs.~video recordings. Each node represents the count of a unique
+word that occurred in both audio and video recordings, averaged across
+all participants in both months.}
 \end{figure}
 
 Finally, looking at just the top ten words by recording-type, we find
@@ -698,7 +719,7 @@ daylong audio-recordings may render more stable estimates of pervasively
 common words across families than do video-recordings.
 
 \begin{figure}
-\includegraphics{sixseven_simplepapaja_files/figure-latex/top10noun-freq-1} \caption{Top 10 words by month and recording type}\label{fig:top10noun-freq}
+\includegraphics{sixseven_simplepapaja_files/figure-latex/top10noun-freq-1} \caption{Top 10 words by recording type. Each node represents the frequency count of a top audio or video word over both months (x axis) and count of participants who were exposed to the word in either or both months (y axis).}\label{fig:top10noun-freq}
 \end{figure}
 
 \section{Discussion}\label{discussion}
