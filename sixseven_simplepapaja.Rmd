@@ -79,12 +79,10 @@ getmode <- function(v) {
 
 #to do:
 #* add missing refs to bib file and format in rmd 
-#* figure out how to add under review refs without breaking rmd
 #* write clear and thorough figure captions
 #* format figures where needed (e.g. rename levels of factors in legend)
-#* fix figure/table rendering positions (eb tried for awhile and gave up)
+#* fix figure/table rendering positions
 # check all crossref's for figures and tables with \@ref(fig:chunk-name) for figures * \@ref(tab:chunk-name) for tables
-# change code to read in from blabr in sixseven_data_aggregation.R for both basic_level and basic_level_agg files
 # (n.b.: multiple refs should be separated by ; not ,), and other tips here:
 ###http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html
 # * add author contribution note? something like this?
@@ -195,12 +193,12 @@ To examine how the hour-long video data 'scale' to day-length data descriptively
 We computed video-fractions (rather than the reciprocal, i.e. audio/video) because there were more zero values for videos than audio-recordings (e.g. instances when children did not hear any nouns sung), rendering more undefined values. Indeed, >1/3 of children did not hear nouns in reading or from fathers on videos in either month. See Table \@ref(tab:propna-missing-tables). 
 
 ```{r propna-missing-tables, echo = F, warning = F, message = F, results = "asis"}
-apa_table(vars_with_NAs, caption = "Proportion of infants with zero values", small = T, note = "V indicates videos, A indicates audio-recordings")
+apa_table(vars_with_NAs, caption = "Proportion of infants with no recorded nouns from the listed speakers and utterance-types", small = T, note = "V indicates videos, A indicates audio-recordings. All infants heard nouns in all other categories (see Table 2)")
 ```
 We next normed our count values by the number of minutes in each. For example, if an infant heard 500 noun-tokens in 800 minutes of non-silent audio-recording, and 200 in 60 minutes of videos, this was normed to .62 and 3.3 noun-tokens per minute, respectively. Zero values are retained within the normed count data. \footnote{One infant's zero value was excluded from 'father' measures because this infant had no father.}  
 
 ```{r normtable, echo = F, warning = F, results = "asis"}
-apa_table(countvals_normed_vboost_table,cap="Video/Audio Count Measures, normed by minutes in recording (column 2) and divided without norming (column 3)", small = T)
+apa_table(countvals_normed_vboost_table,cap="Video/Audio Count Measures, normed by minutes in recording (column 2) and divided without norming (column 3)", small = T, note = "If videos contained equivalent quantities of nouns, Inflation values would be 1, and Video-fractions would be .1")
 ```
 
 ```{r wilcoxon-corr-stats, warning = F, echo = F, message = F}
@@ -217,14 +215,14 @@ Looking next at correlations, we find that `r c_sigps`/12 metrics correlated in 
 
 ```{r gr-derived-normcounts-diff, fig.cap = cap, echo = F, warning = F, fig.height = 4.5}
 gr_countvals_long_norm_collapsed
-cap <- "Normalized variable counts across audio (indicated by solid borders) and video (dashed borders) recordings. Normed counts are calculated as the proportion of raw counts over total non-silent recording time (in minutes). Variables, in order: object presence, nouns from mother and father, utterance type, noun-types and tokens, and count of unique speakers."
+cap <- "Normalized variable counts across audio-recordings (solid borders) and videos (dashed borders). Normed counts are calculated as the proportion of raw counts over total non-silent recording time (in minutes). Variables, in order: object presence, nouns from mother and father, utterance type, noun-types and tokens, and count of unique speakers."
 
 ```
  
  
 ```{r gr-derived-normcounts-corr, fig.cap = cap, echo = F,  fig.height= 3, warning = F}
 gr_count_cor_VA_facetmonth_norm_collapsed
-cap <- "Normalized count correlations between audio vs. video recordings. Each point indicates the correlation coefficient after calculating nouns per minute of recording for each child, averaged across months 6 \\& 7. Variables in order: object presence, nouns from mother and father, utterance type, noun-types and tokens, and unique speakers."
+cap <- "Normalized count correlations between audio vs. video recordings. Each point indicates nouns per minute of recording for each child, averaged across months 6 \\& 7. Variables in order: object presence, nouns from mother and father, utterance type, noun-types and tokens, and unique speakers."
 
 ```
  
@@ -242,7 +240,7 @@ Lastly, we undertook two sets of highly exploratory analyses, at the utterance l
 
 ```{r gr-ut-count-collapsed, fig.cap = cap, echo = F,  fig.height = 3, fig.width = 3, warning = F}
 gr_ut_count_collapsed
-cap <- "Utterance type proportions across audio (indicated by solid borders) and video (dashed borders) recordings. Proportions were calculated as the number of each noun types over total noun tokens."
+cap <- "Utterance type proportions across audio-recordings (solid borders) and videos (dashed borders). Utterance types top to bottom are r: reading, s: singing, i: imperative, n: short phrase, q: questions, and d: declartives."
 
 ```
  
@@ -250,7 +248,7 @@ Our final analysis is at the word level; we aim to provide a first-pass characte
 
 ```{r top-100-logspace, fig.cap = cap, echo = F, warning = F, message= F, fig.width = 9, fig.height = 7}
 top100_logspace_av_graph
-cap <- "Log-scaled counts of the top 100 words in audio and video recordings. Each node represents the averaged count, across all participants in both months, of an unique noun-token. Words that occured zero times in one recording-type are not shown."
+cap <- "Log-scaled counts of the top 100 words in audio and video recordings. Each node represents the averaged count, across all participants in both months, of a unique noun-token. Words that occured zero times in one recording-type are not shown."
 
 ```  
 ```{r top-words, warning=F, message= F, echo = F}
@@ -310,7 +308,7 @@ The reading data too highlight interesting differences across recording-types. T
 Our interpretation of the present results is that findings based on relatively short video-recordings overestimate young infants’ typical noun input, and that extrapolation based on daylong audio recordings likely better represents infants’ daily lives. This underscores our third main finding: that the conclusions one would draw about which words are most common in young infants’ language input differed in their robustness across families by recording-type. That is, the top audio words were all heard by $\geq 75\%$ of the families we recorded; only one of the top 10 video words ('hat') was this common across families, and was a clear artifact of our hat-mounted video-cameras. This result may be meaningful in several ways. From a high level viewpoint, corpora of child language input offer our best proxies for what infants learn from: our 'top words' analysis suggests that one would be led to believe that the input is far more heterogenous across children than it really is based on hourlong video-recordings alone. At a lower level, word frequency and prevalence across families are often used to select stimuli for in-lab study; relying on estimates from shorter, less representative recordings may stymie the words we chose to study in the lab. Thus, understanding how cross-family noun-input stability scales with recording-length may prove critical for future research; the word-level results above are an initial exploration in understanding this dimension of naturalistic observational data.
 
 ## Limitations and Conclusions
-Given the technical limitation that currently-available infant-friendly video-recorders have a shorter battery life than audio-recorders, we cannot conclusively separate the effects of modality and length. That is, had we only audio-recorded for an hour, or recorded video all day, we may have obtained equivalent results across recording modalities. Such a comparison awaits technological progress. A further limitation is the likely influence of self-selection into the study: many parents are unwilling to invite researchers to record their infants’ interactions. Relatedly, our convenience sample does not reflect the broader demographics of the US (let alone other cultures or populations), and as such this work merits extension to other populations before conclusive generalizations about sampling methodology can be made [cf @bergelsonunderreview] **FIX/ADD BERGELSON_ETAL REF; see last code-chunk**.
+Given the technical limitation that currently-available infant-friendly video-recorders have a shorter battery life than audio-recorders, we cannot conclusively separate the effects of modality and length. That is, had we only audio-recorded for an hour, or recorded video all day, we may have obtained equivalent results across recording modalities. Such a comparison awaits technological progress. A further limitation is the likely influence of self-selection into the study: many parents are unwilling to invite researchers to record their infants’ interactions. Relatedly, our convenience sample does not reflect the broader demographics of the US (let alone other cultures or populations), and as such this work merits extension to other populations before conclusive generalizations about sampling methodology can be made [cf @bergelsonunderreview].
 
 Understanding what infants learn from is a key part in understanding what and how they learn at all. Here we have taken first steps in understanding how two different data collection approaches may influence our conclusions about early linguistic input. We find that even naturalistic observer-free video-recordings appear to inflate language input, relative to daylong recordings, in ways that influence syntactic constructions, word-specific experiences, talker-variability, and the sheer quantity and diversity of nouns infants hear. Work from the preceding decades suggests all of these factors matter for early learning. Yet, without knowing how our sampling methods may be limiting us in principle, we necessarily limit our ability to adequately model infant language acquisition. The present work charted datapoints within this largely underspecified space, probing how robust linguistically-relevant measures are across two naturalistic sampling methods of infants' everyday experiences.
 
@@ -319,19 +317,7 @@ Understanding what infants learn from is a key part in understanding what and ho
 # References
 ```{r create_r-references}
 r_refs(file = "r-references.bib")
-#can't figure out how to add these to .bib without breaking file; some pandoc issue
-# @article{bergelsonunderreview,
-#   title=What do North American Babies hear? A Large-
-# Scale Cross-Corpus Analysis},
-#   author={Bergelson, Elika and Casillas, Marisa and Soderstrom, Melanie and Seidl, Amanda and Warlaumont, Anne and Amatuni, Andrei},
-#   notes= {under review}
-# }
-# 
-# @article{Laing+Bergelson-17,
-# 	author={Cathering Laing and Elika Bergelson},
-# 	title={The effect of mothers’ work schedule on 17-month-olds’ productive vocabulary},
-#     year={under review}
-# }
+
 ```
 
 \setlength{\parindent}{-0.5in}

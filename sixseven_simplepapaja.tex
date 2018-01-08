@@ -507,7 +507,7 @@ Infants were always awake during video recordings (save one infant, who
 fell asleep before the recording-hour ended; that video was stopped at
 sleep onset).
 
-\begin{figure}[htbp]
+\begin{figure}
 \centering
 \includegraphics{sixseven_simplepapaja_files/figure-latex/gr-derived-counts-67-diff-1.pdf}
 \caption{\label{fig:gr-derived-counts-67-diff}Raw count of variables across
@@ -541,7 +541,7 @@ either month. See Table \ref{tab:propna-missing-tables}.
 \begin{table}[tbp]
 \begin{center}
 \begin{threeparttable}
-\caption{\label{tab:propna-missing-tables}Proportion of infants with zero values}
+\caption{\label{tab:propna-missing-tables}Proportion of infants with no recorded nouns from the listed speakers and utterance-types}
 \small{
 \begin{tabular}{lllllll}
 \toprule
@@ -553,7 +553,7 @@ V: Mothers & \multicolumn{1}{c}{V: Fathers} & \multicolumn{1}{c}{V: Imperatives}
 \end{tabular}
 }
 \begin{tablenotes}[para]
-\textit{Note.} V indicates videos, A indicates audio-recordings
+\textit{Note.} V indicates videos, A indicates audio-recordings. All infants heard nouns in all other categories (see Table 2)
 \end{tablenotes}
 \end{threeparttable}
 \end{center}
@@ -590,8 +590,12 @@ Reading & 2.90 & 1.02 (2.76)\\
 Short phrases & 2.50 & 0.3 (0.25)\\
 Object presence & 2.90 & 0.34 (0.28)\\
 \bottomrule
+\addlinespace
 \end{tabular}
 }
+\begin{tablenotes}[para]
+\textit{Note.} If videos contained equivalent quantities of nouns, Inflation values would be 1, and Video-fractions would be .1
+\end{tablenotes}
 \end{threeparttable}
 \end{center}
 \end{table}
@@ -614,26 +618,25 @@ moderate (excluding the two non-significant metrics, \emph{M} = 0.44,
 0.27 - 0.57, all adjusted-p\textless{}.05). See Table
 \ref{tab:normtable} and Figure \ref{fig:gr-derived-normcounts-corr}.
 
-\begin{figure}[htbp]
+\begin{figure}
 \centering
 \includegraphics{sixseven_simplepapaja_files/figure-latex/gr-derived-normcounts-diff-1.pdf}
 \caption{\label{fig:gr-derived-normcounts-diff}Normalized variable counts
-across audio (indicated by solid borders) and video (dashed borders)
-recordings. Normed counts are calculated as the proportion of raw counts
-over total non-silent recording time (in minutes). Variables, in order:
-object presence, nouns from mother and father, utterance type,
-noun-types and tokens, and count of unique speakers.}
+across audio-recordings (solid borders) and videos (dashed borders).
+Normed counts are calculated as the proportion of raw counts over total
+non-silent recording time (in minutes). Variables, in order: object
+presence, nouns from mother and father, utterance type, noun-types and
+tokens, and count of unique speakers.}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}
 \centering
 \includegraphics{sixseven_simplepapaja_files/figure-latex/gr-derived-normcounts-corr-1.pdf}
 \caption{\label{fig:gr-derived-normcounts-corr}Normalized count correlations
-between audio vs.~video recordings. Each point indicates the correlation
-coefficient after calculating nouns per minute of recording for each
-child, averaged across months 6 \& 7. Variables in order: object
-presence, nouns from mother and father, utterance type, noun-types and
-tokens, and unique speakers.}
+between audio vs.~video recordings. Each point indicates nouns per
+minute of recording for each child, averaged across months 6 \& 7.
+Variables in order: object presence, nouns from mother and father,
+utterance type, noun-types and tokens, and unique speakers.}
 \end{figure}
 
 \subsection{Exploratory Analyses over Utterance-Types and
@@ -659,13 +662,13 @@ utterance-type differences reached significance across recording-types
 (all adjusted-p\textgreater{}.05). See Figure
 \ref{fig:gr-ut-count-collapsed}.
 
-\begin{figure}[htbp]
+\begin{figure}
 \centering
 \includegraphics{sixseven_simplepapaja_files/figure-latex/gr-ut-count-collapsed-1.pdf}
 \caption{\label{fig:gr-ut-count-collapsed}Utterance type proportions across
-audio (indicated by solid borders) and video (dashed borders)
-recordings. Proportions were calculated as the number of each noun types
-over total noun tokens.}
+audio-recordings (solid borders) and videos (dashed borders). Utterance
+types top to bottom are r: reading, s: singing, i: imperative, n: short
+phrase, q: questions, and d: declartives.}
 \end{figure}
 
 Our final analysis is at the word level; we aim to provide a first-pass
@@ -675,12 +678,12 @@ distribution of nouns in our recordings was zipfian: of the 5801 unique
 object words (3137 lemmas) heard across months and recording types, only
 2482 (960 lemmas) were heard more than once.
 
-\begin{figure}[htbp]
+\begin{figure}
 \centering
 \includegraphics{sixseven_simplepapaja_files/figure-latex/top-100-logspace-1.pdf}
 \caption{\label{fig:top-100-logspace}Log-scaled counts of the top 100 words
 in audio and video recordings. Each node represents the averaged count,
-across all participants in both months, of an unique noun-token. Words
+across all participants in both months, of a unique noun-token. Words
 that occured zero times in one recording-type are not shown.}
 \end{figure}
 
@@ -692,7 +695,7 @@ with zero-frequency words included (Kendall's tau: 0.25,
 p\textless{}.0001; see Figure \ref{fig:top100-corr-rectype} and
 \ref{fig:top-100-logspace}).
 
-\begin{figure}[htbp]
+\begin{figure}
 \centering
 \includegraphics{sixseven_simplepapaja_files/figure-latex/top100-corr-rectype-1.pdf}
 \caption{\label{fig:top100-corr-rectype}Correlations of the top 100 words in
@@ -717,7 +720,7 @@ on average). Taken together, this exploratory analysis suggests that
 daylong audio-recordings may render more stable estimates of pervasively
 common words across families than do video-recordings.
 
-\begin{figure}[htbp]
+\begin{figure}
 \centering
 \includegraphics{sixseven_simplepapaja_files/figure-latex/top10noun-freq-1.pdf}
 \caption{\label{fig:top10noun-freq}Top 10 words by recording type. Each node
@@ -942,8 +945,7 @@ Relatedly, our convenience sample does not reflect the broader
 demographics of the US (let alone other cultures or populations), and as
 such this work merits extension to other populations before conclusive
 generalizations about sampling methodology can be made (cf Bergelson et
-al., under review) \textbf{FIX/ADD BERGELSON\_ETAL REF; see last
-code-chunk}.
+al., under review).
 
 Understanding what infants learn from is a key part in understanding
 what and how they learn at all. Here we have taken first steps in

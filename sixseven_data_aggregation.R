@@ -9,15 +9,9 @@ library(lmerTest)
 
 
 sixseven_basiclevel_home_data <- read_feather("data/sixsevmonth_basiclevel_home_data_feather")%>%
-#sixseven_basiclevel_home_data <- get_all_basiclevel() %>% 
- #  dplyr::filter(month%in% c("06","07"))%>%
    droplevels()
-#source("seedlings_basiclevels_dataprep_sixseven.R")
 
-
-sixseven_basiclevel_home_data_agg <- read_feather("data/all_basiclevel_home_data_agg_feather12-11-17")%>%
-  dplyr::filter(month %in% c("06","07"))%>%
-#sixseven_basiclevel_home_data_agg <- read_feather("data/sixsevmonth_basiclevel_home_data_agg_feather")%>%
+sixseven_basiclevel_home_data_agg <- read_feather("data/sixsevmonth_basiclevel_home_data_agg_feather")%>%
   droplevels() %>% 
   dplyr::select(-contains("exp"), -TOY, -CHI, -CHItypes, -prop_tech, -tech, -prop_parent, -sum_prop_ut, -noun_chi_onset, -posttalk, -ent_subj_av) %>% 
 #subj27 has no dad, NA not 0.

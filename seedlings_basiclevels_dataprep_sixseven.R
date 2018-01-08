@@ -19,7 +19,6 @@ options(tibble.print_max = 200, tibble.print_min = 100)
 all_basiclevel_home_data <- get_all_basiclevel()%>%
   add_chi_noun_onset()
 
-#all_basiclevel_home_data <- read_feather("data/all_basiclevel.feather")
 summary(all_basiclevel_home_data, maxsum=50)
 levels(all_basiclevel_home_data$speaker)
 
