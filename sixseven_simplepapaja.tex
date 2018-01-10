@@ -341,13 +341,13 @@ and 7 months) of this study, for which participants were compensated
 \begin{table}[tbp]
 \begin{center}
 \begin{threeparttable}
-\caption{\label{tab:recording-ages-table}Infant ages at recordings and lab visits}
+\caption{\label{tab:recording-ages-table}Infant ages at home recordings and enrollment lab visit}
 \begin{tabular}{llll}
 \toprule
 Month & \multicolumn{1}{c}{Video Recordings} & \multicolumn{1}{c}{Audio Recordings} & \multicolumn{1}{c}{In-lab visits}\\
 \midrule
-6 months & M=6;4, SD=3.2 days & M=6;7, SD=3.9 days & M=6;2, SD=3.7 days\\
-7 months & M=7;2, SD=2.3 days & M=7;5, SD=3.3 days & NA\\
+6 & M=6;4, SD=3.2 days & M=6;7, SD=3.9 days & M=6;2, SD=3.7 days\\
+7 & M=7;2, SD=2.3 days & M=7;5, SD=3.3 days & NA\\
 \bottomrule
 \end{tabular}
 \end{threeparttable}
@@ -438,7 +438,7 @@ was moderate to strong (utterance-type: 87\% agreement, Cohen's
 \begin{table}[tbp]
 \begin{center}
 \begin{threeparttable}
-\caption{\label{tab:measures-tab}Derived count measures}
+\caption{\label{tab:measures-tab}Count measures (n=12), by Measure-Type}
 \small{
 \begin{tabular}{ll}
 \toprule
@@ -510,11 +510,11 @@ sleep onset).
 \begin{figure}
 \centering
 \includegraphics{sixseven_simplepapaja_files/figure-latex/gr-derived-counts-67-diff-1.pdf}
-\caption{\label{fig:gr-derived-counts-67-diff}Raw count of variables across
-audio (indicated by solid borders) and video (dashed borders)
-recordings. Variables, in order: object presence, nouns from mother and
-father, utterance type, noun-types and tokens, and count of unique
-speakers.}
+\caption{\label{fig:gr-derived-counts-67-diff}Raw count of noun measures
+across audio-recordings (solid borders) and videos (dashed borders). Top
+panel labels reflects measure type (op = object presence; utt =
+utterance-type, quant = quantity, speaker\_num = number of speakers).
+Bars appear in legend order.}
 \end{figure}
 
 To examine how the hour-long video data \enquote{scale} to day-length
@@ -553,7 +553,7 @@ V: Mothers & \multicolumn{1}{c}{V: Fathers} & \multicolumn{1}{c}{V: Imperatives}
 \end{tabular}
 }
 \begin{tablenotes}[para]
-\textit{Note.} V indicates videos, A indicates audio-recordings. All infants heard nouns in all other categories (see Table 2)
+\textit{Note.} V indicates videos, A indicates audio-recordings. All infants heard nouns for all other measures (see Table 2)
 \end{tablenotes}
 \end{threeparttable}
 \end{center}
@@ -624,9 +624,7 @@ moderate (excluding the two non-significant metrics, \emph{M} = 0.44,
 \caption{\label{fig:gr-derived-normcounts-diff}Normalized variable counts
 across audio-recordings (solid borders) and videos (dashed borders).
 Normed counts are calculated as the proportion of raw counts over total
-non-silent recording time (in minutes). Variables, in order: object
-presence, nouns from mother and father, utterance type, noun-types and
-tokens, and count of unique speakers.}
+non-silent recording time (in minutes). Bars appear in legend order.}
 \end{figure}
 
 \begin{figure}
@@ -634,9 +632,10 @@ tokens, and count of unique speakers.}
 \includegraphics{sixseven_simplepapaja_files/figure-latex/gr-derived-normcounts-corr-1.pdf}
 \caption{\label{fig:gr-derived-normcounts-corr}Normalized count correlations
 between audio vs.~video recordings. Each point indicates nouns per
-minute of recording for each child, averaged across months 6 \& 7.
-Variables in order: object presence, nouns from mother and father,
-utterance type, noun-types and tokens, and unique speakers.}
+minute of recording for each child, averaged across months 6 \& 7, for
+each measure. Point-shape indicates measure type. Robust linear
+correlations are plotted for visualization only; non-parametric
+correlations (Kendall) were computed for statistics.}
 \end{figure}
 
 \subsection{Exploratory Analyses over Utterance-Types and
@@ -666,9 +665,8 @@ utterance-type differences reached significance across recording-types
 \centering
 \includegraphics{sixseven_simplepapaja_files/figure-latex/gr-ut-count-collapsed-1.pdf}
 \caption{\label{fig:gr-ut-count-collapsed}Utterance type proportions across
-audio-recordings (solid borders) and videos (dashed borders). Utterance
-types top to bottom are r: reading, s: singing, i: imperative, n: short
-phrase, q: questions, and d: declartives.}
+audio-recordings (solid borders) and videos (dashed borders).
+Utterance-types are in legend order top to bottom.}
 \end{figure}
 
 Our final analysis is at the word level; we aim to provide a first-pass
@@ -683,8 +681,11 @@ object words (3137 lemmas) heard across months and recording types, only
 \includegraphics{sixseven_simplepapaja_files/figure-latex/top-100-logspace-1.pdf}
 \caption{\label{fig:top-100-logspace}Log-scaled counts of the top 100 words
 in audio and video recordings. Each node represents the averaged count,
-across all participants in both months, of a unique noun-token. Words
-that occured zero times in one recording-type are not shown.}
+across all participants in both months, of each noun. .1 was added
+before taking logs to include 0 counts. Words in blue occurred 0 times
+in one recording type, words in pink were attested in both recording
+types. Nodes are jittered for visual clarity, with grey lines indicating
+node location on axes.}
 \end{figure}
 
 We examined the top 100 most frequent nouns from audio- and
@@ -698,10 +699,9 @@ p\textless{}.0001; see Figure \ref{fig:top100-corr-rectype} and
 \begin{figure}
 \centering
 \includegraphics{sixseven_simplepapaja_files/figure-latex/top100-corr-rectype-1.pdf}
-\caption{\label{fig:top100-corr-rectype}Correlations of the top 100 words in
-audio vs.~video recordings. Each node represents the count of a unique
-word that occurred in both audio and video recordings, averaged across
-all participants in both months.}
+\caption{\label{fig:top100-corr-rectype}Correlations of the frequencies of
+the top 100 words in audio vs.~video recordings. Each node represents
+one word averaged across all participants in both months.}
 \end{figure}
 
 Finally, looking at just the top ten words by recording-type, we find
@@ -725,8 +725,8 @@ common words across families than do video-recordings.
 \includegraphics{sixseven_simplepapaja_files/figure-latex/top10noun-freq-1.pdf}
 \caption{\label{fig:top10noun-freq}Top 10 words by recording type. Each node
 represents the frequency count of a top audio or video word over both
-months (x axis) and count of participants who were exposed to the word
-in either or both months (y axis).}
+months (x axis) and count of families where that word was said (out of
+44) across months (y axis).}
 \end{figure}
 
 \section{Discussion}\label{discussion}
@@ -831,7 +831,7 @@ Our talker-based results also revealed that infants heard nouns from
 more talkers per minute in videos than in audio-recordings, though in
 raw numbers infants heard roughly double the speakers over the course of
 a day as they heard in one video-recorded hour (see Figure
-\ref{fig:gr-derived-count-67-diff}. While we considered noun input from
+\ref{fig:gr-derived-counts-67-diff}. While we considered noun input from
 all sources (human, electronic, etc.), the quantity of talkers was
 largely swamped by the preponderance of the input
 (\textasciitilde{}65\%) that came from infants' mothers; this quantity

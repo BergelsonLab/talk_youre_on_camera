@@ -21,7 +21,7 @@ measures_table <- kable(measures_table_data, col.names = measures_col_names,
   kable_styling()
 
 #version without prop stuff
-measures_col_names2 <- c("Measure","Derived Count")
+measures_col_names2 <- c("Measure Type","Derived Count Measure")
 
 measures_table_data2 <- data.frame(measures,derived_count) %>% 
   rename(Measure = measures,
