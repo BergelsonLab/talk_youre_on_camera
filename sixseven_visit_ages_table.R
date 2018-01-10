@@ -37,7 +37,7 @@ sevenmo_video = mmdd(mean(visit_ages_7$video_age_days),sd(visit_ages_7$video_age
 
 
 # Table prep
-Month = c("6 months","7 months")
+Month = c("6","7")
 
 Video_recordings = c(sixmo_video,sevenmo_video)
 

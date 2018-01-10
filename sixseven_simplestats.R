@@ -4,13 +4,16 @@ countvals_long_norm_collapsed <- countvals_long_norm %>%
   ungroup() %>% 
   dplyr::select(-month) %>% 
   group_by(subj, norm_meas, audio_video, meas_type) %>% 
-  summarise_all(mean, na.rm=T)
+  summarise_all(mean, na.rm=T)%>% 
+  mutate(meas_type_fig = fct_recode(meas_type, Nspeakers="speaker_num"))#forgraph
+
 
 countvals_long_collapsed <- countvals_long %>% 
   ungroup() %>% 
   dplyr::select(-month) %>% 
   group_by(subj, count_meas, audio_video, meas_type) %>% 
-  summarise_all(mean, na.rm=T)
+  summarise_all(mean, na.rm=T) %>% 
+  mutate(meas_type_fig = fct_recode(meas_type, Nspeakers="speaker_num"))#forgraph
 
 sixseven_spreadAV_normmin_collapsed <- sixseven_spreadAV_normmin %>% 
   dplyr::select(-month) %>% 
