@@ -8,10 +8,10 @@ library(Hmisc)
 library(lmerTest)
 
 
-sixseven_basiclevel_home_data <- read_feather("data/sixsevmonth_basiclevel_home_data_feather")%>%
+sixseven_basiclevel_home_data <- read_feather("data/sixsevmonth_basiclevel_home_data_feather_01_11_18")%>%
    droplevels()
 
-sixseven_basiclevel_home_data_agg <- read_feather("data/sixsevmonth_basiclevel_home_data_agg_feather")%>%
+sixseven_basiclevel_home_data_agg <- read_feather("data/sixsevmonth_basiclevel_home_data_agg_feather_01_11_18")%>%
   droplevels() %>% 
   dplyr::select(-contains("exp"), -TOY, -CHI, -CHItypes, -prop_tech, -tech, -prop_parent, -sum_prop_ut, -noun_chi_onset, -posttalk, -ent_subj_av) %>% 
 #subj27 has no dad, NA not 0.

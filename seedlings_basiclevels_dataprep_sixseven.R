@@ -92,8 +92,8 @@ summary(all_basiclevel_home_data_agg, maxsum=50)
 
 
 #overall agg feather
-write_feather(all_basiclevel_home_data_agg, "data/all_basiclevel_home_data_agg_feather12-11-17")
+write_feather(all_basiclevel_home_data_agg, "data/all_basiclevel_home_data_agg_feather01-11-18")
 
 # two feathers, agg, and not-agg, six/sev month only
-write_feather(all_basiclevel_home_data_agg %>% filter(month=="06" | month=="07"), "data/sixsevmonth_basiclevel_home_data_agg_feather")
-write_feather(all_basiclevel_home_data%>% filter(month=="06" | month=="07"), "data/sixsevmonth_basiclevel_home_data_feather")
+write_feather(all_basiclevel_home_data_agg %>% filter(month=="06" | month=="07"), "data/sixsevmonth_basiclevel_home_data_agg_feather_01_11_18")
+write_feather(all_basiclevel_home_data%>% filter(month=="06" | month=="07"), "data/sixsevmonth_basiclevel_home_data_feather_01_11_18")
