@@ -51,10 +51,10 @@ gr_count_cor_VA_facetmonth_norm_collapsed<-ggplot(countvals_long_norm_collapsed%
              labeller = labeller(norm_meas = measlabs),
              strip.position = "right")+
   stat_smooth(color = "red", fill = "black", method = "rlm")+
-  theme_bw(base_size=10)+
+  theme_bw(base_size=7)+
   guides(colour = "none")+
   xlab("normed audio count") + ylab ("normed video count")+
-  scale_x_continuous(breaks = scales::pretty_breaks(n = 3))
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 2))
 
 
 #corr between overall top100 a vs. v
