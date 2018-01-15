@@ -36,4 +36,5 @@ sixseven_simplepapaja_files
 *.out
 *.fdb_latexmk
 *.ttt
+*.ent
 wordcountcheck.html

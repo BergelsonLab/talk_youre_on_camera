@@ -40,19 +40,21 @@ gr_countvals_long_norm_collapsed <- ggplot(countvals_long_norm_collapsed,
 #   guides(colour = "none")+
 #   scale_shape_discrete(solid = F)+ggtitle("count correlations, AV")
 # 
-measlabs <- c(y_op="op", MOT = "mot", FAT = "fat", n = "phrase",
-              d = "decl",q = "ques", r = "read", s= "sing", i = "impe",
-              numtypes = "Ntypes", numtokens = "Ntokens", numspeakers = "Nspeakers")
+measlabs <- c(y_op="op", MOT = "mother", FAT = "father", n = "short phrase",
+              d = "declarative",q = "question", r = "reading", s= "singing", i = "imperative",
+              numtypes = "# of noun-types", numtokens = "# of noun-tokens", numspeakers = "# of speakers")
 
 gr_count_cor_VA_facetmonth_norm_collapsed<-ggplot(countvals_long_norm_collapsed%>% 
-  spread(audio_video, normval), aes(audio, video, color = norm_meas, shape = meas_type_fig))+
-  geom_point()+
-  facet_wrap(~norm_meas, scales = "free", nrow=2, labeller = labeller(norm_meas = measlabs))+
-  stat_smooth(color = "red", fill = "black", method = "rlm")+theme_bw(base_size=10)+
+  spread(audio_video, normval), aes(audio, video, color = norm_meas))+
+  geom_point(shape=1)+
+  facet_wrap(~norm_meas, scales = "free", nrow=2, 
+             labeller = labeller(norm_meas = measlabs),
+             strip.position = "right")+
+  stat_smooth(color = "red", fill = "black", method = "rlm")+
+  theme_bw(base_size=10)+
   guides(colour = "none")+
-  scale_shape_discrete(solid = F,
-                       name="Measure Type")+
-  xlab("normed audio count") + ylab ("normed video count")
+  xlab("normed audio count") + ylab ("normed video count")+
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 3))
 
 
 #corr between overall top100 a vs. v
