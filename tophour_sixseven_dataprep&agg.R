@@ -1,4 +1,5 @@
 #just the TOP audio hour and the video hour
+library(blabr)
 source("sixseven_data_aggregation.R")
 
 
@@ -17,6 +18,12 @@ TOPHOURsixseven_basiclevel_home_data <-sixseven_basiclevel_home_data %>%
                                 (onset >= tophour_onset & 
                                 (tophour_onset+(60*60*1000))>=onset))
  
+# Just as a proof of basic functionality, all_basiclevel makes it through big_aggregate():
+all_bl <- get_all_basiclevel()
+ba_abl <- big_aggregate(all_bl)
+
+# TOPHOURsixseven.... does not, complains about "argumemt is not a character vector"
+big_agg <- big_aggregate(TOPHOURsixseven_basiclevel_home_data)
 
 summary(TOPHOURsixseven_basiclevel_home_data)
 # test <- TOPHOURsixseven_basiclevel_home_data %>% 
