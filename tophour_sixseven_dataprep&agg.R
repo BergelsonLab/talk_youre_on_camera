@@ -23,9 +23,29 @@ all_bl <- get_all_basiclevel()
 ba_abl <- big_aggregate(all_bl)
 
 # TOPHOURsixseven.... does not, complains about "argumemt is not a character vector"
-big_agg <- big_aggregate(TOPHOURsixseven_basiclevel_home_data)
 
+#eb: that's not the complaint i get, i get the same mutate and TVS complaint, but line 23 above DOES work.
+# the only diff between TOPHOURsixseven_basiclevel_home_data and sixseven_basiclevel_home_data are teh columns i've selected out below
+# but removing them still doesn't work. this is most likely something about grouping within the various subfunctions in big_agg
+# so trace it through 1:89 in seedlings_basiclevels_dataprep_sixseven
+
+sort(colnames(TOPHOURsixseven_basiclevel_home_data))
+sort(colnames(all_bl))
+summary(sixseven_basiclevel_home_data)
+summary(all_bl)
 summary(TOPHOURsixseven_basiclevel_home_data)
+
+big_agg <- TOPHOURsixseven_basiclevel_home_data %>% 
+  dplyr::select(-noun_chi_onset, -vidtime_ms, -tophour_onset) %>% 
+  big_aggregate()
+big_aggregate
+
+big_agg67 <- sixseven_basiclevel_home_data %>% 
+  dplyr::select(-noun_chi_onset) %>% 
+  big_aggregate()
+big_aggregate
+
+
 # test <- TOPHOURsixseven_basiclevel_home_data %>% 
 #   group_by(SubjectNumber, audio_video) %>% 
 #   summarise(length_min = (max(offset)-min(onset))/60/1000,
