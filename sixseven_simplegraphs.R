@@ -62,7 +62,7 @@ gr_top100_avspread_collapsed <- ggplot(top100av_spread, aes(audio, video))+
   geom_point(shape=2)+
   stat_smooth(method = rlm, fill = "blue")+
   theme_bw(base_size=14)+
-  xlab("normed audio count") + ylab ("normed video count")
+  xlab("audio count") + ylab ("video count")
 
 #top100 graph, log space
 #plot in draft# same as in full paper, can take out of other one when cleaning
