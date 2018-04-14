@@ -36,9 +36,9 @@ summary(SAMEHOURsixseven_basiclevel_home_data_agg$subj)
 #SAMEHOURoverall agg feather
 
 # two feathers, agg, and not-agg, six/sev month only, SAMEHOUR only
-write_feather(SAMEHOURsixseven_basiclevel_home_data_agg %>% filter(month=="06" | month=="07"), "data/SAMEHOURsixseven_basiclevel_home_data_agg_feather_04_13_18")
-write_feather(SAMEHOURsixseven_basiclevel_home_data%>% filter(month=="06" | month=="07"), "data/SAMEHOURsixseven_basiclevel_home_data_04_13_18")
-
+write_feather(SAMEHOURsixseven_basiclevel_home_data_agg , "data/SAMEHOURsixseven_basiclevel_home_data_agg_feather_04_13_18")
+write_feather(SAMEHOURsixseven_basiclevel_home_data, "data/SAMEHOURsixseven_basiclevel_home_data_04_13_18")
+write_feather(SAMEHOUR_marker, "data/SAMEHOUR_marker_04_13_18")
 # samehour various dataframes for figs & stats -------------------------------------
 SAMEHOURaudio_ag <- SAMEHOURsixseven_basiclevel_home_data_agg%>%
   #corresponding vid is missing

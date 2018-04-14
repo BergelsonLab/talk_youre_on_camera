@@ -3,7 +3,7 @@ library(blabr)
 source("sixseven_data_aggregation.R")
 
 
-tophour_marker <- read_csv("data/top_hour_bl_vs_lena.csv") %>% 
+TOPHOUR_marker <- read_csv("data/top_hour_bl_vs_lena.csv") %>% 
   filter(bl_lena=="bl") %>% 
   rename(SubjectNumber=file,
          ms_start_tophour = onset) %>% 
@@ -11,7 +11,7 @@ tophour_marker <- read_csv("data/top_hour_bl_vs_lena.csv") %>%
   dplyr::select(-time, -bl_lena)
 
 TOPHOURsixseven_basiclevel_home_data <-sixseven_basiclevel_home_data %>% 
-  left_join(tophour_marker) %>%
+  left_join(TOPHOUR_marker) %>%
   filter(audio_video=="video" | (audio_video=="audio" & 
                                    onset >= ms_start_tophour & 
                                    onset < ms_end_tophour)) %>%
@@ -30,7 +30,7 @@ summary(TOPHOURsixseven_basiclevel_home_data_agg, maxsum=50)
 # two feathers, agg, and not-agg, six/sev month only, tophour only
 write_feather(TOPHOURsixseven_basiclevel_home_data_agg, "data/TOPHOURsixseven_basiclevel_home_data_agg_feather_04_13_18")
 write_feather(TOPHOURsixseven_basiclevel_home_data, "data/TOPHOURsixseven_basiclevel_home_data_04_13_18")
-
+write_feather(TOPHOUR_marker, "data/TOPHOUR_marker_04_13_18")
 
 # tophour various dataframes for figs & stats -------------------------------------
 TOPHOURaudio_ag <- TOPHOURsixseven_basiclevel_home_data_agg%>%

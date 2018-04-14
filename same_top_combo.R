@@ -1,15 +1,17 @@
 #combining samehour and tophour new dataframes,graphs, analyses
 library(blabr)
 source("sixseven_data_aggregation.R")
+source("sixseven_simplestats.R")
 #these four feathers are all you need for all the new same/top figs (plus stuff from main agg script)
 # they are created by the tophour_sixseven_dataprep&agg.R & samehour_sixseven_dataprep&agg.R scripts)
 #the specific stats for each sub-part (same and top) are in those separate scripts.
 
 TOPHOURsixseven_basiclevel_home_data_agg<- read_feather("data/TOPHOURsixseven_basiclevel_home_data_agg_feather_04_13_18")
 TOPHOURsixseven_basiclevel_home_data<- read_feather("data/TOPHOURsixseven_basiclevel_home_data_04_13_18")
+TOPHOUR_marker <- read_feather("data/TOPHOUR_marker_04_13_18")
 SAMEHOURsixseven_basiclevel_home_data_agg<- read_feather("data/SAMEHOURsixseven_basiclevel_home_data_agg_feather_04_13_18")
-SAMEHOURsixseven_basiclevel_home_data<- read_feather("data/SANEHOURsixseven_basiclevel_home_data_04_13_18")
-
+SAMEHOURsixseven_basiclevel_home_data<- read_feather("data/SAMEHOURsixseven_basiclevel_home_data_04_13_18")
+SAMEHOUR_marker <- read_feather("data/SAMEHOUR_marker_04_13_18")
 
 TOPHOURcountvals_long <- TOPHOURsixseven_basiclevel_home_data_agg %>% 
   dplyr::select(month, audio_video, subj, y_op, MOT, FAT, d, q, n, s, r, i, numtypes, numtokens, numspeakers) %>% 
@@ -57,8 +59,11 @@ SAMEHOURcountvals_long_collapsed <- SAMEHOURcountvals_long %>%
   mutate(meas_type_fig = fct_recode(meas_type, Nspeakers="speaker_num"))#forgraph
 
 timeslices_countvals_long_collapsed <- SAMEHOURcountvals_long_collapsed %>% 
-  mutate(which_hour = ifelse(audio_video=="video","video","same")) %>% 
-  bind_rows(TOPHOURcountvals_long_collapsed %>% filter(audio_video=="audio") %>% mutate(which_hour ="top"))
+  mutate(timeslice = ifelse(audio_video=="video","video","same")) %>% 
+  bind_rows(TOPHOURcountvals_long_collapsed %>% filter(audio_video=="audio") %>% mutate(timeslice ="top")) %>% 
+  bind_rows(countvals_long_collapsed %>% filter(audio_video=="audio") %>% mutate(timeslice ="audio_day")) %>% 
+  mutate(hr_day = factor(ifelse(timeslice=="audio_day", "day","hour")),
+         timeslice = factor(timeslice))
 
 # top10 & top100 all timeslices ----------------------------------------------------
 
@@ -99,12 +104,14 @@ timeslices_top100av_spread <- timeslices_top100av %>%
 
 # df to plot hour onsets and offsets on one graph -------------------------------------------------------------------
 combo_sametopmarker <- SAMEHOUR_marker %>% 
-  left_join(tophour_marker) %>% gather(timetype,startstop, ms_start_samehour:ms_end_tophour)
+  left_join(TOPHOUR_marker) %>% gather(timetype,startstop, ms_start_samehour:ms_end_tophour)
 combo_sametopmarker_wide <- SAMEHOUR_marker %>% 
-  left_join(tophour_marker) 
+  left_join(TOPHOUR_marker) 
 
-filter(combo_sametopmarker, audiorec_startime > video_start_time & timetype=="ms_start_samehour")
-combo_sametopmarker_wide %>% 
+#filter(combo_sametopmarker, audiorec_startime > video_start_time & timetype=="ms_start_samehour")
+#overlap between tophour and samehour, n=15, but actually n=12 bc three were constrained to be that way bc 
+#video started before audio
+top_same_overlappers <- combo_sametopmarker_wide %>% 
   mutate(overlap_SHTH = ifelse((ms_start_samehour>ms_start_tophour &
                                   ms_start_samehour<(ms_start_tophour+60*60*1000))|
                                  (ms_start_tophour > ms_start_samehour &
@@ -129,26 +136,27 @@ same_top_day_graph <- ggplot(combo_sametopmarker %>% filter(timetype %in% c("ms_
   labs(x="Timing of Video Hour & Top Audio Hour in Daylong Audio Recording", y="Individual Recordings")
 
 
-ggplot(timeslices_countvals_long_collapsed, 
-       aes(fill = count_meas, linetype =which_hour, which_hour, countval))+
-  stat_summary(fun.y=mean, geom="bar", position = "dodge", aes(linetype=which_hour),color = "black")+
-  stat_summary(fun.data=mean_cl_boot, geom="pointrange", position=position_dodge(width=.9), 
-               aes(group = interaction(count_meas,which_hour)))+
-  facet_wrap(~meas_type_fig, ncol = 2, scales = "free_y")+
-  scale_fill_discrete(name="Normed Count\nMeasures",
+count_meas_fig <- ggplot(timeslices_countvals_long_collapsed, 
+       aes(fill = count_meas, linetype =timeslice, timeslice, countval))+
+  stat_summary(fun.y=mean, geom="bar", position = "dodge", aes(linetype=timeslice),color = "black", size = .4)+
+  stat_summary(fun.data=mean_cl_boot, geom="linerange", position=position_dodge(width=.9), 
+               aes(group = interaction(count_meas,timeslice)),size = .7, linetype=1)+
+  facet_wrap(hr_day~meas_type_fig, nrow=2,scales = "free")+
+  scale_fill_discrete(name="Count\nMeasures",
                       breaks=c("y_op", "MOT", "FAT", "d","q","n","s","r","i","numtypes","numtokens","numspeakers"),
                       labels=c("op","mother","father","declarative","question","short phrase","singing","reading","imperative",
                                "Ntypes","Ntokens","Nspeakers"))+
-  xlab("Measure Type")+ylab("Top Hour Count")+
+  xlab("Measure Type")+ylab("Count")+
   scale_linetype(name = "")
 
-ggplot(timeslices_countvals_long_collapsed %>% filter(meas_type=="utt"),
-       aes(which_hour, countval, fill = fct_reorder(count_meas, countval), linetype =which_hour))+
-  stat_summary(fun.y=mean, geom="bar", position = "fill", aes(linetype=which_hour),color = "black")+
-  #scale_x_discrete(breaks=NULL)+
+prop_ut_fig <- ggplot(timeslices_countvals_long_collapsed %>% filter(meas_type=="utt"),
+       aes(timeslice, countval, fill = fct_reorder(count_meas, countval), linetype =timeslice))+
+  stat_summary(fun.y=mean, geom="bar", position = "fill", aes(linetype=timeslice),color = "black")+
+  scale_x_discrete(breaks=NULL)+
+  guides(linetype=F)+
   scale_fill_discrete(name=NULL,
-                      breaks=c("r","s","i","n","q","d"),
-                      labels=c("reading","singing","imperative","short phrase", "question","declarative"))+
+                      breaks=c("s","r","i","n","q","d"),
+                      labels=c("singing","reading","imperative","short phrase", "question","declarative"))+
   scale_linetype(name = "")
 
 
@@ -160,15 +168,15 @@ ggplot(timeslices_countvals_long_collapsed %>% filter(meas_type=="utt"),
 #   guides(colour=F)+scale_x_log10()+scale_y_log10()+
 #   xlab("log(audio count+.1)")+ylab("log(video count+.1)")
 
-ggplot(timeslices_overall_top10, 
+top10_all4_fig <- ggplot(timeslices_overall_top10, 
        aes(n, nfams, label = object, shape = timeslice, colour = object, linetype = audio_video))+
   geom_point(size = 2, color = "black")+
   geom_label_repel(point.padding = .5, box.padding = .4, label.size = .1)+
   theme_bw(base_size=18)+
-  scale_shape_discrete(solid=F, name = "")+
+  scale_shape_discrete(solid=F, name = "", guide=F)+
   guides(color=F)+
-  xlab("word count")+ylab("number of families")
-#  facet_grid(~timeslice)
+  xlab("word count")+ylab("number of families")+
+ facet_grid(~timeslice)
 
 ggplot(timeslices_overall_top10, aes(object, fill=timeslice, linetype = timeslice, color=timeslice))+geom_bar(stat="count", color="black")
 

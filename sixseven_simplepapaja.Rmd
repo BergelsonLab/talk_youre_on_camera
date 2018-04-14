@@ -1,6 +1,6 @@
 ---
-title             : "Talk, You're On Camera! Or, Comparing Naturalistic Audio and Video Recordings of Infants"
-shorttitle        : "Talk, You're On Camera!"
+title             : "Day by Day, Hour by Hour: Naturalistic Language Input to Infants"
+shorttitle        : "Day by Day, Hour by Hour"
 
 author: 
   - name          : "Elika Bergelson"
