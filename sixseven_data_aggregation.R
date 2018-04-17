@@ -5,15 +5,13 @@ library(broom)
 library(forcats)
 library(MASS)
 library(Hmisc)
-library(lmerTest)
 
-
-sixseven_basiclevel_home_data <- read_feather("data/sixsevmonth_basiclevel_home_data_feather_01_11_18")%>%
+sixseven_basiclevel_home_data <- read_feather("data/sixsevmonth_basiclevel_home_data_feather_04_16_18")%>%
    droplevels()
 
-sixseven_basiclevel_home_data_agg <- read_feather("data/sixsevmonth_basiclevel_home_data_agg_feather_01_11_18")%>%
+sixseven_basiclevel_home_data_agg <- read_feather("data/sixsevmonth_basiclevel_home_data_agg_feather_04_16_18")%>%
   droplevels() %>% 
-  dplyr::select(-contains("exp"), -TOY, -CHI, -CHItypes, -prop_tech, -tech, -prop_parent, -sum_prop_ut, -noun_chi_onset, -posttalk, -ent_subj_av) %>% 
+  dplyr::select(-contains("exp"), -TOY, -CHI, -CHItypes, -prop_parent, -sum_prop_ut, -noun_chi_onset, -posttalk, -ent_subj_av) %>% 
 #subj27 has no dad, NA not 0.
   mutate(FAT = ifelse(subj=="27", NA, FAT))
 
@@ -216,6 +214,32 @@ countvals_long_norm <- sixseven_spreadAV_normmin %>%
                                   quant = c("numtypes","numtokens"),
                                   op = "y_op"))
 
+
+# collapsing month, and only doing counts --------------------------------------------------------------
+countvals_long_norm_collapsed <- countvals_long_norm %>% 
+  ungroup() %>% 
+  dplyr::select(-month) %>% 
+  group_by(subj, norm_meas, audio_video, meas_type) %>% 
+  summarise_all(mean, na.rm=T)%>% 
+  mutate(meas_type_fig = fct_recode(meas_type, Nspeakers="speaker_num"))#forgraph
+
+
+countvals_long_collapsed <- countvals_long %>% 
+  ungroup() %>% 
+  dplyr::select(-month) %>% 
+  group_by(subj, count_meas, audio_video, meas_type) %>% 
+  summarise_all(mean, na.rm=T) %>% 
+  mutate(meas_type_fig = fct_recode(meas_type, Nspeakers="speaker_num"))#forgraph
+
+sixseven_spreadAV_normmin_collapsed <- sixseven_spreadAV_normmin %>% 
+  dplyr::select(-month) %>% 
+  group_by(subj) %>% 
+  summarise_all(mean, na.rm=T)
+
+sixseven_spreadAV_collapsed <- sixseven_spreadAV %>% 
+  dplyr::select(-SubjectNumber,  -month,-v_n_op, -a_n_op) %>% 
+  group_by(subj) %>% 
+  summarise_all(mean, na.rm=T)
 # a_boost and v_boost -----------------------------------------------------
 
 #count comparison by min

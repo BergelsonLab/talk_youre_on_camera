@@ -379,12 +379,6 @@ cor_sixsevenVtop <-
   cor.test(top100video_monthspread$six,
            top100video_monthspread$seven,
            method = "kendall") %>% tidy()#.36
-cor_AVtop <-cor.test(top100av_spread$audio,
-                     top100av_spread$video,
-                     method = "kendall") %>% tidy()
-cor_AVtopnozeroes <- cor.test(top100av_spread_nozeros$audio,
-                              top100av_spread_nozeros$video,
-                              method = "kendall") %>% tidy()# sig cor, but ~1/2 are 0s
 corAVtop67_combo <- bind_rows(cor_sixavtop, cor_sevavtop,cor_sixsevenAtop, cor_sixsevenVtop) %>% 
   mutate(pval_adj = p.adjust(p.value, method = "holm"))
 
