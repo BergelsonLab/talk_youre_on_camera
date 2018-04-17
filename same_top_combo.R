@@ -175,3 +175,43 @@ top_same_overlappers <- combo_sametopmarker_wide %>%
 
 
 
+SAMEHOUR_Avars_with_NAs <- SAMEHOURsixseven_spreadAV %>% 
+  dplyr::select(subj,
+                a_numtypes, v_numtypes, a_numtokens, v_numtokens, a_numspeakers, v_numspeakers,a_MOT, v_MOT, a_FAT, v_FAT, a_d, v_d, a_q, v_q, a_i, v_i, a_s, v_s, a_r, v_r, a_n, v_n, a_y_op, v_y_op) %>% 
+  group_by(subj) %>% 
+  summarise_if(is.numeric, funs(sum)) %>% 
+  mutate_if(is.numeric, funs(na_if(., 0))) %>%
+  mutate(v_FAT = ifelse(subj=="27", 0, v_FAT), # this is a hack so that 27 isn't counted bc that subj had no FAT
+         a_FAT = ifelse(subj=="27", 0, a_FAT)) %>%  # this is a hack so that 27 isn't counted bc that subj had no FAT 
+  summarise_if(is.numeric, funs(round(sum(is.na(.))/length(.),2)))%>%
+  mutate(v_FAT = round(v_FAT *44/43,2)) %>%  # this is a hack so that 27 isn't counted bc that subj had no FAT
+  dplyr::select_if(any_vars(.>0)) %>% 
+  dplyr::select(-starts_with("v_")) %>% 
+  rename("SameA: Singing"=a_s,
+         "SameA: Reading"=a_r,
+         "SameA: Fathers"=a_FAT)
+
+TOPHOUR_Avars_with_NAs <-TOPHOURsixseven_spreadAV %>% 
+  dplyr::select(subj,
+                a_numtypes, v_numtypes, a_numtokens, v_numtokens, a_numspeakers, v_numspeakers,a_MOT, v_MOT, a_FAT, v_FAT, a_d, v_d, a_q, v_q, a_i, v_i, a_s, v_s, a_r, v_r, a_n, v_n, a_y_op, v_y_op) %>% 
+  group_by(subj) %>% 
+  summarise_if(is.numeric, funs(sum)) %>% 
+  mutate_if(is.numeric, funs(na_if(., 0))) %>%
+  mutate(v_FAT = ifelse(subj=="27", 0, v_FAT), # this is a hack so that 27 isn't counted bc that subj had no FAT
+         a_FAT = ifelse(subj=="27", 0, a_FAT)) %>%  # this is a hack so that 27 isn't counted bc that subj had no FAT 
+  summarise_if(is.numeric, funs(round(sum(is.na(.))/length(.),2)))%>%
+  mutate(v_FAT = round(v_FAT *44/43,2)) %>%  # this is a hack so that 27 isn't counted bc that subj had no FAT
+  dplyr::select_if(any_vars(.>0)) %>% 
+  dplyr::select(-starts_with("v_")) %>% 
+  rename("TopA: Singing"=a_s,
+         "TopA: Reading"=a_r,
+         "TopA: Fathers"=a_FAT,
+         "TopA: Mothers" =a_MOT)
+
+all_vars_with_NAs <- TOPHOUR_Avars_with_NAs %>% 
+    bind_cols(SAMEHOUR_Avars_with_NAs) %>% 
+    bind_cols(vars_with_NAs) %>% gather(key = "Measure", value = "Prop.Missing") %>% 
+  separate(Measure, sep = ": ", into = c("Time Sample","Measure")) %>% 
+  #arrange(Measure,-Prop.Missing) %>%
+  spread(Measure, Prop.Missing) %>% 
+  dplyr::select(`Time Sample`, Fathers, Mothers, Reading, Singing, Imperatives)

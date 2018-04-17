@@ -161,7 +161,7 @@ Trained researchers annotated each recording. This entailed demarcating each con
 ## Analysis Plan
 Based on the coding scheme above, we derived 12 measures from each recordings' annotations for each child (n=44), recording-type (audio, video), and month (6, 7). See Table \@ref(tab:measures-tab). We averaged across months to increase precision, and because we have no theoretically-motivated reason to predict input differences across months (i.e. no developmental or linguistic milestones are typically achieved at 6--7 months.) While we initially anticipated analyzing the data with multi-level models, nearly all such models revealed highly skewed residuals (by Shapiro-Wilk Test), even when log-transformed, limiting interpretation across measures. Thus, we instead report a simple set of nonparametric analyses below. We used R for all analyses; the code that rendered this manuscript is on Github, to be shared upon publication.\footnote{Please contact corresponding author for access before publication.}
 
-For all recording-type comparisons, we look at whether our measures *differed* significantly (by two-tailed, paired Wilcoxon Test) and *correlated* significantly (by Kendall Rank Correlation) across the given groups. This approach lets us compare, e.g., whether the time-normalized count of declarative nouns is indistinguishable in our audio- and video-recordings, independently of whether these values are correlated. We applied Holm's *p*-value adjustment for multiple comparisons [@holm1979simple] for the set of 12 Wilcoxon tests and the set of 12 Kendall Correlations. 
+For all recording-type comparisons, we look at whether our measures *differed* significantly (by two-tailed, paired Wilcoxon Test) and *correlated* significantly (by Kendall Rank Correlation) across the given groups. This approach lets us compare, e.g., whether the time-normalized count of declarative nouns is indistinguishable in our audio- and video-recordings, independently of whether these values are correlated. We applied Holm's *p*-value adjustment for multiple comparisons [@holm1979simple] for the set of 12 Wilcoxon tests and the set of 12 Kendall Correlations.
 
 ```{r scaling examination, echo = F, warning = F, message = F}
 mean_vboost_measures <- vboost_mean_collapsed %>% 
@@ -169,11 +169,11 @@ mean_vboost_measures <- vboost_mean_collapsed %>%
 ```
 
 ## Count Measure Analysis
-To examine how the hour-long video data 'scale' to day-length data descriptively, we first divided the 12 count measures from the videos by those from the audio-recordings for each child, to derive 'video-fraction' scores (video/audio). This showed that the video-recordings were `r vboost_mean_collapsed$vboost_min` of the length of audio-recordings, or `r vboost_mean_collapsed$vboost_awakemin` of the length when audio-recording silences were removed. However, rather than a concomitant 10-fold decrease in our count measures (as would be expected if videos captured a 'representative' hour of the day), the fractions averaged to `r mean_vboost_measures`; see Table \@ref(tab:normtable). Thus, by and large, videos had a denser concentration of nouns across measures than did the audio-recordings. See Figure \@ref(fig:gr-derived-counts-67-diff) for raw count data for each metric. 
+To examine how the hour-long video data 'scale' to day-length data descriptively, we first divided the 12 count measures from the videos by those from the audio-recordings for each child, to derive 'video-fraction' scores (video/audio). This showed that the video-recordings were `r vboost_mean_collapsed$vboost_min` of the length of audio-recordings, or `r vboost_mean_collapsed$vboost_awakemin` of the length when audio-recording silences were removed. However, rather than a concomitant 10-fold decrease in our count measures (as would be expected if videos captured a 'representative' hour of the day), the fractions averaged to `r mean_vboost_measures`; see Table \@ref(tab:normtable). Thus, by and large, videos had a denser concentration of nouns across measures than did the audio-recordings. See Figure \@ref(fig:gr-derived-counts-67-diff) for raw count data for each measure. 
 
-We computed video-fractions (rather than the reciprocal, i.e. audio/video) because there were more zero values for videos than audio-recordings (e.g. a chlid who heard no sung nouns), rendering more undefined values. Indeed, >1/3 of children did not hear nouns in reading or from fathers on videos in either month. See Table \@ref(tab:propna-missing-tables). 
+We computed video-fractions (rather than the reciprocal, i.e. audio/video) because there were more zero values for videos than audio-recordings (e.g. children who heard no sung nouns), rendering more undefined values. Indeed, >1/3 of children did not hear nouns in reading or from fathers on videos in either month. See Table \@ref(tab:propna-missing-tables). 
 
-We next normed our counts by the number of minutes in each. E.g., if an infant heard 500 noun-tokens in 800 minutes of non-silent audio-recording, and 200 in 60 minutes of videos, this was normed to .62 and 3.3 noun-tokens per minute, respectively; zero values were retained within normed counts.\footnote{One infant's zero value was excluded from 'father' measures; this infant had no father at home.}
+We next normed our counts by the number of minutes in each recording. E.g., if an infant heard 500 noun-tokens in 800 minutes of non-silent audio-recording, and 200 in 60 minutes of video, this was normed to .62 and 3.3 noun-tokens per minute, respectively; zero values were retained within normed counts.\footnote{One infant's data was excluded from 'father' measures; this infant had no father at home.}
 
 ```{r wilcoxon-corr-stats, warning = F, echo = F, message = F}
 w_sigps <- nrow(ws %>% filter(pval_adj<.05))
@@ -182,25 +182,39 @@ tau_min <- round(min(c_taus_sig$estimate),2)
 tau_max <- round(max(c_taus_sig$estimate),2)
 tau_mean <- round(mean(c_taus_sig$estimate),2)
 
-same_top_overlap <- top_same_overlappers %>% filter(!SubjectNumber %in% c("25_07","12_06","37_06")) %>% summarise(n_distinct(SubjectNumber))
+s_t_overlap <- top_same_overlappers %>% filter(!SubjectNumber %in% c("25_07","12_06","37_06")) %>% summarise(s_t_overlap=n_distinct(SubjectNumber))
+SHw_sigps <- nrow(SHws %>% filter(pval_adj<.05))
+THw_sigps <- nrow(THws %>% filter(pval_adj<.05))
+
 ```
 
 We first looked at correlations across recording types, and find that `r c_sigps`/12 metrics correlated in audio vs. video data; nouns per minute heard from fathers and in singing did not. The size of the correlations (i.e. Kendall's $\tau$) was moderate (excluding the two non-significant metrics, *M*=`r tau_mean`, `r tau_min`-`r tau_max`, all adjusted-*p*<.05). See Table \@ref(tab:normtable) and Figure \@ref(fig:gr-derived-normcounts-corr). 
 
-We next compared the rates of each of our measures in three ways. First, we used the normed data, looking at counts per minute. With the normed data, `r w_sigps`/12 metrics occurred at significantly lower rates in audio-recordings than video-recordings (all adjusted-*p*<.05). The remaining metric, nouns from fathers, was statistically indistinguishable across recording types (adjusted-*p*>.05). Thus, overall, per unit time, infants heard less noun input across our metrics of quantity, talker, utterance-type and object presence in audio-recordings than in videos (see Figure \@ref(fig:gr-derived-counts-67-diff) and \@ref(fig:gr-derived-normcounts-diff) for raw and normed count data).
+We next compared the rates of each measure in three ways. First, we used the normed data, looking at counts per minute. With the normed data, `r w_sigps`/12 metrics occurred at significantly lower rates in audio-recordings than video-recordings (all adjusted-*p*<.05). The remaining metric, nouns from fathers, was statistically indistinguishable across recording types (adjusted-*p*>.05). Thus, overall, per unit time, infants heard less noun input across our metrics of quantity, talker, utterance-type and object presence in audio-recordings than in videos (see Figure \@ref(fig:gr-derived-counts-67-diff) and \@ref(fig:gr-derived-normcounts-diff) for raw and normed count data).
 
-Next, we compared two different hour-long subsets from the daylong audio recording for comparison with the video-recorded hour, collectively referred to as 'peak' audio times. The *top* hour was calculated by sliding a moving window through the annotations to find the hour in which infants heard the most nouns. Complementarily, under the logic that parents scheduled the video-recordings for times of high infant altertness, we extracted that *same* hour in the daylong audio, i.e. if the video recording visit was scheduled from 2-3pm, we used 2-3pm from that same child's daylong audio recording for that month. Our 12 measures were then compted in both the *top* and *same* hours of audio. These hours only overlapped in `r same_top_overlap`/88 recordings (`r round(15/88,2)*100`%)) \footnote{In 3 cases, the video-recording time (i.e. 'same' hour time) preceded the beginning of the daylong audio-recording (by 5, 30, or 90 minutes); in those cases the first hour of the recording was used. This created two further cases of 'top' and 'same' hour overlap. See Figure S1}
+Next, we compared two different hour-long subsets from the daylong audio recording for comparison with the video-recorded hour, collectively referred to as 'peak' audio times. The *top* hour was calculated by sliding a window through the annotations to find the hour in which infants heard the most nouns. Complementarily, under the logic that parents scheduled the video-recordings for times of high infant altertness, we extracted that *same* hour in the daylong audio, i.e. if the video recording visit was scheduled from 2-3pm, we used 2-3pm from that child's daylong audio recording that month. Our 12 measures were then computed in both the *top* and *same-as-video* hours of audio. Top and same-as-video hours only overlapped in `r s_t_overlap$s_t_overlap`/88 recordings (`r round(s_t_overlap$s_t_overlap/88,2)*100`%)).\footnote{In 3 cases, the video-recording time (i.e. 'same-as-video' time) preceded the beginning of the daylong audio-recording (by 5, 30, or 90 minutes); in those cases the first hour of the recording was used. This created two further cases of \'top' and 'same-as-video' overlap.}
+
+For the peak audio, `r SHw_sigps`/12 metrics occurred at significantly *higher* rates in 'same' audio hour than in video-recordings (all adjusted-*p*<.05), namely the number of types, nouns from fathers, and nouns from declaratives. Similarly, `r THw_sigps` occurred at significantly higher rates in 'top' audio hour than in video-recordings (all adjusted-*p*<.05); these included all the measures that were higher in the 'same' audio hour, along with number of tokens, and nouns in imperatives and short phrases. Thus, the video data presented a somewhat different language input profile than the peak audio hours of the day: they featured less input for some of our quantity, talker, and utterance-type measures, but were statistically indistinguishable in object presence, input from mothers, and input in other utterance-types. This same qualitative pattern held when looking at 'zero' values for the peak audio hours, relative to the videos and daylong audio-recordings (see Table \@ref(tab:propna-missing-tables)).
+
 
 ```{r prop-ut, echo = F, warning = F, message = F}
 dq_propmeans <- sixseven_spreadAV_collapsed %>% 
   dplyr::select(a_propd, v_propd, a_propq, v_propq) %>% 
   summarise_all(.funs = mean)
+THdq_propmeans <- TOPHOURsixseven_spreadAV_collapsed %>% 
+  dplyr::select(a_propd, a_propq) %>% 
+  summarise_all(.funs = mean)
+SHdq_propmeans <- SAMEHOURsixseven_spreadAV_collapsed %>% 
+  dplyr::select(a_propd, a_propq) %>% 
+  summarise_all(.funs = mean)
 #pvalues for d&q here:
-#propws
+#propws%>% filter(pval_adj<.05)
+#SHpropws %>% filter(pval_adj<.05)
+#THpropws%>% filter(pval_adj<.05)
 ```  
 
 ## Exploratory Analyses
-Lastly, we undertook two sets of highly exploratory analyses, at the utterance and word level. The utterance-type analysis is based on the unanticipated observation that while declaratives and questions made up >2/3 of the input for each recording-type, the videos appeared to contain relatively more questions and fewer declaratives (See Fig \@ref(fig:gr-derived-counts-67-diff) and Fig \@ref(fig:gr-derived-normcounts-diff)). To test this statistically, we converted the six utterance-type counts to proportions (e.g. number of nouns heard in declaratives over total noun tokens) for each recording-type. Wilcoxon tests of each utterance-type in audio- vs. video-recording (corrected for multiple comparisons) revealed that indeed, declaratives and questions occurred at different rates in audio- and video-recordings (both adjusted-*p*<.05), with audio-recordings containing relatively fewer questions ($M_{video}$=`r dq_propmeans$v_propq`, $M_{audio}$=`r dq_propmeans$a_propq`) and more declaratives than videos ($M_{video}$=`r dq_propmeans$v_propd`, $M_{audio}$=`r dq_propmeans$a_propd`). No other proportional utterance-type differences reached significance across recording-types (all adjusted-*p*>.05). See Figure \@ref(fig:gr-ut-count-collapsed). 
+Lastly, we undertook two sets of highly exploratory analyses, at the utterance and word level. The utterance-type analysis is based on the unanticipated result that while declaratives and questions made up >2/3 of the input for each recording-type, the videos appeared to contain relatively more questions and fewer declaratives (See Fig. \@ref(fig:gr-derived-counts-67-diff) and \@ref(fig:gr-derived-normcounts-diff)). To test this statistically, we converted the six utterance-type counts to proportions (e.g. number of nouns heard in declaratives over total noun tokens), and compared the proportion of each utterance types in video- and audio-recordings. Wilcoxon tests of each utterance-type in audio- vs. video-recording (corrected for multiple comparisons) revealed that indeed, declaratives and questions occurred at different rates across recording-types, with audio-recordings containing relatively fewer questions ($M_{video}$=`r dq_propmeans$v_propq`, $M_{audio}$=`r dq_propmeans$a_propq`, $M_{same\  audio}$=`r SHdq_propmeans$a_propq`, $M_{top\  audio}$=`r THdq_propmeans$a_propq`) and more declaratives than videos ($M_{video}$=`r dq_propmeans$v_propd`, $M_{audio}$=`r dq_propmeans$a_propd`, $M_{same\  audio}$=`r SHdq_propmeans$a_propd`, $M_{top\ audio}$=`r THdq_propmeans$a_propd`; each video vs. audio comparison adjusted-*p*<.05). No other proportional utterance-type differences reached significance across recording-types (all adjusted-*p*>.05). See Figure \@ref(fig:gr-ut-count-collapsed). 
 
 At the word level, we aimed to characterize whether audio- and video-recordings captured the same nouns and the same relative frequencies across words and families. Nouns' frequency distribution was Zipfian: of the `r totaln_objectwords` unique object words (`r totaln_bl` lemmas) heard across months and recording-types, only `r totaln_once_objectwords` (`r totaln_once_bl` lemmas) occurred more than once.
 
@@ -265,21 +279,21 @@ apa_table(measures_table_data2,caption = "Count measures (n=12), by Measure-Type
 ```
 \pagebreak
 ```{r propna-missing-tables, echo = F, warning = F, message = F, results = "asis"}
-apa_table(vars_with_NAs, caption = "Proportion of infants with no recorded nouns from the listed speakers and utterance-types", small = T, note = "V indicates videos, A indicates audio-recordings. All infants heard nouns for all other measures (see Table 2).")
+apa_table(all_vars_with_NAs, caption = "Proportion of infants with no recorded nouns for the listed measures, by sample", small = T, note = "V=video, A=daylong audio, Top=top hour of A, Same = Video-hour of A. All infants heard nouns for all other measures (see Table 2).")
 ```
 \pagebreak
 ```{r normtable, echo = F, warning = F, results = "asis"}
 apa_table(countvals_normed_vboost_table,cap="Video/Audio Count Measures, normed by minutes in recording (column 2) and divided without norming (column 3)", small = T, note = "If videos contained equivalent quantities of nouns, Inflation values would be 1, and Video-fractions would be .1")
 ```
 
-```{r gr-derived-counts-67-diff, fig.cap = cap, echo = F, warning = F, fig.height=5, fig.width=7}
+```{r gr-derived-counts-67-diff, fig.cap = cap, echo = F, warning = F, fig.height=5, fig.width=7.5}
 gr_countvals_long_collapsedNEW
-cap <- "Raw counts of noun measures across audio-recordings and videos. The top row shows counts in the daylong audio recording; the bottom row shows the 3 hour-long annotations: 'same' and 'top' are the two peak audio times, and 'video' indicates the video recording; see text for details. The upper panel labels indicate length of annotated sample (day or hour); the bottom panel labels reflects measure type (op = object presence; utt = utterance-type, quant = quantity, Nspeakers = number of speakers). Bars (left to right) appear in legend order (top to bottom) in both color (count measures) and line-type (annotation length: day, top-hour, same-hour, or video)."
+cap <- "Noun count measures across audio-recordings and videos. Top row depicts daylong audio data; bottom row shows the 3 hour-long annotations: 'same' and 'top' are the two peak audio times, and 'video' indicates the video data. Upper panel labels indicate annotated sample length (day or hour); the bottom panel labels reflects measure type (op = object presence; utt = utterance-type, quant = quantity, Nspeakers = number of speakers). Bars (left to right) appear in legend order (top to bottom) in both color (count measures) and opacity (time sample: day, top-hour, same-hour, or video)."
 ```
 
 ```{r gr-derived-normcounts-diff, fig.cap = cap, echo = F, warning = F, fig.height = 5, fig.width =5.5}
 gr_countvals_long_norm_collapsed
-cap <- "Count measures normalized by recording length, for audio-recordings (solid borders) and videos (dashed borders). Normalized counts were calculated by dividing raw counts (see Fig 1.) by non-silent recording minutes. op = object presence; utt = utterance-type, quant = quantity, Nspeakers = number of speakers. Bars (left to right) appear in legend order (top to bottom). All measures differed significantly across recording-types except nouns from fathers."
+cap <- "Noun count measures normalized by recording length, for audio-recordings (solid borders) and videos (dashed borders). Normalized counts were calculated by dividing raw counts (see Fig 1.) by non-silent recording minutes. op = object presence; utt = utterance-type, quant = quantity, Nspeakers = number of speakers. Bars (left to right) appear in legend order (top to bottom). All measures differed significantly across recording-types except nouns from fathers."
 ```
 
 ```{r gr-derived-normcounts-corr, fig.cap = cap, echo = F,  fig.height= 3, warning = F}
@@ -289,7 +303,7 @@ cap <- "Normalized count correlations between audio- vs. video-recordings. Each 
 
 ```{r gr-ut-count-collapsed, fig.cap = cap, echo = F,  fig.height = 3, fig.width = 4, warning = F}
 gr_ut_count_collapsedNEW
-cap <- "Utterance-type proportions across audio-recordings (daylong, 'same' hour and 'top' hour) and videos (indicated by line-type). Utterance-types are in legend order top to bottom. Videos contained a significantly greater proportion of questions and lesser proportion of declaratives; see text for details."
+cap <- "Utterance-type proportions across audio-recordings (daylong, 'same' hour and 'top' hour) and videos (indicated by line-type). Utterance-types are in legend order top to bottom. Videos contained a significantly more questions and fewer declaratives than the audio-recording time samples."
 ```
 
 ```{r top-100-logspace, fig.cap = cap, echo = F, warning = F, message= F, fig.width = 9, fig.height = 7}
@@ -304,7 +318,7 @@ cap <- "Correlations of the frequencies of the top 100 words in audio- vs. video
 
 ```{r top10noun-freq, fig.cap = cap, echo = F, warning = F, fig.height = 3, fig.width = 8, fig.align="h"}
 top10_graph_collapsedNEW
-cap<-"Top 10 words by recording type. Each node represents the frequency count of each top audio or video word over both months (x-axis) and the number of families where that word was said (out of 44) across months (y-axis)."
+cap<-"Top 10 words by recording type and time sample. Each node represents the frequency count of each top audio or video word over both months (x-axis) and the number of families where that word was said (out of 44) across months (y-axis)."
 ```  
 
 \setlength{\parindent}{-0.5in}
