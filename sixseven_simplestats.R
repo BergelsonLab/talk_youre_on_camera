@@ -98,9 +98,15 @@ vboost_sd_collapsed<- sixseven_spreadAV_collapsed %>%
 cor_AVtop <-cor.test(top100av_spread$audio,
                      top100av_spread$video,
                      method = "kendall") %>% tidy()
+# cor.test(timeslices_top100av_spread$audio_day,
+#          timeslices_top100av_spread$video_hr,
+#          method = "kendall") %>% tidy()
 cor_AVtopnozeroes <- cor.test(top100av_spread_nozeros$audio,
                               top100av_spread_nozeros$video,
                               method = "kendall") %>% tidy()# sig cor, but ~1/2 are 0s
+# cor.test(timeslices_top100av_spread_nozeros$audio_day,
+#          timeslices_top100av_spread_nozeros$video_hr,
+#                               method = "kendall") %>% tidy()# sig cor, but ~1/2 are 0s
 
 # shapiro tests -----------------------------------------------------------
 #only 4 are normal: numtypes, tokens, speakers, and MOT

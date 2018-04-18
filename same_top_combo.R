@@ -142,20 +142,42 @@ timeslices_overall_top10<- SAMEHOURoverall_top10 %>%
   bind_rows(TOPHOURoverall_top10 %>% filter(audio_video=="audio") %>% mutate(timeslice ="audio_tophr")) %>% 
   bind_rows(overall_top10 %>% filter(audio_video=="audio") %>% mutate(timeslice="audio_day"))
 
+timeslices_overall_top10_nfams <- timeslices_overall_top10 %>% 
+  group_by(timeslice) %>% 
+  summarise(min_nfams = min(nfams),
+            max_nfams = max(nfams),
+            mean_freq = mean(n),
+            sd_freq = sd(n),
+            mean_nfams = mean(nfams),
+            sd_nfams = sd(nfams))
+
 timeslices_top100av <- SAMEHOURsixseven_basiclevel_home_data%>%
   mutate(timeslice = ifelse(audio_video=="video","video_hr","audio_samehr")) %>% 
-  bind_rows(TOPHOURsixseven_basiclevel_home_data %>% filter(audio_video=="audio") %>% mutate(timeslice ="audio_tophr")) %>% 
-  bind_rows(sixseven_basiclevel_home_data %>% filter(audio_video=="audio") %>% mutate(timeslice="audio_day")) %>% 
+  bind_rows(TOPHOURsixseven_basiclevel_home_data %>% 
+              filter(audio_video=="audio" & object %in% top100av$object) %>% 
+              mutate(timeslice ="audio_tophr")) %>%  
+ # bind_rows(sixseven_basiclevel_home_data %>% filter(audio_video=="audio") %>% mutate(timeslice="audio_day")) %>% 
   mutate(timeslice = as.factor(timeslice)) %>% 
+  filter(object %in% top100av$object) %>% 
   group_by(timeslice, object)%>%
   tally()%>%
-  top_n(100,n)
+  top_n(100,n) %>% 
+  bind_rows(top100av %>% filter(audio_video=="audio") %>% mutate(timeslice="audio_day"))%>% 
+  dplyr::select(-audio_video)
 
 timeslices_top100av_spread <- timeslices_top100av %>% 
   spread(timeslice, n,fill = 0) %>% 
   group_by(object) %>% 
   mutate(aud_vid_sum = sum(audio_day,audio_samehr,audio_tophr, video_hr, na.rm=T)) %>% 
   arrange(-aud_vid_sum)
+
+timeslices_top100av_spread_nozeros<- timeslices_top100av_spread %>% 
+  filter(audio_day!=0 & video_hr!=0 & audio_tophr!=0 & audio_samehr!=0) 
+
+
+
+
+
 
 # df to plot hour onsets and offsets on one graph -------------------------------------------------------------------
 combo_sametopmarker <- SAMEHOUR_marker %>% 
