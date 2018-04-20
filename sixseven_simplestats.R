@@ -43,10 +43,28 @@ c10 <- cor.test(data=sixseven_spreadAV_normmin_collapsed, ~v_i+a_i,conf.int=T, m
 c11 <- cor.test(data=sixseven_spreadAV_normmin_collapsed, ~v_n+a_n,conf.int=T, method = "kendall")%>%  tidy() %>% mutate(comp = "c_n")
 c12 <- cor.test(data=sixseven_spreadAV_normmin_collapsed, ~v_y_op+a_y_op,conf.int=T, method = "kendall")%>%  tidy() %>% mutate(comp = "c_yop")
 
+nn_c1 <- cor.test(data=sixseven_spreadAV_collapsed, ~v_numtokens+a_numtokens,conf.int=T, method = "kendall")%>% tidy() %>% mutate(comp = "c_numtok")
+nn_c2 <- cor.test(data=sixseven_spreadAV_collapsed, ~v_numtypes+a_numtypes,conf.int=T, method = "kendall")%>% tidy() %>% mutate(comp = "c_numtyp")
+nn_c3 <- cor.test(data=sixseven_spreadAV_collapsed, ~v_numspeakers+a_numspeakers,conf.int=T, method = "kendall")%>% tidy() %>% mutate(comp = "c_numsp")
+nn_c4 <- cor.test(data=sixseven_spreadAV_collapsed, ~v_MOT+a_MOT,conf.int=T, method = "kendall")%>% tidy() %>% mutate(comp = "c_MOT")
+nn_c5 <- cor.test(data=sixseven_spreadAV_collapsed, ~v_FAT+a_FAT,conf.int=T, method = "kendall")%>% tidy() %>% mutate(comp = "c_FAT")
+nn_c6 <- cor.test(data=sixseven_spreadAV_collapsed, ~v_d+a_d,conf.int=T, method = "kendall")%>%  tidy() %>% mutate(comp = "c_d")
+nn_c7 <- cor.test(data=sixseven_spreadAV_collapsed, ~v_q+a_q,conf.int=T, method = "kendall")%>%  tidy() %>% mutate(comp = "c_q")
+nn_c8 <- cor.test(data=sixseven_spreadAV_collapsed, ~v_r+a_r,conf.int=T, method = "kendall")%>%  tidy() %>% mutate(comp = "c_r")
+nn_c9 <- cor.test(data=sixseven_spreadAV_collapsed, ~v_s+a_s,conf.int=T, method = "kendall")%>%  tidy() %>% mutate(comp = "c_s")
+nn_c10 <- cor.test(data=sixseven_spreadAV_collapsed, ~v_i+a_i,conf.int=T, method = "kendall")%>%  tidy() %>% mutate(comp = "c_i")
+nn_c11 <- cor.test(data=sixseven_spreadAV_collapsed, ~v_n+a_n,conf.int=T, method = "kendall")%>%  tidy() %>% mutate(comp = "c_n")
+nn_c12 <- cor.test(data=sixseven_spreadAV_collapsed, ~v_y_op+a_y_op,conf.int=T, method = "kendall")%>%  tidy() %>% mutate(comp = "c_yop")
+
 cs <- bind_rows(c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12) %>% 
   mutate(pval_adj = p.adjust(p.value, method = "holm"))
 cs %>% filter(pval_adj<.05)
 c_taus_sig <- filter(cs, pval_adj<.05)
+
+nn_cs <- bind_rows(nn_c1, nn_c2, nn_c3, nn_c4, nn_c5, nn_c6, nn_c7, nn_c8, nn_c9, nn_c10, nn_c11, nn_c12) %>% 
+  mutate(pval_adj = p.adjust(p.value, method = "holm"))
+nn_cs %>% filter(pval_adj<.05)
+nn_c_taus_sig <- filter(nn_cs, pval_adj<.05)
 
 vboost_mean_collapsed <- sixseven_spreadAV_collapsed %>% 
   dplyr::select(subj, v_total_min, a_tot_nosilsk, a_tot_nosil,a_total_min,
