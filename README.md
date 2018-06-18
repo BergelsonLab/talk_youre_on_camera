@@ -4,3 +4,5 @@ Repo for "Day by Day, Hour by Hour: Naturalistic Language Input to Infants"
 This paper is in press at DevSci as of June 2018, and uses the six and seven month audio/video data from our SEEDLingS corpus
 Bergelson, Amatuni, Dailey, Koorathota, & Tor
 Contact elika.bergelson@duke.edu with any questions about code/paper/corpus etc
+
+Audio and video data for this project can be found by members at Databrary and Homebank
